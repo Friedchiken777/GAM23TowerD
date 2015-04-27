@@ -48,7 +48,7 @@ public class GridSquare : MonoBehaviour
 	
 	public void SetNeighbors()
 	{
-		Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, 0.5f);
+		Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, 0.7f);
 		int i = 0;
 		while (i < hitColliders.Length) 
 		{
@@ -63,7 +63,7 @@ public class GridSquare : MonoBehaviour
 	public void SetCanBuildDefaults()
 	{
 		Vector3 up = transform.TransformDirection(Vector3.up);
-		if (Physics.Raycast(transform.position, up, 5))
+		if (Physics.Raycast(transform.position, up, 1.5f))
 		{
 			canBuild = canMove = false;
 		}
