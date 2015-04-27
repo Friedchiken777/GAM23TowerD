@@ -23,6 +23,7 @@ public class GridSquare : MonoBehaviour
 	{
 		pathMarker = transform.FindChild("EnemyPathMarker").gameObject;
 		SetNeighbors();
+		SetCanBuildDefaults();
 		if(isPathStart)
 		{
 			gValue = 0;
@@ -51,11 +52,20 @@ public class GridSquare : MonoBehaviour
 		int i = 0;
 		while (i < hitColliders.Length) 
 		{
-			if(hitColliders[i].gameObject != gameObject)
+			if(hitColliders[i].gameObject != gameObject && hitColliders[i].gameObject.tag == "GridSquare")
 			{
 				neighbors.Add(hitColliders[i].gameObject);
 			}
 			i++;
+		}
+	}
+	
+	public void SetCanBuildDefaults()
+	{
+		Vector3 up = transform.TransformDirection(Vector3.up);
+		if (Physics.Raycast(transform.position, up, 5))
+		{
+			canBuild = canMove = false;
 		}
 	}
 	
