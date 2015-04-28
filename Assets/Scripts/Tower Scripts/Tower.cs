@@ -3,13 +3,11 @@ using System.Collections;
 
 public class Tower : MonoBehaviour 
 {
-    public int CORROSIVE_DAMAGE = 1;
-    public int ELECTRIC_DAMAGE = 2;
-    public int FLAME_DAMAGE = 2;
-    public int SPOOK_DAMAGE = 1 / 3;
-    public int CRYSTAL_DAMAGE = 1;
     public int health = 20;
+	public float firingTimer = 0.0f;
+	public GameObject[] gunPlacements;
     public GameObject projectile;
+	public Transform target;
     public AudioClip[] audioClip;
 
 	// Use this for initialization
