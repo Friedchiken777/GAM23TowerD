@@ -7,11 +7,12 @@ public class Pathfinder : MonoBehaviour
 	public List<GameObject> validNodeList;
 	
 	public GameObject start, end;
+	public int startcount, endcount;
 	
 	public List<GameObject> openList;
 	public List<GameObject> closedList;
 	
-	public List<GameObject> currentPath;
+	public List<GameObject> currentPath, proposedPath;
 	
 	GameObject infinityGridSquare;
 
@@ -19,9 +20,14 @@ public class Pathfinder : MonoBehaviour
 	void Start () 
 	{
 		infinityGridSquare = Resources.Load("InfinityGridSquare") as GameObject;
-		PopulateValidNodeList();
-		CalculateHValues();
-		FindPath ();
+		if(PopulateValidNodeListDebugColors())
+		{
+			CalculateHValues();
+			if(FindPath ())
+			{
+				SetPath();
+			}
+		}		
 	}
 	
 	// Update is called once per frame
@@ -29,8 +35,37 @@ public class Pathfinder : MonoBehaviour
 	{
 		if(Input.GetKeyDown(KeyCode.R))
 		{
-			FindPath();
+			if(FindPath ())
+			{
+				SetPath();
+			}
 		}
+	}
+	
+	bool ValidLevelCheck()
+	{
+		bool r = true;
+		if(start == null)
+		{
+			Debug.LogError("Invalid Map, No Path Start Detected");
+			r = false;
+		}
+		if(end == null)
+		{
+			Debug.LogError("Invalid Map, No Path Destination Detected");
+			r = false;
+		}
+		if(startcount > 1)
+		{
+			Debug.LogError("Invalid Map, Too Many Path Starts Detected. Total Found: " + startcount);
+			r = false;
+		}
+		if(endcount > 1)
+		{
+			Debug.LogError("Invalid Map, Too Many Path Destinations Detected. Total Found: " + endcount);
+			r = false;
+		}
+		return r;
 	}
 	
 	void ClearLists()
@@ -41,12 +76,40 @@ public class Pathfinder : MonoBehaviour
 		for(int i = 0; i < currentPath.Count; i++)
 		{
 			currentPath[i].GetComponent<GridSquare>().pathMarker.SetActive(false);
+			currentPath[i].GetComponent<GridSquare>().gValue = 0;
+			currentPath[i].GetComponent<GridSquare>().parent = null;
 		}
 		currentPath.Clear();
+		proposedPath.Clear();
 	}
 	
-	void PopulateValidNodeList()
+	bool PopulateValidNodeList()
 	{
+		startcount = endcount = 0;
+		GameObject[] temp = GameObject.FindGameObjectsWithTag("GridSquare");
+		for(int i = 0; i < temp.Length; i++)
+		{
+			if(temp[i].GetComponent<GridSquare>().canMove)
+			{
+				validNodeList.Add(temp[i]);
+			}
+			if(temp[i].GetComponent<GridSquare>().isPathStart)
+			{
+				start = temp[i];
+				startcount++;
+			}
+			if(temp[i].GetComponent<GridSquare>().isTarget)
+			{
+				end = temp[i];
+				endcount++;
+			}
+		}
+		return ValidLevelCheck();
+	}
+	
+	bool PopulateValidNodeListDebugColors()
+	{
+		startcount = endcount = 0;
 		GameObject[] temp = GameObject.FindGameObjectsWithTag("GridSquare");
 		for(int i = 0; i < temp.Length; i++)
 		{
@@ -62,14 +125,17 @@ public class Pathfinder : MonoBehaviour
 			if(temp[i].GetComponent<GridSquare>().isPathStart)
 			{
 				start = temp[i];
+				startcount++;
 				temp[i].GetComponent<GridSquare>().ColorStartGreen();
 			}
 			if(temp[i].GetComponent<GridSquare>().isTarget)
 			{
 				end = temp[i];
+				endcount++;
 				temp[i].GetComponent<GridSquare>().ColorEndBlue();
 			}
 		}
+		return ValidLevelCheck();
 	}
 	
 	void CalculateHValues()
@@ -135,31 +201,50 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	public void FindPath()
+	public bool FindPath()
 	{
 		ClearLists();
-		PopulateValidNodeList();
-		CalculateParent(start);
-		GameObject nextNode = CalculateNextNode();
-		for(int i = 0; i < validNodeList.Count; i++)
+		if(PopulateValidNodeListDebugColors())
 		{
-			if(!openList.Contains(end))
+			CalculateParent(start);
+			GameObject nextNode = CalculateNextNode();
+			for(int i = 0; i < validNodeList.Count; i++)
 			{
-				CalculateParent(nextNode);
-				nextNode = CalculateNextNode();
+				if(!openList.Contains(end))
+				{
+					CalculateParent(nextNode);
+					nextNode = CalculateNextNode();
+				}
+				else
+				{
+					i = validNodeList.Count + 1;
+				}
 			}
-			else
+			GameObject backtrack = end;
+			proposedPath.Add(backtrack);
+			while(backtrack.GetComponent<GridSquare>().parent != null)
 			{
-				i = validNodeList.Count + 1;
+				backtrack = backtrack.GetComponent<GridSquare>().parent;
+				proposedPath.Add(backtrack);
 			}
 		}
-		GameObject backtrack = end;
-		currentPath.Add(backtrack);
-		while(backtrack.GetComponent<GridSquare>().parent != null)
+		if(proposedPath.Count > 1)
 		{
-			backtrack = backtrack.GetComponent<GridSquare>().parent;
-			currentPath.Add(backtrack);
+			return true;
 		}
-		LightUpMarkers();
+		else
+		{
+			//Debug.LogError("No Path Detected");
+			return false;
+		}
+	}
+	
+	public void SetPath()
+	{		
+		for(int i = proposedPath.Count - 1; i >= 0; i--)
+		{
+			currentPath.Add(proposedPath[i]);
+		}
+		LightUpMarkers();		
 	}
 }
