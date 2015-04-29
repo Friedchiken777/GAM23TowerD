@@ -1,5 +1,5 @@
 ﻿/// <summary>
-/// HorrorCharacterController.cs
+/// TDCharacterController.cs
 /// Written by William George (with lots of internet help...)
 /// Basically just a custom first person controller :)
 /// </summary>
@@ -12,6 +12,8 @@ public class TDCharacterController : MonoBehaviour {
 	CharacterController characterControler;
 
 	public Camera cam;
+	public GameManager gm;
+	public GameState gameState;
 	
 	public float sensitivityX = 15F;
 	public float sensitivityY = 15F;
@@ -45,6 +47,7 @@ public class TDCharacterController : MonoBehaviour {
 	
 	public GameObject[] bullets;
 	public GameObject gun;
+	GameObject weapon;
 	public int ammo, ammoShotType;
 	
 	public float maxHealth, currentHealth;
@@ -55,14 +58,12 @@ public class TDCharacterController : MonoBehaviour {
 	void Start ()
 	{
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+		gm = GameObject.Find ("_GameManager").GetComponent<GameManager>();
+		gameState = gm.currentState;
 		gun = GameObject.Find("SpawnBullet");
-		gravity = -10f;
-		fallGravity = -3f;
-		jumpHeight = 6;
+		weapon = cam.transform.FindChild("Weapon").gameObject;
 		jump = true;
-		totalJumps = 1;
 		currentHealth = maxHealth;
-		playerDamage = 1;
 		characterControler = this.GetComponent<CharacterController> ();
 		originalRotation = cam.transform.localRotation;
 		origionalPlayerRotation = transform.localRotation;		
@@ -70,6 +71,17 @@ public class TDCharacterController : MonoBehaviour {
 	
 	void Update ()
 	{
+		gameState = gm.currentState;
+		
+		if(gameState == GameState.DefensePhase)
+		{
+			weapon.SetActive(true);
+		}
+		else
+		{
+			weapon.SetActive(false);
+		}
+	
 		rotationX += Input.GetAxis("Mouse X") * sensitivityX/10;
 		rotationY += Input.GetAxis("Mouse Y") * sensitivityY/10;
 		
@@ -86,15 +98,24 @@ public class TDCharacterController : MonoBehaviour {
 		vertical = Input.GetAxis ("Vertical");
 		
 
-		if((vertical > 0.01f || vertical < -0.01f))
-		{		
-			moveDirec.x = vertical * walkSpeed * this.transform.forward.x;
-			moveDirec.z = vertical * walkSpeed * this.transform.forward.z;
-		}
-		if ((horizontal > 0.01f || horizontal < -0.01f)) 
+		if(((vertical > 0.01f && horizontal > 0.01f) || (vertical < -0.01f && horizontal < -0.01f) 
+		    || (vertical > 0.01f && horizontal < -0.01f) || (vertical < -0.01f && horizontal > 0.01f)))
 		{
-			moveDirec.x = horizontal * walkSpeed * this.transform.right.x;
-			moveDirec.z = horizontal * walkSpeed * this.transform.right.z;
+			moveDirec.x = (horizontal * walkSpeed * this.transform.right.x + vertical * walkSpeed * this.transform.forward.x)/Mathf.Sqrt(2);
+			moveDirec.z = (horizontal * walkSpeed * this.transform.right.z + vertical * walkSpeed * this.transform.forward.z)/Mathf.Sqrt(2);
+		}
+		else
+		{
+			if((vertical > 0.01f || vertical < -0.01f))
+			{		
+				moveDirec.x = vertical * walkSpeed * this.transform.forward.x;
+				moveDirec.z = vertical * walkSpeed * this.transform.forward.z;
+			}
+			if ((horizontal > 0.01f || horizontal < -0.01f)) 
+			{
+				moveDirec.x = horizontal * walkSpeed * this.transform.right.x;
+				moveDirec.z = horizontal * walkSpeed * this.transform.right.z;
+			}
 		}
 
 		if((vertical < 0.01f && vertical > -0.01f) && (horizontal < 0.01f && horizontal > -0.01f))
@@ -138,13 +159,13 @@ public class TDCharacterController : MonoBehaviour {
 			characterControler.Move (moveDirec * Time.deltaTime);
 		}
 		
-		if(ammo > 0)
+		if(ammo > 0 && gameState == GameState.DefensePhase)
 		{
 			if(Input.GetMouseButtonDown(0))
 			{
 				ammoShotType = Random.Range(0,bullets.Length);
-				Instantiate(bullets[ammoShotType], gun.transform.position, gun.transform.localRotation);
-				GetComponent<AudioSource>().PlayOneShot(gun.GetComponent<AudioSource>().clip);
+				Instantiate(bullets[0], gun.transform.position, gun.transform.localRotation);
+				//GetComponent<AudioSource>().PlayOneShot(gun.GetComponent<AudioSource>().clip);
 				ammo --;
 			}
 		}
@@ -158,7 +179,7 @@ public class TDCharacterController : MonoBehaviour {
 		if(currentHealth < 0)
 		{			
 			print ("YOU LOOSE");
-			Application.LoadLevel(1);
+			//Application.LoadLevel(1);
 		}
 	}
 

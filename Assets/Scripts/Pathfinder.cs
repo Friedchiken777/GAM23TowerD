@@ -23,10 +23,7 @@ public class Pathfinder : MonoBehaviour
 		if(PopulateValidNodeListDebugColors())
 		{
 			CalculateHValues();
-			if(FindPath ())
-			{
-				SetPath();
-			}
+			FindPath ();
 		}		
 	}
 	
@@ -230,7 +227,8 @@ public class Pathfinder : MonoBehaviour
 		}
 		if(proposedPath.Count > 1)
 		{
-			return true;
+			SetPath();	
+			return true;			
 		}
 		else
 		{
