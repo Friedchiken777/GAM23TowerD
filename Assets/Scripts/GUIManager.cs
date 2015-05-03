@@ -4,13 +4,11 @@ using UnityEngine.UI;
 
 public class GUIManager : MonoBehaviour 
 {
-
-	GameManager gm;
 	
 	// Use this for initialization
 	void Start () 
 	{
-		gm = GetComponent<GameManager>();
+	
 	}
 	
 	// Update is called once per frame
@@ -30,7 +28,7 @@ public class GUIManager : MonoBehaviour
 	
 	void CrosshairLogic()
 	{
-		if(gm.currentState == GameState.DefensePhase || gm.currentState == GameState.BuildPhase)
+		if(GameManager.currentState == GameState.DefensePhase || GameManager.currentState == GameState.BuildPhase)
 		{
 			GameObject.Find("Crosshair").GetComponent<Image>().enabled = true;
 		}
@@ -42,11 +40,11 @@ public class GUIManager : MonoBehaviour
 	
 	public void MakeBuildPhase()
 	{
-		GetComponent<GameManager>().currentState = GameState.BuildPhase;
+		GameManager.currentState = GameState.BuildPhase;
 	}
 	
 	public void MakeDefensePhase()
 	{
-		GetComponent<GameManager>().currentState = GameState.DefensePhase;
+		GameManager.currentState = GameState.DefensePhase;
 	}
 }

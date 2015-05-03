@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WaveData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<wave>
+<waveNumber>0</waveNumber>
+<enemyToSpawn>
+<string>Enemy1</string>
+<string>Enemy2</string>
+</enemyToSpawn>
+</wave>
+</WaveData>

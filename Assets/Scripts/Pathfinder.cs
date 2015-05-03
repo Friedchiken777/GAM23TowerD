@@ -4,22 +4,35 @@ using System.Collections.Generic;
 
 public class Pathfinder : MonoBehaviour 
 {
-	public List<GameObject> validNodeList;
+	static Pathfinder instance_;
+	public static Pathfinder Instance
+	{
+		get
+		{
+			if (instance_ == null) {
+				instance_ = new Pathfinder();
+			}
+			return instance_;
+		}
+	}
 	
-	public GameObject start, end;
-	public int startcount, endcount;
+	public static GameObject infinityGridSquare = Resources.Load("InfinityGridSquare") as GameObject;
 	
-	public List<GameObject> openList;
-	public List<GameObject> closedList;
+	public static List<GameObject> validNodeList = new List<GameObject>();
 	
-	public List<GameObject> currentPath, proposedPath;
+	public static GameObject start, end;
+	public static int startcount, endcount;
 	
-	GameObject infinityGridSquare;
+	public static List<GameObject> openList = new List<GameObject>();
+	public static List<GameObject> closedList = new List<GameObject>();
+	
+	public static List<GameObject> currentPath = new List<GameObject>();
+	public static List<GameObject> proposedPath = new List<GameObject>();
+	
 
 	// Use this for initialization
 	void Start () 
 	{
-		infinityGridSquare = Resources.Load("InfinityGridSquare") as GameObject;
 		if(PopulateValidNodeListDebugColors())
 		{
 			CalculateHValues();
@@ -39,7 +52,7 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	bool ValidLevelCheck()
+	static bool ValidLevelCheck()
 	{
 		bool r = true;
 		if(start == null)
@@ -65,7 +78,7 @@ public class Pathfinder : MonoBehaviour
 		return r;
 	}
 	
-	void ClearLists()
+	static void ClearLists()
 	{
 		validNodeList.Clear();
 		openList.Clear();
@@ -80,7 +93,7 @@ public class Pathfinder : MonoBehaviour
 		proposedPath.Clear();
 	}
 	
-	bool PopulateValidNodeList()
+	static bool PopulateValidNodeList()
 	{
 		startcount = endcount = 0;
 		GameObject[] temp = GameObject.FindGameObjectsWithTag("GridSquare");
@@ -104,7 +117,7 @@ public class Pathfinder : MonoBehaviour
 		return ValidLevelCheck();
 	}
 	
-	bool PopulateValidNodeListDebugColors()
+	static bool PopulateValidNodeListDebugColors()
 	{
 		startcount = endcount = 0;
 		GameObject[] temp = GameObject.FindGameObjectsWithTag("GridSquare");
@@ -135,7 +148,7 @@ public class Pathfinder : MonoBehaviour
 		return ValidLevelCheck();
 	}
 	
-	void CalculateHValues()
+	static void CalculateHValues()
 	{
 		float startx;
 		float startz;
@@ -149,7 +162,7 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	void CalculateParent(GameObject node)
+	static void CalculateParent(GameObject node)
 	{
 		if(!closedList.Contains(node))
 		{
@@ -175,9 +188,10 @@ public class Pathfinder : MonoBehaviour
 					node.GetComponent<GridSquare>().neighbors[i].GetComponent<GridSquare>().hValue + node.GetComponent<GridSquare>().neighbors[i].GetComponent<GridSquare>().gValue;		
 			}
 		}
+		openList.Sort(delegate(GameObject i1, GameObject i2) { return i1.name.CompareTo(i2.name); });
 	}
 	
-	GameObject CalculateNextNode()
+	static GameObject CalculateNextNode()
 	{
 		GameObject nextNode = infinityGridSquare;
 		for(int i = 0; i < openList.Count; i++)
@@ -190,7 +204,7 @@ public class Pathfinder : MonoBehaviour
 		return nextNode;
 	}
 	
-	void LightUpMarkers()
+	static void LightUpMarkers()
 	{
 		for(int i = 0; i < currentPath.Count; i++)
 		{
@@ -198,7 +212,7 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	public bool FindPath()
+	public static bool FindPath()
 	{
 		ClearLists();
 		if(PopulateValidNodeListDebugColors())
@@ -237,7 +251,7 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	public void SetPath()
+	static public void SetPath()
 	{		
 		for(int i = proposedPath.Count - 1; i >= 0; i--)
 		{

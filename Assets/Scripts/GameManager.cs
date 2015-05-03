@@ -3,7 +3,21 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour 
 {
-	public GameState currentState;
+	static GameManager instance_;
+	public static GameManager Instance
+	{
+		get
+		{
+			if (instance_ == null) {
+				instance_ = new GameManager();
+			}
+			return instance_;
+		}
+	}
+	
+	public static GameState currentState;
+	
+
 	
 	// Use this for initialization
 	void Start () 

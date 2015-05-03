@@ -12,7 +12,7 @@ public class TDCharacterController : MonoBehaviour {
 	CharacterController characterControler;
 
 	public Camera cam;
-	public GameManager gm;
+
 	public GameState gameState;
 	
 	public float sensitivityX = 15F;
@@ -58,8 +58,7 @@ public class TDCharacterController : MonoBehaviour {
 	void Start ()
 	{
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-		gm = GameObject.Find ("_GameManager").GetComponent<GameManager>();
-		gameState = gm.currentState;
+		gameState = GameManager.currentState;
 		gun = GameObject.Find("SpawnBullet");
 		weapon = cam.transform.FindChild("Weapon").gameObject;
 		jump = true;
@@ -71,7 +70,7 @@ public class TDCharacterController : MonoBehaviour {
 	
 	void Update ()
 	{
-		gameState = gm.currentState;
+		gameState = GameManager.currentState;
 		
 		if(gameState == GameState.DefensePhase)
 		{

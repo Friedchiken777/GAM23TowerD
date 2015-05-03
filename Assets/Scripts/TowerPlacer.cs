@@ -17,21 +17,19 @@ public class TowerPlacer : MonoBehaviour
 	GameObject tb = null;
 	bool buildOnClick = false;
 	RaycastHit hit;
-	GameObject infinityBlock;
 	
 	// Use this for initialization
 	void Start () 
 	{
 		gm = GameObject.Find("_GameManager");
 		player = GameObject.Find("PlayerTD");
-		infinityBlock = Resources.Load("InfinityGridSquare") as GameObject;
-		lastGridSquare = infinityBlock;
+		lastGridSquare = Pathfinder.infinityGridSquare;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(gm.GetComponent<GameManager>().currentState == GameState.BuildPhase)
+		if(GameManager.currentState == GameState.BuildPhase)
 		{
 			Ray lookAtRay = Camera.main.ScreenPointToRay(new Vector2(Screen.width*0.5f, Screen.height*0.5f));
 			if(Physics.Raycast(lookAtRay, out hit, 100, gridsOnly))
@@ -47,7 +45,7 @@ public class TowerPlacer : MonoBehaviour
 					lastGridSquare = currentSquare;
 					currentSquare.GetComponent<GridSquare>().canMove = false;
 					Vector3 tempPos = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBuffer ,hit.collider.gameObject.transform.position.z);
-					if(gm.GetComponent<Pathfinder>().FindPath())
+					if(Pathfinder.FindPath())
 					{
 						//print ("Path good");
 						tb = Instantiate(towerBaseValid, tempPos, currentSquare.transform.rotation) as GameObject;
@@ -96,8 +94,8 @@ public class TowerPlacer : MonoBehaviour
 			{				
 				hit.collider.gameObject.GetComponent<GridSquare>().canMove = true;
 			}
-			gm.GetComponent<Pathfinder>().FindPath();
-			lastGridSquare = infinityBlock;
+			Pathfinder.FindPath();
+			lastGridSquare = Pathfinder.infinityGridSquare;
 		}
 	}
 	
