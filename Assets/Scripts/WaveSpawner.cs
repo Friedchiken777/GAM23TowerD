@@ -22,6 +22,8 @@ public class WaveSpawner : MonoBehaviour
 	
 	public string fileToLoad;
 	
+	public float waitTime;
+	
 
 	void Start () 
 	{
@@ -64,7 +66,7 @@ public class WaveSpawner : MonoBehaviour
 	}
 	void LoadSong()
 	{
-		if (GameManager.currentState == GameState.BuildPhase && firstPlay == true)
+		if (GameManager.currentState == GameState.DefensePhase && firstPlay == true)
 		{
 			firstPlay = false;
 			LoadGame (dPath+""+fileToLoad);
@@ -80,7 +82,7 @@ public class WaveSpawner : MonoBehaviour
 		Animator animator;
 		for (int i=0; i < teststring.Length; i++)
 		{
-			yield return new WaitForSeconds(0.25f);
+			yield return new WaitForSeconds(waitTime);
 			notePath = (GameObject) Instantiate (Resources.Load(teststring[i]), Pathfinder.start.transform.position, Pathfinder.start.transform.rotation);
 			animator = notePath.GetComponent<Animator>();
 			if(GameManager.currentState == GameState.WinScreen)

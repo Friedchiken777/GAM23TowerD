@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Pathfinder : MonoBehaviour 
 {
@@ -29,10 +30,13 @@ public class Pathfinder : MonoBehaviour
 	public static List<GameObject> currentPath = new List<GameObject>();
 	public static List<GameObject> proposedPath = new List<GameObject>();
 	
+	public static int sortPerformance;
+	
 
 	// Use this for initialization
 	void Start () 
 	{
+		sortPerformance = 0;
 		if(PopulateValidNodeListDebugColors())
 		{
 			CalculateHValues();
@@ -162,7 +166,7 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	static void CalculateParent(GameObject node)
+	static void CalculateParent(GameObject node, bool sort = true)
 	{
 		if(!closedList.Contains(node))
 		{
@@ -188,7 +192,10 @@ public class Pathfinder : MonoBehaviour
 					node.GetComponent<GridSquare>().neighbors[i].GetComponent<GridSquare>().hValue + node.GetComponent<GridSquare>().neighbors[i].GetComponent<GridSquare>().gValue;		
 			}
 		}
-		openList.Sort(delegate(GameObject i1, GameObject i2) { return i1.name.CompareTo(i2.name); });
+		if(sort)
+		{
+			openList = openList.OrderBy(go=>(go.transform.position.x+(10*go.transform.position.z))).ToList();
+		}
 	}
 	
 	static GameObject CalculateNextNode()
@@ -217,13 +224,25 @@ public class Pathfinder : MonoBehaviour
 		ClearLists();
 		if(PopulateValidNodeListDebugColors())
 		{
+			bool sort = true;
+			int sortTest = 0;
 			CalculateParent(start);
 			GameObject nextNode = CalculateNextNode();
 			for(int i = 0; i < validNodeList.Count; i++)
 			{
 				if(!openList.Contains(end))
 				{
-					CalculateParent(nextNode);
+					CalculateParent(nextNode, sort);
+					sortTest++;
+					if(sortTest > sortPerformance)
+					{
+						sort = true;
+						sortTest = 0;
+					}
+					else
+					{
+						sort = false;
+					}
 					nextNode = CalculateNextNode();
 				}
 				else
