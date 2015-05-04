@@ -62,7 +62,9 @@ public class TowerPlacer : MonoBehaviour
 				}
 				else if(currentSquare != lastGridSquare && !currentSquare.GetComponent<GridSquare>().canBuild)
 				{
+					lastGridSquare = currentSquare;
 					LittleClearFunction();
+					buildOnClick = false;
 				}
 			}
 			if(hit.collider == null)
