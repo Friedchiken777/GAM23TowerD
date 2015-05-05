@@ -54,6 +54,8 @@ public class TDCharacterController : MonoBehaviour {
 	
 	public float playerDamage;
 
+	public float enemiesAggroed;
+
 	
 	void Start ()
 	{

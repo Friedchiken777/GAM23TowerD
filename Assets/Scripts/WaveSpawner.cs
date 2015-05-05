@@ -71,25 +71,60 @@ public class WaveSpawner : MonoBehaviour
 			firstPlay = false;
 			LoadGame (dPath+""+fileToLoad);
 			teststring = test.wave.enemyToSpawn;
-			print (teststring.Length);
+			//print (teststring.Length);
 			StartCoroutine(SongDelay());
 		}
 	}
 	
 	IEnumerator SongDelay()
 	{
-		GameObject notePath;
-		Animator animator;
+		GameObject newEnemy;
 		for (int i=0; i < teststring.Length; i++)
 		{
 			yield return new WaitForSeconds(waitTime);
-			notePath = (GameObject) Instantiate (Resources.Load(teststring[i]), Pathfinder.start.transform.position, Pathfinder.start.transform.rotation);
-			animator = notePath.GetComponent<Animator>();
+			string[] enemyData = teststring[i].Split(',');
+			string enemyToLoad = enemyData[0];
+			string enemyType = enemyData[1];
+			waitTime = float.Parse(enemyData[2]);
+			//print ("Enemy: "+enemyToLoad+" Type: "+enemyType+" Delay: "+waitTime);
+			newEnemy = (GameObject) Instantiate (Resources.Load(enemyToLoad), Pathfinder.start.transform.position, Pathfinder.start.transform.rotation);
+			newEnemy.GetComponent<Enemy>().enemyType = DetermineType(enemyType);
 			if(GameManager.currentState == GameState.WinScreen)
 			{
 				i = teststring.Length;
 			}
 			
+		}
+	}
+
+	EnemyType DetermineType(string stringtype)
+	{
+		switch (stringtype) 
+		{
+		case "Flame":
+		{
+			return EnemyType.Flame;
+		}
+		case "Electric":
+		{
+			return EnemyType.Electric;
+		}
+		case "Corrosive":
+		{
+			return EnemyType.Corrosive;
+		}
+		case "Crystal":
+		{
+			return EnemyType.Crystal;
+		}
+		case "Spook":
+		{
+			return EnemyType.Spook;
+		}
+		default:
+		{
+			return EnemyType.None;
+		}
 		}
 	}
 	
