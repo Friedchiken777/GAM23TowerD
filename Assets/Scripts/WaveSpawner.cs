@@ -38,7 +38,7 @@ public class WaveSpawner : MonoBehaviour
 	
 	void Update()
 	{
-		LoadSong ();
+		LoadLevel ();
 	}
 	
 	void SaveGame()
@@ -46,10 +46,10 @@ public class WaveSpawner : MonoBehaviour
 		savefiles = info.Length + 1;
 		if(savefiles < 7)
 		{
-			string xml = XMLizer<WaveData>.CreateXMLGeneric (n, dPath + filename + "0" + savefiles + ".xml");
+			XMLizer<WaveData>.CreateXMLGeneric (n, dPath + filename + "0" + savefiles + ".xml");
 		}
 		else{
-			string xml = XMLizer<WaveData>.CreateXMLGeneric (n, dPath + filename + savefiles + ".xml");
+			XMLizer<WaveData>.CreateXMLGeneric (n, dPath + filename + savefiles + ".xml");
 		}
 	}
 	
@@ -64,7 +64,7 @@ public class WaveSpawner : MonoBehaviour
 			test = XMLizer<WaveData>.ReadXMLGeneric (loadfile);
 		}
 	}
-	void LoadSong()
+	void LoadLevel()
 	{
 		if (GameManager.currentState == GameState.DefensePhase && firstPlay == true)
 		{
@@ -72,11 +72,11 @@ public class WaveSpawner : MonoBehaviour
 			LoadGame (dPath+""+fileToLoad);
 			teststring = test.wave.enemyToSpawn;
 			//print (teststring.Length);
-			StartCoroutine(SongDelay());
+			StartCoroutine(WaveDelay());
 		}
 	}
 	
-	IEnumerator SongDelay()
+	IEnumerator WaveDelay()
 	{
 		GameObject newEnemy;
 		for (int i=0; i < teststring.Length; i++)

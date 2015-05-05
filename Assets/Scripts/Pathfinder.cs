@@ -30,6 +30,8 @@ public class Pathfinder : MonoBehaviour
 	public static List<GameObject> currentPath = new List<GameObject>();
 	public static List<GameObject> proposedPath = new List<GameObject>();
 	
+	public static List<GameObject> sidePath = new List<GameObject>();
+	
 	public static int sortPerformance;
 	
 
@@ -270,12 +272,62 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	static public void SetPath()
+	public static void SetPath()
 	{		
 		for(int i = proposedPath.Count - 1; i >= 0; i--)
 		{
 			currentPath.Add(proposedPath[i]);
 		}
 		LightUpMarkers();		
+	}
+	
+	public static List<GameObject> GetCorrectionPath(GameObject b)
+	{
+		openList.Clear();
+		closedList.Clear();
+		proposedPath.Clear();
+		sidePath.Clear();
+		bool sort = true;
+		int sortTest = 0;
+		CalculateParent(b);
+		GameObject nextNode = CalculateNextNode();
+		print ("1");
+		for(int i = 0; i < validNodeList.Count; i++)
+		{
+			if(!openList.Contains(end))
+			{
+				CalculateParent(nextNode, sort);
+				sortTest++;
+				if(sortTest > sortPerformance)
+				{
+					sort = true;
+					sortTest = 0;
+				}
+				else
+				{
+					sort = false;
+				}
+				nextNode = CalculateNextNode();
+			}
+			else
+			{
+				i = validNodeList.Count + 1;
+			}
+		}
+		print("2");
+		GameObject backtrack = end;
+		proposedPath.Add(backtrack);
+		while(backtrack.GetComponent<GridSquare>().parent != null)
+		{
+			backtrack = backtrack.GetComponent<GridSquare>().parent;
+			proposedPath.Add(backtrack);
+		}
+		print ("3");
+		for(int i = proposedPath.Count - 1; i >= 0; i--)
+		{
+			sidePath.Add(proposedPath[i]);
+		}
+		print ("4");
+		return sidePath;
 	}
 }
