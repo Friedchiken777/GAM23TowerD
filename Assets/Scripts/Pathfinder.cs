@@ -213,11 +213,19 @@ public class Pathfinder : MonoBehaviour
 		return nextNode;
 	}
 	
-	static void LightUpMarkers()
+	public static void LightUpMarkers()
 	{
 		for(int i = 0; i < currentPath.Count; i++)
 		{
 			currentPath[i].GetComponent<GridSquare>().pathMarker.SetActive(true);
+		}
+	}
+
+	public static void UnlightUpMarkers()
+	{
+		for(int i = 0; i < currentPath.Count; i++)
+		{
+			currentPath[i].GetComponent<GridSquare>().pathMarker.SetActive(false);
 		}
 	}
 	

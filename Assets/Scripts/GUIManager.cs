@@ -19,10 +19,13 @@ public class GUIManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.B))
 		{
 			MakeBuildPhase();
+			Pathfinder.LightUpMarkers();
 		}
 		if(Input.GetKeyDown(KeyCode.N))
 		{
+			Pathfinder.UnlightUpMarkers();
 			MakeDefensePhase();
+
 		}
 	}
 	
