@@ -87,7 +87,7 @@ public class WaveSpawner : MonoBehaviour
 			string enemyType = enemyData[1];
 			waitTime = float.Parse(enemyData[2]);
 			//print ("Enemy: "+enemyToLoad+" Type: "+enemyType+" Delay: "+waitTime);
-			newEnemy = (GameObject) Instantiate (Resources.Load(enemyToLoad), Pathfinder.start.transform.position, Pathfinder.start.transform.rotation);
+			newEnemy = (GameObject) Instantiate (Resources.Load(enemyToLoad), Pathfinder.start.GetComponent<GridSquare>().pathMarker.transform.position, Pathfinder.start.GetComponent<GridSquare>().pathMarker.transform.rotation);
 			newEnemy.GetComponent<Enemy>().enemyType = DetermineType(enemyType);
 			if(GameManager.currentState == GameState.WinScreen)
 			{
