@@ -3,8 +3,8 @@
 <wave>
 <waveNumber>0</waveNumber>
 <enemyToSpawn>
-<string>Enemy1,Spook,2.3</string>
-<string>Enemy2,Flame,1</string>
+<string>Enemy_Bruiser,Spook,2.3</string>
+<string>Enemy_Bruiser,Flame,1</string>
 </enemyToSpawn>
 </wave>
 </WaveData>
