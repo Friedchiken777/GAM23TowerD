@@ -1,53 +1,84 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GUIManager : MonoBehaviour 
 {
+
+	static GUIManager instance_;
+	public static GUIManager Instance
+	{
+		get
+		{
+			if (instance_ == null) {
+				instance_ = new GUIManager();
+			}
+			return instance_;
+		}
+	}
 	
+	public static List<GameObject> towerChoices, towerSelectors;
 	// Use this for initialization
 	void Start () 
 	{
-	
+		GameObject[] tc = GameObject.FindGameObjectsWithTag("TowerChoose");
+		towerChoices = new List<GameObject>(tc);
+		towerChoices.Sort(CompareListByName);
+		GameObject[] tch = GameObject.FindGameObjectsWithTag("TowerChooseHighlight");
+		towerSelectors = new List<GameObject>(tch);
+		towerSelectors.Sort (CompareListByName);
 	}
 	
 	// Update is called once per frame
 	void Update () 
-	{
-		CrosshairLogic();
+	{		
 		
-		if(Input.GetKeyDown(KeyCode.B))
+	}
+	
+	public static void ShowCrosshair()
+	{
+		GameObject.Find("Crosshair").GetComponent<Image>().enabled = true;
+	}
+	
+	public static void HideCrosshair()
+	{
+		GameObject.Find("Crosshair").GetComponent<Image>().enabled = false;
+	}
+	
+	public static void ShowTowerChoices()
+	{
+		for(int i = 0; i < towerChoices.Count; i++)
 		{
-			MakeBuildPhase();
-			Pathfinder.LightUpMarkers();
+			towerChoices[i].SetActive(true);
+			//towerChoices[i].GetComponent<Image>() = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().spriteImage;
 		}
-		if(Input.GetKeyDown(KeyCode.N))
+		towerSelectors[0].SetActive(true);
+	}
+	
+	public static void HideTowerChoices()
+	{
+		for(int i = 0; i < towerSelectors.Count; i++)
 		{
-			Pathfinder.UnlightUpMarkers();
-			MakeDefensePhase();
-
+			towerChoices[i].SetActive(false);
+		}
+		for(int i = 0; i < towerChoices.Count; i++)
+		{
+			towerSelectors[i].SetActive(false);
 		}
 	}
 	
-	void CrosshairLogic()
+	public static void ChangeSelectedTower(int t)
 	{
-		if(GameManager.currentState == GameState.DefensePhase || GameManager.currentState == GameState.BuildPhase)
+		for(int i = 0; i < towerChoices.Count; i++)
 		{
-			GameObject.Find("Crosshair").GetComponent<Image>().enabled = true;
+			towerSelectors[i].SetActive(false);
 		}
-		else
-		{
-			GameObject.Find("Crosshair").GetComponent<Image>().enabled = false;
-		}
+		towerSelectors[t].SetActive(true);
 	}
 	
-	public void MakeBuildPhase()
+	private static int CompareListByName(GameObject i1, GameObject i2)
 	{
-		GameManager.currentState = GameState.BuildPhase;
-	}
-	
-	public void MakeDefensePhase()
-	{
-		GameManager.currentState = GameState.DefensePhase;
+		return i1.name.CompareTo(i2.name); 
 	}
 }

@@ -18,7 +18,7 @@ public class EnemyAI : MonoBehaviour
 	void Start () 
 	{
 		enemyPath = Pathfinder.currentPath;
-		player = GameObject.Find ("PlayerTD");
+		player = GameManager.currentPlayer;
 		stayOnPath = true;
 	}
 	
