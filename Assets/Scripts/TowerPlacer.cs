@@ -8,10 +8,12 @@ public class TowerPlacer : MonoBehaviour
 	
 	public GameObject lastGridSquare;
 	
-	public List<GameObject> availableTowers, towersBad, towersGood;
+	public List<GameObject> availableTowers, towersGood;
+	public GameObject towerBaseBad;
 	int currentTower;
 	public float yBufferTowerBase, yBufferTower;
 	GameObject tb = null;
+	GameObject tTemp = null;
 	bool buildOnClick = false;
 	RaycastHit hit;
 	
@@ -39,33 +41,56 @@ public class TowerPlacer : MonoBehaviour
 	void BuildPhaseGO()
 	{
 		Ray lookAtRay = Camera.main.ScreenPointToRay(new Vector2(Screen.width*0.5f, Screen.height*0.5f));
+		Vector3 tempPosBase = Vector3.zero;
+		Vector3 tempPosTower = Vector3.zero;
 		if(Physics.Raycast(lookAtRay, out hit, 100, gridsOnly))
 		{
 			GameObject currentSquare = hit.collider.gameObject;
-			if(currentSquare != lastGridSquare && currentSquare.GetComponent<GridSquare>().canBuild)
+			if(currentSquare != lastGridSquare && (currentSquare.GetComponent<GridSquare>().canBuild || currentSquare.GetComponent<GridSquare>().hasTowerBase))
 			{
 				//print(currentSquare.name);
 				if(tb != null)
 				{
 					Destroy(tb);
 				}
+				if(tTemp != null)
+				{
+					Destroy(tTemp);
+				}	
 				lastGridSquare = currentSquare;
 				currentSquare.GetComponent<GridSquare>().canMove = false;
-				Vector3 tempPos = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerBase ,hit.collider.gameObject.transform.position.z);
-				if(Pathfinder.FindPath())
+				if(currentTower == 0 || !currentSquare.GetComponent<GridSquare>().hasTowerBase)
 				{
-					//print ("Path good");
-					tb = Instantiate(towersGood[0], tempPos, currentSquare.transform.rotation) as GameObject;
-					buildOnClick = true;
+					tempPosBase = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerBase ,hit.collider.gameObject.transform.position.z);
+					if(Pathfinder.FindPath())
+					{
+						//print ("Path good");
+						if(!currentSquare.GetComponent<GridSquare>().hasTowerBase)
+						{
+							tb = Instantiate(towersGood[0], tempPosBase, currentSquare.transform.rotation) as GameObject;
+						}
+						buildOnClick = true;
+					}
+					else
+					{
+						//print ("Path bad");
+						if(!currentSquare.GetComponent<GridSquare>().hasTowerBase)
+						{
+							tb = Instantiate(towerBaseBad, tempPosBase, currentSquare.transform.rotation) as GameObject;
+						}
+						buildOnClick = false;
+						
+					}
+					if(!currentSquare.GetComponent<GridSquare>().hasTowerBase)
+					{
+						currentSquare.GetComponent<GridSquare>().canMove = true;
+					}
 				}
-				else
+				if(currentTower > 0 && towersGood[currentTower] != null)
 				{
-					//print ("Path bad");
-					tb = Instantiate(towersBad[0], tempPos, currentSquare.transform.rotation) as GameObject;
-					buildOnClick = false;
-					
+					tempPosTower = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTower ,hit.collider.gameObject.transform.position.z);
+					tTemp = Instantiate(towersGood[currentTower], tempPosTower, currentSquare.transform.rotation) as GameObject;
 				}
-				currentSquare.GetComponent<GridSquare>().canMove = true;
 			}
 			else if(currentSquare != lastGridSquare && !currentSquare.GetComponent<GridSquare>().canBuild)
 			{
@@ -82,10 +107,18 @@ public class TowerPlacer : MonoBehaviour
 		if(buildOnClick && Input.GetMouseButtonDown(0))
 		{
 			Destroy(tb);
-			Vector3 tempPos = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerBase ,hit.collider.gameObject.transform.position.z);
-			Instantiate(availableTowers[0], tempPos, hit.collider.gameObject.transform.rotation);
+			if(tTemp != null)
+			{
+				tempPosTower = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTower ,hit.collider.gameObject.transform.position.z);
+				Instantiate(availableTowers[currentTower], tempPosTower, hit.collider.gameObject.transform.rotation);
+				hit.collider.gameObject.GetComponent<GridSquare>().hasTower = true;
+				Destroy(tTemp);
+			}
+			tempPosBase = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerBase ,hit.collider.gameObject.transform.position.z);
+			Instantiate(availableTowers[0], tempPosBase, hit.collider.gameObject.transform.rotation);
 			hit.collider.gameObject.GetComponent<GridSquare>().canMove = false;
 			hit.collider.gameObject.GetComponent<GridSquare>().canBuild = false;
+			hit.collider.gameObject.GetComponent<GridSquare>().hasTowerBase = true;
 		}
 	}
 	
@@ -118,13 +151,17 @@ public class TowerPlacer : MonoBehaviour
 		if(tb != null)
 		{
 			Destroy(tb);
-			if(hit.collider != null && hit.collider.gameObject.GetComponent<GridSquare>().canBuild)
+			if(hit.collider != null && hit.collider.gameObject.GetComponent<GridSquare>().canBuild && !hit.collider.gameObject.GetComponent<GridSquare>().hasTowerBase)
 			{				
 				hit.collider.gameObject.GetComponent<GridSquare>().canMove = true;
 			}
 			Pathfinder.FindPath();
 			lastGridSquare = Pathfinder.infinityGridSquare;
 		}
+		if(tTemp != null)
+		{
+			Destroy(tTemp);
+		}		
 	}
 	
 }
