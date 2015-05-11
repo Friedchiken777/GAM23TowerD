@@ -4,16 +4,18 @@ using System.Collections;
 public class Tower : MonoBehaviour 
 {
     public int health = 20;
-	public float firingTimer = 0.0f;
+	public float firingRate = 0.0f;
 	public GameObject[] gunPlacements;
     public GameObject projectile;
+    public TowerType towerType;
+    public FireRate rate;
 	public Transform target;
     public AudioClip[] audioClip;
 
 	// Use this for initialization
 	void Start () 
     {
-	
+        SetTowers();
 	}
 	
 	// Update is called once per frame
@@ -23,40 +25,189 @@ public class Tower : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        transform.LookAt(target);
+        switch (rate)
+        {
+            case FireRate.Slow:
+                {
+                    firingRate += Time.deltaTime;
+                    if (firingRate >= 1.0f)
+                    {
+                        foreach (GameObject gunPlacement in gunPlacements)
+                        {
+                            Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
+                        }
+                        firingRate = 0.0f;
+                    }
+                    break;
+                }
+            case FireRate.Fast:
+                {
+                    firingRate += Time.deltaTime;
+                    if (firingRate >= 0.25f)
+                    {
+                        foreach (GameObject gunPlacement in gunPlacements)
+                        {
+                            Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
+                        }
+                        firingRate = 0.0f;
+                    }
+                    break;
+                }
+            default:
+                firingRate += Time.deltaTime;
+                    if (firingRate >= 0.5f)
+                    {
+                        foreach (GameObject gunPlacement in gunPlacements)
+                        {
+                            Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
+                        }
+                        firingRate = 0.0f;
+                    }
+                break;
+        }
     }
     
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "CorrosiveEnemy")
+        
+    }
+
+    public void SetTowers()
+    {
+        switch (towerType)
         {
-            health -= 1 / 3;
-        }
-        if (other.gameObject.tag == "FlameEnemy")
-        {
-            health -= 1;
-        }
-        if (other.gameObject.tag == "ElectricEnemy")
-        {
-            health -= 1;
-        }
-        if (other.gameObject.tag == "SpookEnemy")
-        {
-            health -= 2;
-        }
-        if (other.gameObject.tag == "CrystalEnemy")
-        {
-            health -= 2;
+            case TowerType.Corrosive:
+                {
+                    switch (rate)
+                    {
+                        case FireRate.Slow:
+                            {
+
+                                break;
+                            }
+                        case FireRate.Fast:
+                            {
+
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            case TowerType.Flame:
+                {
+                    switch (rate)
+                    {
+                        case FireRate.Slow:
+                            {
+
+                                break;
+                            }
+                        case FireRate.Fast:
+                            {
+
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            case TowerType.Electric:
+                {
+                    switch (rate)
+                    {
+                        case FireRate.Slow:
+                            {
+
+                                break;
+                            }
+                        case FireRate.Fast:
+                            {
+
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            case TowerType.Spook:
+                {
+                    switch (rate)
+                    {
+                        case FireRate.Slow:
+                            {
+
+                                break;
+                            }
+                        case FireRate.Fast:
+                            {
+
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            case TowerType.Crystal:
+                {
+                    switch (rate)
+                    {
+                        case FireRate.Slow:
+                            {
+
+                                break;
+                            }
+                        case FireRate.Fast:
+                            {
+
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            default:
+                switch (rate)
+                {
+                    case FireRate.Slow:
+                        {
+
+                            break;
+                        }
+                    case FireRate.Fast:
+                        {
+
+                            break;
+                        }
+                    default:
+                        break;
+                }
+                break;
         }
     }
-    
+
     void PlaySound(int clip)
     {
         GetComponent<AudioSource>().PlayOneShot(audioClip[clip]);
     }
 }
+
+public enum FireRate
+{
+    Slow,
+    Normal,
+    Fast
+};
+
 public enum TowerType
 {
-    None,
+    Normal,
     Corrosive,
     Flame,
     Electric,

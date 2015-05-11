@@ -123,7 +123,7 @@ public class WaveSpawner : MonoBehaviour
 		}
 		default:
 		{
-			return EnemyType.None;
+			return EnemyType.Normal;
 		}
 		}
 	}
