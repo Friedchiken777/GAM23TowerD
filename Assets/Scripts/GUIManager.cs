@@ -53,7 +53,7 @@ public class GUIManager : MonoBehaviour
 		for(int i = 0; i < towerChoices.Count; i++)
 		{
 			towerChoices[i].SetActive(true);
-			//towerChoices[i].GetComponent<Image>() = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().spriteImage;
+			//towerChoices[i].GetComponent<Image>().sprite = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().sprite;
 		}
 		towerSelectors[0].SetActive(true);
 	}

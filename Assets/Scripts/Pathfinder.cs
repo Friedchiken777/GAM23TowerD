@@ -295,8 +295,6 @@ public class Pathfinder : MonoBehaviour
 		closedList.Clear();
 		proposedPath.Clear();
 		sidePath.Clear();
-		bool sort = true;
-		int sortTest = 0;
 		CalculateParent(b);
 		GameObject nextNode = CalculateNextNode();
 		print ("1");
@@ -304,17 +302,7 @@ public class Pathfinder : MonoBehaviour
 		{
 			if(!openList.Contains(end))
 			{
-				CalculateParent(nextNode, sort);
-				sortTest++;
-				if(sortTest > sortPerformance)
-				{
-					sort = true;
-					sortTest = 0;
-				}
-				else
-				{
-					sort = false;
-				}
+				CalculateParent(nextNode);
 				nextNode = CalculateNextNode();
 			}
 			else

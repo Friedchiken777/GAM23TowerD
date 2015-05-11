@@ -19,7 +19,7 @@ public class Tower : MonoBehaviour
     public float rate;
 	public Transform target;
     public AudioClip[] audioClip;
-    public Image sprite;
+    public Sprite sprite;
 
 	// Use this for initialization
 	void Start () 

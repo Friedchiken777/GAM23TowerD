@@ -35,7 +35,11 @@ public class EnemyAI : MonoBehaviour
 				pathIndex++;
 			}
 		}
-		if (Vector3.Distance (transform.position, player.transform.position) < 2) 
+		if(Vector3.Distance (transform.position, player.transform.position) < 1)
+		{
+			gameObject.GetComponent<Enemy>().isAttacking = true;
+		}
+		else if (Vector3.Distance (transform.position, player.transform.position) < 2) 
 		{
 			RaycastHit hit;
 			if(Physics.Raycast(player.transform.position, Vector3.down, out hit, 2))
@@ -76,7 +80,6 @@ public class EnemyAI : MonoBehaviour
 	{
 		GameObject CurrentGrid;
 		RaycastHit hit;
-		Debug.LogError ("5");
 		if(Physics.Raycast(transform.position, Vector3.down, out hit, 2))
 		{
 			if(hit.collider.gameObject.tag == "GridSquare")

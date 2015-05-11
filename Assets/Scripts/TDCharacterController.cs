@@ -15,6 +15,9 @@ public class TDCharacterController : MonoBehaviour {
 
 	public GameState gameState;
 	
+	public float currentCurrency;
+	public float currentTowerBases;
+	
 	public float sensitivityX = 15F;
 	public float sensitivityY = 15F;
 	
