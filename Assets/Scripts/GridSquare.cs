@@ -9,6 +9,7 @@ public class GridSquare : MonoBehaviour
 	
 	public bool canMove; //valid for pathfinding
 	public bool canBuild; // valid for building
+	public bool hasTowerBase, hasTower;
 	
 	public List<GameObject> neighbors;
 	public GameObject pathMarker;

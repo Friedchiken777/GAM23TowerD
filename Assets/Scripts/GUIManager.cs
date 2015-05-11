@@ -18,15 +18,17 @@ public class GUIManager : MonoBehaviour
 		}
 	}
 	
-	public static List<GameObject> towerChoices, towerSelectors;
+	public static List<GameObject> towerChoices = new List<GameObject>();
+	public static List<GameObject> towerSelectors = new List<GameObject>();
+	
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
 		GameObject[] tc = GameObject.FindGameObjectsWithTag("TowerChoose");
-		towerChoices = new List<GameObject>(tc);
+		towerChoices.AddRange(tc);
 		towerChoices.Sort(CompareListByName);
 		GameObject[] tch = GameObject.FindGameObjectsWithTag("TowerChooseHighlight");
-		towerSelectors = new List<GameObject>(tch);
+		towerSelectors.AddRange(tch);
 		towerSelectors.Sort (CompareListByName);
 	}
 	

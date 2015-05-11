@@ -17,12 +17,14 @@ public class GameManager : MonoBehaviour
 	
 	public static GameState currentState;
 	public static GameObject currentPlayer;
+	public GameState levelStartingState;
 
 	
 	// Use this for initialization
 	void Start () 
 	{
 		currentPlayer = GameObject.Find ("PlayerTD");
+		currentState = levelStartingState;
 		StartingState();
 	}
 	
