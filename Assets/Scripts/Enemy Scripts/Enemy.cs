@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     public bool isAttacking = false;
     public EnemyType enemyType;
     public Transform target;
-    public AttackRate rate;
+    public float rate;
     public GameObject[] particlePlacements;
     public AudioClip[] audioClip;
 
@@ -25,62 +25,24 @@ public class Enemy : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        // Attack Rate of Each Enemy
-        switch (rate)
-        {
-            case AttackRate.Slow:
-                {
-                    attackRate += Time.deltaTime;
-                    if (isAttacking == true)
-                    {
-                        if (attackRate >= 1.0f)
-                        {
-
-                            attackRate = 0.0f;
-                        }
-                    }
-                    if (isAttacking == false)
-                    {
-                        attackRate = 0.0f;
-                    }
-                    break;
-                }
-            case AttackRate.Fast:
-                {
-                    attackRate += Time.deltaTime;
-                    if (isAttacking == true)
-                    {
-                        if (attackRate >= 0.25f)
-                        {
-
-                            attackRate = 0.0f;
-                        }
-                    }
-                    if (isAttacking == false)
-                    {
-                        attackRate = 0.0f;
-                    }
-                    break;
-                }
-            default:
-                attackRate += Time.deltaTime;
-                if (isAttacking == true)
-                {
-                    if (attackRate >= 0.5f)
-                    {
-
-                        attackRate = 0.0f;
-                    }
-                }
-                if (isAttacking == false)
-                {
-                    attackRate = 0.0f;
-                }
-                break;
-        }
+        Attack();
 	}
+    void Attack()
+    {
+        attackRate += Time.deltaTime;
+        if (isAttacking == true)
+        {
+            if (attackRate >= rate)
+            {
 
+                attackRate = 0.0f;
+            }
+        }
+        if (isAttacking == false)
+        {
+            attackRate = 0.0f;
+        }
+    }
     // Player damaging enemy
     void OnTriggerEnter (Collider other)
     {
@@ -289,21 +251,6 @@ public class Enemy : MonoBehaviour
                        GameObject parent = (GameObject) Instantiate(Resources.Load("ParticleSystem_Corrosive"), particlePlacements[i].transform.position, particlePlacements[i].transform.rotation);
                        parent.transform.parent = transform;
                     }
-                    switch (rate)
-                    {
-                        case AttackRate.Slow:
-                            {
-
-                                break;
-                            }
-                        case AttackRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
-                    }
                         break; 
                 }
             case EnemyType.Flame:
@@ -312,21 +259,6 @@ public class Enemy : MonoBehaviour
                     {
                         GameObject parent = (GameObject)Instantiate(Resources.Load("ParticleSystem_Flame"), particlePlacements[i].transform.position, particlePlacements[i].transform.rotation);
                         parent.transform.parent = transform;
-                    }
-                    switch (rate)
-                    {
-                        case AttackRate.Slow:
-                            {
-
-                                break;
-                            }
-                        case AttackRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
                     }
                     break;
                 }
@@ -337,21 +269,6 @@ public class Enemy : MonoBehaviour
                         GameObject parent = (GameObject)Instantiate(Resources.Load("ParticleSystem_Electric"), particlePlacements[i].transform.position, particlePlacements[i].transform.rotation);
                         parent.transform.parent = transform;
                     }
-                    switch (rate)
-                    {
-                        case AttackRate.Slow:
-                            {
-
-                                break;
-                            }
-                        case AttackRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
-                    }
                     break;
                 }
             case EnemyType.Spook:
@@ -360,21 +277,6 @@ public class Enemy : MonoBehaviour
                     {
                         GameObject parent = (GameObject)Instantiate(Resources.Load("ParticleSystem_Spook"), particlePlacements[i].transform.position, particlePlacements[i].transform.rotation);
                         parent.transform.parent = transform;
-                    }
-                    switch (rate)
-                    {
-                        case AttackRate.Slow:
-                            {
-
-                                break;
-                            }
-                        case AttackRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
                     }
                     break;
                 }
@@ -385,50 +287,13 @@ public class Enemy : MonoBehaviour
                         GameObject parent = (GameObject)Instantiate(Resources.Load("ParticleSystem_Crystal"), particlePlacements[i].transform.position, particlePlacements[i].transform.rotation);
                         parent.transform.parent = transform;
                     }
-                    switch (rate)
-                    {
-                        case AttackRate.Slow:
-                            {
-
-                                break;
-                            }
-                        case AttackRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
-                    }
                     break;
                 }
             default:
-                switch (rate)
-                {
-                    case AttackRate.Slow:
-                        {
-
-                            break;
-                        }
-                    case AttackRate.Fast:
-                        {
-
-                            break;
-                        }
-                    default:
-                        break;
-                }
                 break;
         }
     }
 }
-
-public enum AttackRate
-{
-    Slow,
-    Normal,
-    Fast
-};
 
 public enum EnemyType
 {

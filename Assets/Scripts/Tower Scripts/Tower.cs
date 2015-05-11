@@ -1,16 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Tower : MonoBehaviour 
 {
     public int health = 20;
+    public int rank;
+    public float range;
+    public float cost;
+    public float upgrade1Cost;
+    public float upgrade2Cost;
+    public float totalValue;
 	public float firingRate = 0.0f;
 	public GameObject[] gunPlacements;
     public GameObject projectile;
+    public GameObject upgradeTower;
     public TowerType towerType;
-    public FireRate rate;
+    public float rate;
 	public Transform target;
     public AudioClip[] audioClip;
+    public Image sprite;
 
 	// Use this for initialization
 	void Start () 
@@ -26,48 +35,21 @@ public class Tower : MonoBehaviour
             Destroy(gameObject);
         }
         transform.LookAt(target);
-        switch (rate)
+        Fire();
+
+    }
+    void Fire()
+    {
+        firingRate += Time.deltaTime;
+        if (firingRate >= rate)
         {
-            case FireRate.Slow:
-                {
-                    firingRate += Time.deltaTime;
-                    if (firingRate >= 1.0f)
-                    {
-                        foreach (GameObject gunPlacement in gunPlacements)
-                        {
-                            Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
-                        }
-                        firingRate = 0.0f;
-                    }
-                    break;
-                }
-            case FireRate.Fast:
-                {
-                    firingRate += Time.deltaTime;
-                    if (firingRate >= 0.25f)
-                    {
-                        foreach (GameObject gunPlacement in gunPlacements)
-                        {
-                            Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
-                        }
-                        firingRate = 0.0f;
-                    }
-                    break;
-                }
-            default:
-                firingRate += Time.deltaTime;
-                    if (firingRate >= 0.5f)
-                    {
-                        foreach (GameObject gunPlacement in gunPlacements)
-                        {
-                            Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
-                        }
-                        firingRate = 0.0f;
-                    }
-                break;
+            foreach (GameObject gunPlacement in gunPlacements)
+            {
+                Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
+            }
+            firingRate = 0.0f;
         }
     }
-    
     void OnTriggerStay(Collider other)
     {
         
@@ -79,115 +61,31 @@ public class Tower : MonoBehaviour
         {
             case TowerType.Corrosive:
                 {
-                    switch (rate)
-                    {
-                        case FireRate.Slow:
-                            {
 
-                                break;
-                            }
-                        case FireRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
-                    }
                     break;
                 }
             case TowerType.Flame:
                 {
-                    switch (rate)
-                    {
-                        case FireRate.Slow:
-                            {
 
-                                break;
-                            }
-                        case FireRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
-                    }
                     break;
                 }
             case TowerType.Electric:
                 {
-                    switch (rate)
-                    {
-                        case FireRate.Slow:
-                            {
 
-                                break;
-                            }
-                        case FireRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
-                    }
                     break;
                 }
             case TowerType.Spook:
                 {
-                    switch (rate)
-                    {
-                        case FireRate.Slow:
-                            {
 
-                                break;
-                            }
-                        case FireRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
-                    }
                     break;
                 }
             case TowerType.Crystal:
                 {
-                    switch (rate)
-                    {
-                        case FireRate.Slow:
-                            {
 
-                                break;
-                            }
-                        case FireRate.Fast:
-                            {
-
-                                break;
-                            }
-                        default:
-                            break;
-                    }
                     break;
                 }
             default:
-                switch (rate)
-                {
-                    case FireRate.Slow:
-                        {
-
-                            break;
-                        }
-                    case FireRate.Fast:
-                        {
-
-                            break;
-                        }
-                    default:
-                        break;
-                }
+ 
                 break;
         }
     }
@@ -197,13 +95,6 @@ public class Tower : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(audioClip[clip]);
     }
 }
-
-public enum FireRate
-{
-    Slow,
-    Normal,
-    Fast
-};
 
 public enum TowerType
 {
