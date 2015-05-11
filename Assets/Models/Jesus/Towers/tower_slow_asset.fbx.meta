@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: 910dc0a554bd4ca4f93ac099c4a14215
-timeCreated: 1431237560
+guid: 7015ae4019c6f2344916a33d13faca87
+timeCreated: 1431238348
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: gate_defend_asset_finished:gate_defend
+    100000: tower_bottom
+    100002: tower_gun
+    100004: //RootNode
+    400000: tower_bottom
+    400002: tower_gun
+    400004: //RootNode
+    2300000: tower_bottom
+    2300002: tower_gun
+    3300000: tower_bottom
+    3300002: tower_gun
+    4300000: tower_gun
+    4300002: tower_bottom
     9500000: //RootNode
   materials:
     importMaterials: 1

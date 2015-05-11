@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 265ceb7f36ef8c34aa30e29b730b91b0
+guid: 5a8453e46baa54c4489b217c77e9881a
+timeCreated: 1431237294
+licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: back
-    100002: bottom
-    100004: //RootNode
-    100006: polySurface92
-    400000: back
-    400002: bottom
-    400004: //RootNode
-    400006: polySurface92
-    2300000: polySurface92
-    3300000: polySurface92
-    4300000: polySurface92
+    100000: bottom
+    100002: //RootNode
+    100004: enemy_bruiser_asset
+    400000: bottom
+    400002: //RootNode
+    400004: enemy_bruiser_asset
+    2300000: enemy_bruiser_asset
+    3300000: enemy_bruiser_asset
+    4300000: enemy_bruiser_asset
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -34,7 +34,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -48,7 +48,7 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1

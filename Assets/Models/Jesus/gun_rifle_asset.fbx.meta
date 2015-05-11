@@ -1,17 +1,15 @@
 fileFormatVersion: 2
-guid: 769cd871fa8618c4d8dbb610ff84decd
+guid: cddf2cc159de715419c404c4ffb06d2e
+timeCreated: 1431239035
+licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: back
-    100002: enemy_sprinter
-    100004: //RootNode
-    400000: back
-    400002: enemy_sprinter
-    400004: //RootNode
-    2300000: enemy_sprinter
-    3300000: enemy_sprinter
-    4300000: enemy_sprinter
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: polySurface32
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -32,7 +30,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -46,7 +44,7 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1

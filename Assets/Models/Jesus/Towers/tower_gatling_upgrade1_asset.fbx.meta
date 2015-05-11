@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: 910dc0a554bd4ca4f93ac099c4a14215
-timeCreated: 1431237560
+guid: 680353477bda46546ad389da048cc3b4
+timeCreated: 1431239282
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: gate_defend_asset_finished:gate_defend
+    100000: gatling_body
+    100002: gatling_gun
+    100004: //RootNode
+    400000: gatling_body
+    400002: gatling_gun
+    400004: //RootNode
+    2300000: gatling_body
+    2300002: gatling_gun
+    3300000: gatling_body
+    3300002: gatling_gun
+    4300000: gatling_gun
+    4300002: gatling_body
     9500000: //RootNode
   materials:
     importMaterials: 1

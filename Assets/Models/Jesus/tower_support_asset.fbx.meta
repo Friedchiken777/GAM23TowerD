@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 910dc0a554bd4ca4f93ac099c4a14215
-timeCreated: 1431237560
+guid: a753a4b4e2e0b73418367d54e4048550
+timeCreated: 1431243907
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: gate_defend_asset_finished:gate_defend
+    4300000: tower_support_asset
     9500000: //RootNode
   materials:
     importMaterials: 1
