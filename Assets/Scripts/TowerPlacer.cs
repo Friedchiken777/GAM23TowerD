@@ -16,6 +16,10 @@ public class TowerPlacer : MonoBehaviour
 	bool buildOnClick = false;
 	bool towerOnBaseBuild = false;
 	bool upgradeIsGo = false;
+	bool selling = false;
+	bool upgrading = false;
+	float actionDelay;
+	GameObject towerUpgradeSell;
 	RaycastHit hit;
 	TDCharacterController player;
 	
@@ -139,7 +143,7 @@ public class TowerPlacer : MonoBehaviour
 					}	
 					RaycastHit tempHit;
 					Physics.Raycast(hit.collider.transform.position, Vector3.down, out tempHit);
-					if(currentTower > 0 && towersGood[currentTower] != null && tempHit.collider.gameObject.GetComponent<GridSquare>().hasTower != true)
+					if(currentTower > 0 && towersGood[currentTower] != null && !tempHit.collider.gameObject.GetComponent<GridSquare>().hasTower  && tempHit.collider.gameObject.GetComponent<GridSquare>().hasTowerBase)
 					{
 						if(player.currentCurrency >= availableTowers[currentTower].GetComponent<Tower>().cost)
 						{
@@ -158,6 +162,7 @@ public class TowerPlacer : MonoBehaviour
 			}
 			else if(hit.collider.gameObject.tag == "Tower")
 			{
+				towerUpgradeSell = hit.collider.gameObject;
 				GUIManager.ShowTowerInterface(true);
 				GUIManager.UpdateTowerInterface(hit.collider.gameObject.GetComponent<Tower>().towerName, TypeToString(hit.collider.gameObject.GetComponent<Tower>().towerType));
 				upgradeIsGo = true;
@@ -188,8 +193,9 @@ public class TowerPlacer : MonoBehaviour
 				hit.collider.gameObject.GetComponent<GridSquare>().canBuild = false;
 				hit.collider.gameObject.GetComponent<GridSquare>().hasTowerBase = true;
 			}
+			buildOnClick = false;
 		}
-		if(towerOnBaseBuild && Input.GetMouseButtonDown(0))
+		else if(towerOnBaseBuild && Input.GetMouseButtonDown(0))
 		{
 			//Destroy(tb);
 			tempPosTower = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerOffBase ,hit.collider.gameObject.transform.position.z);
@@ -207,7 +213,70 @@ public class TowerPlacer : MonoBehaviour
 		}
 		if(upgradeIsGo)
 		{
-
+			if(Input.GetMouseButton(0) && towerUpgradeSell.GetComponent<Tower>().upgradeTower != null && towerUpgradeSell.GetComponent<Tower>().upgradeTower.GetComponent<Tower>().cost < player.currentCurrency && !selling)
+			{
+				upgrading = true;
+				actionDelay += Time.deltaTime;
+				if(actionDelay < 2.5f)
+				{
+					GUIManager.MoveBar("Upgrade", actionDelay/2.5f);
+				
+				}
+				else
+				{
+					upgrading = false;
+					actionDelay = 0;
+					GUIManager.MoveBar("Upgrade", actionDelay/2.5f);
+					GameObject tempUp = Instantiate(towerUpgradeSell.GetComponent<Tower>().upgradeTower, towerUpgradeSell.transform.position, towerUpgradeSell.transform.rotation) as GameObject;
+					Destroy(towerUpgradeSell);
+					player.currentCurrency -= tempUp.GetComponent<Tower>().cost;
+				}
+			}
+			if(Input.GetMouseButton(1) && !upgrading)
+			{
+				selling = true;
+				actionDelay += Time.deltaTime;
+				if(actionDelay < 2.5f)
+				{
+					GUIManager.MoveBar("Sell", actionDelay/2.5f);
+					
+				}
+				else
+				{
+					selling = false;
+					actionDelay = 0;
+					GUIManager.MoveBar("Sell", actionDelay/2.5f);
+					player.currentCurrency += towerUpgradeSell.GetComponent<Tower>().totalValue;
+					RaycastHit tempHit;
+					if(Physics.Raycast(towerUpgradeSell.transform.position, Vector3.down, out tempHit))
+					{
+						if(tempHit.collider.gameObject.tag == "TowerBase")
+						{				
+							if(Physics.Raycast(tempHit.transform.position, Vector3.down, out tempHit))
+							{
+								if(tempHit.collider.gameObject.tag == "GridSquare")
+								{				
+									tempHit.collider.gameObject.GetComponent<GridSquare>().hasTower = false;
+								}
+							}
+						}
+					}
+					Destroy (towerUpgradeSell);
+				}
+			}
+			if(Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+			{
+				upgrading = selling = false;
+				actionDelay = 0;
+				GUIManager.MoveBar("Upgrade", actionDelay/2.5f);
+				GUIManager.MoveBar("Sell", actionDelay/2.5f);
+			}
+		}
+		else
+		{
+			actionDelay = 0;
+			selling = false;
+			upgrading = false;
 		}
 	}
 	

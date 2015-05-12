@@ -56,7 +56,7 @@ public class GUIManager : MonoBehaviour
 		for(int i = 0; i < towerChoices.Count; i++)
 		{
 			towerChoices[i].SetActive(true);
-			//towerChoices[i].GetComponent<Image>().sprite = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().sprite;
+			towerChoices[i].GetComponent<Image>().sprite = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().sprite;
 		}
 		towerSelectors[0].SetActive(true);
 	}
@@ -90,8 +90,12 @@ public class GUIManager : MonoBehaviour
 	public static void UpdateTowerInterface(string name, string type)
 	{
 		towerInterface.transform.FindChild ("TowerName").GetComponent<Text> ().text = name;
-		print (towerInterface.transform.FindChild ("TowerName").GetComponent<Text> ().text);
 		towerInterface.transform.FindChild ("TypeDisplay").GetComponent<Text> ().text = type;
+	}
+	
+	public static void MoveBar(string bar, float amount)
+	{
+		towerInterface.transform.FindChild(bar+"BarFill").GetComponent<Image>().fillAmount = amount;
 	}
 	
 	private static int CompareListByName(GameObject i1, GameObject i2)
