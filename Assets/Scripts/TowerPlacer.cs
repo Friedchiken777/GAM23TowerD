@@ -15,6 +15,7 @@ public class TowerPlacer : MonoBehaviour
 	GameObject tTemp = null;
 	bool buildOnClick = false;
 	bool towerOnBaseBuild = false;
+	bool upgradeIsGo = false;
 	RaycastHit hit;
 	TDCharacterController player;
 	
@@ -46,6 +47,8 @@ public class TowerPlacer : MonoBehaviour
 		Vector3 tempPosBase = Vector3.zero;
 		Vector3 tempPosTower = Vector3.zero;
 		towerOnBaseBuild = false;
+		upgradeIsGo = false;
+		GUIManager.ShowTowerInterface(false);
 		if(Physics.Raycast(lookAtRay, out hit, 100, buildStuff))
 		{
 			GameObject currentSquare = hit.collider.gameObject;
@@ -116,7 +119,7 @@ public class TowerPlacer : MonoBehaviour
 					buildOnClick = false;
 				}
 			}
-			if(hit.collider.gameObject.tag == "TowerBase")
+			else if(hit.collider.gameObject.tag == "TowerBase")
 			{
 				buildOnClick = false;
 				if(lastGridSquare.GetComponent<GridSquare>() != null && lastGridSquare.GetComponent<GridSquare>().canBuild)
@@ -152,6 +155,12 @@ public class TowerPlacer : MonoBehaviour
 						}
 					}
 				}
+			}
+			else if(hit.collider.gameObject.tag == "Tower")
+			{
+				GUIManager.ShowTowerInterface(true);
+				GUIManager.UpdateTowerInterface(hit.collider.gameObject.GetComponent<Tower>().towerName, TypeToString(hit.collider.gameObject.GetComponent<Tower>().towerType));
+				upgradeIsGo = true;
 			}
 		}
 		if(hit.collider == null)
@@ -196,6 +205,10 @@ public class TowerPlacer : MonoBehaviour
 			}
 			Destroy(tTemp);
 		}
+		if(upgradeIsGo)
+		{
+
+		}
 	}
 	
 	void UpdateTowerSelection()
@@ -224,6 +237,8 @@ public class TowerPlacer : MonoBehaviour
 		{
 			currentTower = 0;
 		}
+		lastGridSquare = Pathfinder.infinityGridSquare;
+		BuildPhaseGO ();
 	}
 	
 	void LittleClearFunction()
@@ -243,5 +258,35 @@ public class TowerPlacer : MonoBehaviour
 			Destroy(tTemp);
 		}		
 	}
-	
+
+	string TypeToString(TowerType t)
+	{
+		switch (t) 
+		{
+		case TowerType.Flame:
+		{
+			return "Flame";
+		}
+		case TowerType.Electric:
+		{
+			return "Electric";
+		}
+		case TowerType.Corrosive:
+		{
+			return "Corrosive";
+		}
+		case TowerType.Crystal:
+		{
+			return "Crystal";
+		}
+		case TowerType.Spook:
+		{
+			return "Spook";
+		}
+		default:
+		{
+			return "Normal";
+		}
+		}
+	}
 }

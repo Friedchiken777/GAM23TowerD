@@ -20,6 +20,7 @@ public class GUIManager : MonoBehaviour
 	
 	public static List<GameObject> towerChoices = new List<GameObject>();
 	public static List<GameObject> towerSelectors = new List<GameObject>();
+	public static GameObject towerInterface;
 	
 	// Use this for initialization
 	void Awake () 
@@ -30,6 +31,8 @@ public class GUIManager : MonoBehaviour
 		GameObject[] tch = GameObject.FindGameObjectsWithTag("TowerChooseHighlight");
 		towerSelectors.AddRange(tch);
 		towerSelectors.Sort (CompareListByName);
+		towerInterface = GameObject.Find("TowerInterface");
+		ShowTowerInterface (false);
 	}
 	
 	// Update is called once per frame
@@ -77,6 +80,18 @@ public class GUIManager : MonoBehaviour
 			towerSelectors[i].SetActive(false);
 		}
 		towerSelectors[t].SetActive(true);
+	}
+
+	public static void ShowTowerInterface(bool b)
+	{
+		towerInterface.SetActive (b);
+	}
+
+	public static void UpdateTowerInterface(string name, string type)
+	{
+		towerInterface.transform.FindChild ("TowerName").GetComponent<Text> ().text = name;
+		print (towerInterface.transform.FindChild ("TowerName").GetComponent<Text> ().text);
+		towerInterface.transform.FindChild ("TypeDisplay").GetComponent<Text> ().text = type;
 	}
 	
 	private static int CompareListByName(GameObject i1, GameObject i2)

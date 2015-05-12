@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class Tower : MonoBehaviour 
 {
-    public int health = 20;
+	public string towerName;
+	public int health = 20;
     public int rank;
     public float range;
     public float cost;
