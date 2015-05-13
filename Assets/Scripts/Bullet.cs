@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
 	void Start () 
 	{
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-		player = GameObject.Find("PlayerTD");
+		player = GameObject.FindGameObjectWithTag("Player");
 		playerVelocity = player.GetComponent<CharacterController>().velocity;
 		if(this.transform.parent)
 		{

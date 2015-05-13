@@ -21,6 +21,8 @@ public class GUIManager : MonoBehaviour
 	public static List<GameObject> towerChoices = new List<GameObject>();
 	public static List<GameObject> towerSelectors = new List<GameObject>();
 	public static GameObject towerInterface;
+	public static GameObject buildPhaseGUI;
+	public static Camera miniMapCamera;
 	
 	// Use this for initialization
 	void Awake () 
@@ -32,7 +34,9 @@ public class GUIManager : MonoBehaviour
 		towerSelectors.AddRange(tch);
 		towerSelectors.Sort (CompareListByName);
 		towerInterface = GameObject.Find("TowerInterface");
+		buildPhaseGUI = GameObject.Find("BuildPhaseGUI");
 		ShowTowerInterface (false);
+		//miniMapCamera = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
 	}
 	
 	// Update is called once per frame
@@ -53,24 +57,18 @@ public class GUIManager : MonoBehaviour
 	
 	public static void ShowTowerChoices()
 	{
+		buildPhaseGUI.SetActive(true);
 		for(int i = 0; i < towerChoices.Count; i++)
-		{
-			towerChoices[i].SetActive(true);
+		{			
 			towerChoices[i].GetComponent<Image>().sprite = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().sprite;
+			towerSelectors[i].SetActive(false);
 		}
 		towerSelectors[0].SetActive(true);
 	}
 	
 	public static void HideTowerChoices()
 	{
-		for(int i = 0; i < towerSelectors.Count; i++)
-		{
-			towerChoices[i].SetActive(false);
-		}
-		for(int i = 0; i < towerChoices.Count; i++)
-		{
-			towerSelectors[i].SetActive(false);
-		}
+		buildPhaseGUI.SetActive(false);
 	}
 	
 	public static void ChangeSelectedTower(int t)
@@ -82,15 +80,30 @@ public class GUIManager : MonoBehaviour
 		towerSelectors[t].SetActive(true);
 	}
 
+	public static void ChangeCurrencyDisplay(float c)
+	{
+		GameObject cc = buildPhaseGUI.transform.FindChild("CurrentCurrency").gameObject;
+		cc.GetComponent<Text>().text = "*v^*: " + c;
+	}
+	
+	public static void ChangeTowerBaseDisplay(float c)
+	{
+		GameObject cc = buildPhaseGUI.transform.FindChild("TowerBaseAvailableDisplay").gameObject;
+		cc.GetComponent<Text>().text = "" + c;
+	}
+	
 	public static void ShowTowerInterface(bool b)
 	{
 		towerInterface.SetActive (b);
 	}
 
-	public static void UpdateTowerInterface(string name, string type)
+	public static void UpdateTowerInterface(string name, string type, bool upgrade)
 	{
 		towerInterface.transform.FindChild ("TowerName").GetComponent<Text> ().text = name;
 		towerInterface.transform.FindChild ("TypeDisplay").GetComponent<Text> ().text = type;
+		towerInterface.transform.FindChild("UpgradeBarBack").gameObject.SetActive(upgrade);
+		towerInterface.transform.FindChild("UpgradeBarFill").gameObject.SetActive(upgrade);
+		towerInterface.transform.FindChild("Upgrade").gameObject.SetActive(upgrade);
 	}
 	
 	public static void MoveBar(string bar, float amount)

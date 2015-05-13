@@ -50,7 +50,8 @@ public class TDCharacterController : MonoBehaviour {
 	
 	public GameObject[] bullets;
 	public GameObject gun;
-	GameObject weapon;
+	public GameObject arm, armAttached;
+	public GameObject weapon;
 	public int ammo, ammoShotType;
 	
 	public float maxHealth, currentHealth;
@@ -58,14 +59,21 @@ public class TDCharacterController : MonoBehaviour {
 	public float playerDamage;
 
 	public float enemiesAggroed;
+	
+	public GameObject spawnPad;
 
 	
-	void Start ()
+	void Awake()
 	{
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-		gameState = GameManager.currentState;
-		gun = GameObject.Find("SpawnBullet");
+		armAttached = transform.FindChild("player_vecordy_asset").FindChild("right_arm").gameObject;
 		weapon = cam.transform.FindChild("Weapon").gameObject;
+		gun = weapon.transform.FindChild("SpawnBullet").gameObject;
+		arm = cam.transform.FindChild("Arm").gameObject;
+	}
+	void Start ()
+	{
+		gameState = GameManager.currentState;
 		jump = true;
 		currentHealth = maxHealth;
 		characterControler = this.GetComponent<CharacterController> ();
@@ -76,15 +84,6 @@ public class TDCharacterController : MonoBehaviour {
 	void Update ()
 	{
 		gameState = GameManager.currentState;
-		
-		if(gameState == GameState.DefensePhase)
-		{
-			weapon.SetActive(true);
-		}
-		else
-		{
-			weapon.SetActive(false);
-		}
 	
 		rotationX += Input.GetAxis("Mouse X") * sensitivityX/10;
 		rotationY += Input.GetAxis("Mouse Y") * sensitivityY/10;
@@ -174,19 +173,33 @@ public class TDCharacterController : MonoBehaviour {
 			}
 		}
 		
-		if(Input.GetKey(KeyCode.R)||Input.GetMouseButtonDown(1))
+		if(Input.GetKeyDown(KeyCode.R)||Input.GetMouseButtonDown(1))
 		{
 			ammo = 10;
 		}
 		
-		
-		if(currentHealth < 0)
+		if(currentHealth < 0 || transform.position.y > 30 || transform.position.y < -10)
 		{			
-			print ("YOU LOOSE");
+			print ("YOU DIED");
+			Respawn();
 			//Application.LoadLevel(1);
 		}
+		
 	}
 
+	public void Respawn()
+	{
+		Vector3 spawnPosition = new Vector3(spawnPad.transform.position.x, spawnPad.transform.position.y + 1, spawnPad.transform.position.z);
+		transform.position = spawnPosition;
+		transform.rotation = spawnPad.transform.rotation;
+		currentHealth = maxHealth;
+	}
+	
+	public void SetArms(bool b)
+	{
+		arm.SetActive(b);
+		armAttached.SetActive(!b);
+	}
 	
 	public static float ClampAngle (float angle, float min, float max)
 	{

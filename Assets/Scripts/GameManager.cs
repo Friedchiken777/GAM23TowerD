@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		currentPlayer = GameObject.Find ("PlayerTD");
+		currentPlayer = GameObject.FindGameObjectWithTag("Player");
 		currentState = levelStartingState;
 		StartingState();
 	}
@@ -105,6 +105,8 @@ public class GameManager : MonoBehaviour
 		currentState = GameState.BuildPhase;
 		GUIManager.ShowTowerChoices();
 		GUIManager.ShowCrosshair();
+		currentPlayer.GetComponent<TDCharacterController>().SetArms(true);
+		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
 	}
 	
 	public static void MakeDefensePhase()
@@ -112,6 +114,8 @@ public class GameManager : MonoBehaviour
 		currentState = GameState.DefensePhase;
 		GUIManager.HideTowerChoices();
 		GUIManager.ShowCrosshair();
+		currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
+		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(true);
 	}
 	
 	public static void MakeMainMenue()
@@ -119,6 +123,11 @@ public class GameManager : MonoBehaviour
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
 		currentState = GameState.MainMenue;
+		if(currentPlayer != null)
+		{
+			currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
+			currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		}
 	}
 	
 	public static void MakeLevelSelect()
@@ -126,6 +135,11 @@ public class GameManager : MonoBehaviour
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
 		currentState = GameState.LevelSelect;
+		if(currentPlayer != null)
+		{
+			currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
+			currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		}
 	}
 	
 	public static void MakeLoadout()
@@ -133,6 +147,11 @@ public class GameManager : MonoBehaviour
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
 		currentState = GameState.Loadout;
+		if(currentPlayer != null)
+		{
+			currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
+			currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		}
 	}
 	
 	public static void MakePause()
@@ -140,6 +159,11 @@ public class GameManager : MonoBehaviour
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
 		currentState = GameState.Pause;
+		if(currentPlayer != null)
+		{
+			currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
+			currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		}
 	}
 	
 	public static void MakeLoadingScreen()
@@ -147,6 +171,11 @@ public class GameManager : MonoBehaviour
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
 		currentState = GameState.LoadingScreen;
+		if(currentPlayer != null)
+		{
+			currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
+			currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		}
 	}
 	
 	public static void MakeWinScreen()
@@ -154,6 +183,11 @@ public class GameManager : MonoBehaviour
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
 		currentState = GameState.WinScreen;
+		if(currentPlayer != null)
+		{
+			currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
+			currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		}
 	}
 	
 	public static void MakeLossScreen()
@@ -161,6 +195,11 @@ public class GameManager : MonoBehaviour
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
 		currentState = GameState.LossScreen;
+		if(currentPlayer != null)
+		{
+			currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
+			currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		}
 	}
 }
 
