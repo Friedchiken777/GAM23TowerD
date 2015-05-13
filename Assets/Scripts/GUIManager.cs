@@ -20,6 +20,7 @@ public class GUIManager : MonoBehaviour
 	
 	public static List<GameObject> towerChoices = new List<GameObject>();
 	public static List<GameObject> towerSelectors = new List<GameObject>();
+	public static GameObject towerInterface;
 	
 	// Use this for initialization
 	void Awake () 
@@ -30,6 +31,8 @@ public class GUIManager : MonoBehaviour
 		GameObject[] tch = GameObject.FindGameObjectsWithTag("TowerChooseHighlight");
 		towerSelectors.AddRange(tch);
 		towerSelectors.Sort (CompareListByName);
+		towerInterface = GameObject.Find("TowerInterface");
+		ShowTowerInterface (false);
 	}
 	
 	// Update is called once per frame
@@ -53,7 +56,7 @@ public class GUIManager : MonoBehaviour
 		for(int i = 0; i < towerChoices.Count; i++)
 		{
 			towerChoices[i].SetActive(true);
-			//towerChoices[i].GetComponent<Image>().sprite = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().sprite;
+			towerChoices[i].GetComponent<Image>().sprite = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().sprite;
 		}
 		towerSelectors[0].SetActive(true);
 	}
@@ -77,6 +80,22 @@ public class GUIManager : MonoBehaviour
 			towerSelectors[i].SetActive(false);
 		}
 		towerSelectors[t].SetActive(true);
+	}
+
+	public static void ShowTowerInterface(bool b)
+	{
+		towerInterface.SetActive (b);
+	}
+
+	public static void UpdateTowerInterface(string name, string type)
+	{
+		towerInterface.transform.FindChild ("TowerName").GetComponent<Text> ().text = name;
+		towerInterface.transform.FindChild ("TypeDisplay").GetComponent<Text> ().text = type;
+	}
+	
+	public static void MoveBar(string bar, float amount)
+	{
+		towerInterface.transform.FindChild(bar+"BarFill").GetComponent<Image>().fillAmount = amount;
 	}
 	
 	private static int CompareListByName(GameObject i1, GameObject i2)
