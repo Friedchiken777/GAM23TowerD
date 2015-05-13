@@ -18,7 +18,10 @@ public class Tower : MonoBehaviour
     public GameObject upgradeTower;
     public TowerType towerType;
     public float rate;
-	public Transform target;
+    public float radius;
+    public LayerMask firstTarget;
+    public Vector3 center;
+	public GameObject target;
     public AudioClip[] audioClip;
     public Sprite sprite;
 
@@ -35,26 +38,42 @@ public class Tower : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        transform.LookAt(target);
         Fire();
-
     }
     void Fire()
     {
         firingRate += Time.deltaTime;
         if (firingRate >= rate)
         {
-            foreach (GameObject gunPlacement in gunPlacements)
+            target = FindTargetWithinReach(center, radius, firstTarget);
+            if (target == null)
             {
-                Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
+                target = FindTargetWithinReach(center, radius, firstTarget);
             }
-            firingRate = 0.0f;
+            else
+            {
+                transform.LookAt(target.transform);
+                foreach (GameObject gunPlacement in gunPlacements)
+                {
+                    Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
+                }
+                firingRate = 0.0f;
+            }
         }
     }
-    void OnTriggerStay(Collider other)
+    GameObject FindTargetWithinReach(Vector3 center, float radius, LayerMask firstTarget)
     {
-        
+        Collider[] hitEnemies = Physics.OverlapSphere(center, radius, firstTarget);
+        if (hitEnemies.Length > 0)
+        {
+            return hitEnemies[0].gameObject;
+        }
+        else
+        {
+            return null;
+        }
     }
+
 
     public void SetTowers()
     {
