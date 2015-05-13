@@ -57,8 +57,8 @@ public class Tower : MonoBehaviour
                 {
                     Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
                 }
-                firingRate = 0.0f;
-            }
+				firingRate = 0.0f;
+            }			
         }
     }
     GameObject FindTargetWithinReach(Vector3 center, float radius, LayerMask firstTarget)

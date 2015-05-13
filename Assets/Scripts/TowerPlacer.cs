@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TowerPlacer : MonoBehaviour 
 {
-	public LayerMask buildStuff;
+	public LayerMask buildStuff, gridSquaresOnly;
 	
 	public GameObject lastGridSquare;
 	
@@ -267,18 +267,9 @@ public class TowerPlacer : MonoBehaviour
 					player.currentCurrency += towerUpgradeSell.GetComponent<Tower>().totalValue;
 					GUIManager.ChangeCurrencyDisplay(player.currentCurrency);
 					RaycastHit tempHit;
-					if(Physics.Raycast(towerUpgradeSell.transform.position, Vector3.down, out tempHit))
-					{
-						if(tempHit.collider.gameObject.tag == "TowerBase")
-						{				
-							if(Physics.Raycast(tempHit.transform.position, Vector3.down, out tempHit))
-							{
-								if(tempHit.collider.gameObject.tag == "GridSquare")
-								{				
-									tempHit.collider.gameObject.GetComponent<GridSquare>().hasTower = false;
-								}
-							}
-						}
+					if(Physics.Raycast(towerUpgradeSell.transform.position, Vector3.down, out tempHit, 100, gridSquaresOnly))
+					{	
+						tempHit.collider.gameObject.GetComponent<GridSquare>().hasTower = false;
 					}
 					Destroy (towerUpgradeSell);
 				}
