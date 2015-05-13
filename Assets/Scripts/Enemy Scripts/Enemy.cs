@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
         }
     }
     // Player damaging enemy
-    void OnTriggerEnter (Collider other)
+    void OnCollisionEnter (Collision other)
     {
         switch (enemyType)
         {
@@ -52,27 +52,27 @@ public class Enemy : MonoBehaviour
                 {
                     if (other.gameObject.tag == "NormalProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "CorrosiveProjectile")
                     {
-
+                        health -= 1;
                     }
                     if (other.gameObject.tag == "FlameProjectile")
                     {
-
+                        health -= 4;
                     }
                     if (other.gameObject.tag == "ElectricProjectile")
                     {
-
+                        health -= 4;
                     }
                     if (other.gameObject.tag == "SpookProjectile")
                     {
-
+                        health -= 3;
                     }
                     if (other.gameObject.tag == "CrystalProjectile")
                     {
-
+                        health -= 3;
                     }
                 }
                 break;
@@ -80,27 +80,27 @@ public class Enemy : MonoBehaviour
                 {
                     if (other.gameObject.tag == "NormalProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "CorrosiveProjectile")
                     {
-
+                        health -= 3;
                     }
                     if (other.gameObject.tag == "FlameProjectile")
                     {
-
+                        health -= 1;
                     }
                     if (other.gameObject.tag == "ElectricProjectile")
                     {
-
+                        health -= 3;
                     }
                     if (other.gameObject.tag == "SpookProjectile")
                     {
-
+                        health -= 4;
                     }
                     if (other.gameObject.tag == "CrystalProjectile")
                     {
-
+                        health -= 4;
                     }
                 }
                 break;
@@ -108,27 +108,27 @@ public class Enemy : MonoBehaviour
                 {
                     if (other.gameObject.tag == "NormalProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "CorrosiveProjectile")
                     {
-
+                        health -= 3;
                     }
                     if (other.gameObject.tag == "FlameProjectile")
                     {
-
+                        health -= 4;
                     }
                     if (other.gameObject.tag == "ElectricProjectile")
                     {
-
+                        health -= 1;
                     }
                     if (other.gameObject.tag == "SpookProjectile")
                     {
-
+                        health -= 4;
                     }
                     if (other.gameObject.tag == "CrystalProjectile")
                     {
-
+                        health -= 3;
                     }
                 }
                 break;
@@ -136,27 +136,27 @@ public class Enemy : MonoBehaviour
                 {
                     if (other.gameObject.tag == "NormalProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "CorrosiveProjectile")
                     {
-
+                        health -= 4;
                     }
                     if (other.gameObject.tag == "FlameProjectile")
                     {
-
+                        health -= 3;
                     }
                     if (other.gameObject.tag == "ElectricProjectile")
                     {
-
+                        health -= 3;
                     }
                     if (other.gameObject.tag == "SpookProjectile")
                     {
-
+                        health -= 1;
                     }
                     if (other.gameObject.tag == "CrystalProjectile")
                     {
-
+                        health -= 4;
                     }
                 }
                 break;
@@ -164,54 +164,54 @@ public class Enemy : MonoBehaviour
                 {
                     if (other.gameObject.tag == "NormalProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "CorrosiveProjectile")
                     {
-
+                        health -= 4;
                     }
                     if (other.gameObject.tag == "FlameProjectile")
                     {
-
+                        health -= 3;
                     }
                     if (other.gameObject.tag == "ElectricProjectile")
                     {
-
+                        health -= 4;
                     }
                     if (other.gameObject.tag == "SpookProjectile")
                     {
-
+                        health -= 3;
                     }
                     if (other.gameObject.tag == "CrystalProjectile")
                     {
-
+                        health -= 1;
                     }
                 }
                 break;
             default:
-                if (other.gameObject.tag == "NormalProjectile")
+                    if (other.gameObject.tag == "NormalProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "CorrosiveProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "FlameProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "ElectricProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "SpookProjectile")
                     {
-
+                        health -= 2;
                     }
                     if (other.gameObject.tag == "CrystalProjectile")
                     {
-
+                        health -= 2;
                     }
                 break;
         }
