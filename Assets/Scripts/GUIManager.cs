@@ -22,7 +22,8 @@ public class GUIManager : MonoBehaviour
 	public static List<GameObject> towerSelectors = new List<GameObject>();
 	public static GameObject towerInterface;
 	public static GameObject buildPhaseGUI;
-	public static Camera miniMapCamera;
+	public static GameObject miniMapCamera, mapCamera;
+	public static GameObject buildReadyDisplay, defendReadyDisplay;
 	
 	// Use this for initialization
 	void Awake () 
@@ -35,14 +36,21 @@ public class GUIManager : MonoBehaviour
 		towerSelectors.Sort (CompareListByName);
 		towerInterface = GameObject.Find("TowerInterface");
 		buildPhaseGUI = GameObject.Find("BuildPhaseGUI");
+		buildReadyDisplay = GameObject.Find("BuildReadyText");
+		defendReadyDisplay = GameObject.Find("DefendReadyText");
 		ShowTowerInterface (false);
-		//miniMapCamera = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
+		miniMapCamera = GameObject.Find("MiniMapCamera");
+		mapCamera = GameObject.Find("MapCamera");
+		mapCamera.GetComponent<Camera>().enabled = false;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{		
-		
+		if(Input.GetKeyDown(KeyCode.M))
+		{
+			ToggleMaps();
+		}
 	}
 	
 	public static void ShowCrosshair()
@@ -96,6 +104,16 @@ public class GUIManager : MonoBehaviour
 	{
 		towerInterface.SetActive (b);
 	}
+	
+	public static void ShowBuildReadyText(bool b)
+	{
+		buildReadyDisplay.SetActive(b);
+	}
+	
+	public static void ShowDefendReadyText(bool b)
+	{
+		defendReadyDisplay.SetActive(b);
+	}
 
 	public static void UpdateTowerInterface(string name, string type, bool upgrade)
 	{
@@ -104,6 +122,25 @@ public class GUIManager : MonoBehaviour
 		towerInterface.transform.FindChild("UpgradeBarBack").gameObject.SetActive(upgrade);
 		towerInterface.transform.FindChild("UpgradeBarFill").gameObject.SetActive(upgrade);
 		towerInterface.transform.FindChild("Upgrade").gameObject.SetActive(upgrade);
+	}
+	
+	public static void ToggleMaps()
+	{
+		if(miniMapCamera.GetComponent<Camera>().enabled)
+		{
+			miniMapCamera.GetComponent<Camera>().enabled = false;
+			mapCamera.GetComponent<Camera>().enabled = true;
+		}
+		else if(mapCamera.GetComponent<Camera>().enabled)
+		{
+			miniMapCamera.GetComponent<Camera>().enabled = false;
+			mapCamera.GetComponent<Camera>().enabled = false;
+		}
+		else if(!miniMapCamera.GetComponent<Camera>().enabled && !mapCamera.GetComponent<Camera>().enabled)
+		{
+			miniMapCamera.GetComponent<Camera>().enabled = true;
+			mapCamera.GetComponent<Camera>().enabled = false;
+		}
 	}
 	
 	public static void MoveBar(string bar, float amount)

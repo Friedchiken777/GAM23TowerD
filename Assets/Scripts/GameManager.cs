@@ -18,12 +18,16 @@ public class GameManager : MonoBehaviour
 	public static GameState currentState;
 	public static GameObject currentPlayer;
 	public GameState levelStartingState;
+	public static WaveSpawner spawnerOfWaves;
+	public static int enemiesOnField;
 
 	
 	// Use this for initialization
 	void Start () 
 	{
 		currentPlayer = GameObject.FindGameObjectWithTag("Player");
+		spawnerOfWaves = GetComponent<WaveSpawner>();
+		enemiesOnField = 0;
 		currentState = levelStartingState;
 		StartingState();
 	}
@@ -37,9 +41,63 @@ public class GameManager : MonoBehaviour
 		}
 		if(Input.GetKeyDown(KeyCode.N))
 		{
-			MakeDefensePhase();
-			
+			MakeDefensePhase();			
 		}
+		
+		switch(currentState)
+		{
+		case GameState.BuildPhase:
+		{
+			DoBuildPhase();
+			break;
+		}
+		case GameState.DefensePhase:
+		{
+			DoDefensePhase();
+			break;
+		}
+		case GameState.LevelSelect:
+		{
+			DoLevelSelect();
+			break;
+		}
+		case GameState.LoadingScreen:
+		{
+			DoLoadingScreen();
+			break;
+		}
+		case GameState.Loadout:
+		{
+			DoLoadout();
+			break;
+		}
+		case GameState.LossScreen:
+		{
+			DoLossScreen();
+			break;
+		}
+		case GameState.MainMenue:
+		{
+			DoMainMenue();
+			break;
+		}
+		case GameState.Pause:
+		{
+			DoPause();
+			break;
+		}
+		case GameState.WinScreen:
+		{
+			DoWinScreen();
+			break;
+		}
+		default:
+		{
+			Debug.LogError("No Gamestate Present");
+			break;
+		}
+		}
+		
 	}
 	
 	
@@ -105,23 +163,35 @@ public class GameManager : MonoBehaviour
 		currentState = GameState.BuildPhase;
 		GUIManager.ShowTowerChoices();
 		GUIManager.ShowCrosshair();
+		GUIManager.ShowDefendReadyText(true);
+		GUIManager.ShowBuildReadyText(false);
+		GUIManager.ChangeCurrencyDisplay(currentPlayer.GetComponent<TDCharacterController>().currentCurrency);
+		GUIManager.ChangeTowerBaseDisplay(currentPlayer.GetComponent<TDCharacterController>().currentTowerBases);
 		currentPlayer.GetComponent<TDCharacterController>().SetArms(true);
 		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
 	}
 	
 	public static void MakeDefensePhase()
 	{
+		enemiesOnField = 0;
 		currentState = GameState.DefensePhase;
 		GUIManager.HideTowerChoices();
 		GUIManager.ShowCrosshair();
+		GUIManager.ShowTowerInterface(false);
+		GUIManager.ShowDefendReadyText(false);
+		GUIManager.ShowBuildReadyText(false);
 		currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
 		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(true);
+		spawnerOfWaves.LoadWave();
 	}
 	
 	public static void MakeMainMenue()
 	{
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
+		GUIManager.ShowTowerInterface(false);
+		GUIManager.ShowDefendReadyText(false);
+		GUIManager.ShowBuildReadyText(false);
 		currentState = GameState.MainMenue;
 		if(currentPlayer != null)
 		{
@@ -134,6 +204,9 @@ public class GameManager : MonoBehaviour
 	{
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
+		GUIManager.ShowTowerInterface(false);
+		GUIManager.ShowDefendReadyText(false);
+		GUIManager.ShowBuildReadyText(false);
 		currentState = GameState.LevelSelect;
 		if(currentPlayer != null)
 		{
@@ -146,6 +219,9 @@ public class GameManager : MonoBehaviour
 	{
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
+		GUIManager.ShowTowerInterface(false);
+		GUIManager.ShowDefendReadyText(false);
+		GUIManager.ShowBuildReadyText(true);
 		currentState = GameState.Loadout;
 		if(currentPlayer != null)
 		{
@@ -158,6 +234,9 @@ public class GameManager : MonoBehaviour
 	{
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
+		GUIManager.ShowTowerInterface(false);
+		GUIManager.ShowDefendReadyText(false);
+		GUIManager.ShowBuildReadyText(false);
 		currentState = GameState.Pause;
 		if(currentPlayer != null)
 		{
@@ -170,6 +249,9 @@ public class GameManager : MonoBehaviour
 	{
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
+		GUIManager.ShowTowerInterface(false);
+		GUIManager.ShowDefendReadyText(false);
+		GUIManager.ShowBuildReadyText(false);
 		currentState = GameState.LoadingScreen;
 		if(currentPlayer != null)
 		{
@@ -182,6 +264,9 @@ public class GameManager : MonoBehaviour
 	{
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
+		GUIManager.ShowTowerInterface(false);
+		GUIManager.ShowDefendReadyText(false);
+		GUIManager.ShowBuildReadyText(false);
 		currentState = GameState.WinScreen;
 		if(currentPlayer != null)
 		{
@@ -194,6 +279,9 @@ public class GameManager : MonoBehaviour
 	{
 		GUIManager.HideTowerChoices();
 		GUIManager.HideCrosshair();
+		GUIManager.ShowTowerInterface(false);
+		GUIManager.ShowDefendReadyText(false);
+		GUIManager.ShowBuildReadyText(false);
 		currentState = GameState.LossScreen;
 		if(currentPlayer != null)
 		{
@@ -201,6 +289,68 @@ public class GameManager : MonoBehaviour
 			currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
 		}
 	}
+	
+	public static void DoBuildPhase()
+	{
+		if(Input.GetKeyDown(KeyCode.Return))
+		{
+			MakeDefensePhase();
+		}
+	}
+	
+	public static void DoDefensePhase()
+	{
+		if(WaveSpawner.allWaveEnemiesSpawned && enemiesOnField <= 0)
+		{
+			if(WaveSpawner.lastWave)
+			{
+				MakeWinScreen();
+			}
+			else
+			{
+				MakeBuildPhase();
+			}			
+		}
+	}
+	
+	public static void DoMainMenue()
+	{
+		print ("No Main Menue Logic");
+	}
+	
+	public static void DoLevelSelect()
+	{
+		print ("No Level Select Logic");
+	}
+	
+	public static void DoLoadout()
+	{
+		if(Input.GetKeyDown(KeyCode.Return))
+		{
+			MakeBuildPhase();
+		}
+	}
+	
+	public static void DoPause()
+	{
+		print ("No Pause Logic");
+	}
+	
+	public static void DoLoadingScreen()
+	{
+		print ("No Loading Screen Logic");
+	}
+	
+	public static void DoWinScreen()
+	{
+		print ("No Win Screen Logic");
+	}
+	
+	public static void DoLossScreen()
+	{
+		print ("No Loss Screen Logic");
+	}
+	
 }
 
 public enum GameState

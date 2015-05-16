@@ -230,7 +230,7 @@ public class TowerPlacer : MonoBehaviour
 		}
 		if(upgradeIsGo)
 		{
-			if(Input.GetMouseButton(0) && towerUpgradeSell.GetComponent<Tower>().upgradeTower != null && towerUpgradeSell.GetComponent<Tower>().upgradeTower.GetComponent<Tower>().cost < player.currentCurrency && !selling)
+			if(Input.GetMouseButton(0) && towerUpgradeSell.GetComponent<Tower>().upgradeTower != null && towerUpgradeSell.GetComponent<Tower>().upgradeTower.GetComponent<Tower>().cost <= player.currentCurrency && !selling)
 			{
 				upgrading = true;
 				actionDelay += Time.deltaTime;

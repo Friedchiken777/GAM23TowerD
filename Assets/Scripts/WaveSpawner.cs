@@ -8,6 +8,7 @@ public class WaveSpawner : MonoBehaviour
 	WaveData n = new WaveData ();
 	public WaveData test = new WaveData ();
 	public string[] teststring;
+	public int testStringIndex;
 	
 	string dPath;
 	string filename = "level ";
@@ -15,14 +16,13 @@ public class WaveSpawner : MonoBehaviour
 
 	public GameObject prefabTest;
 	
-	private bool firstPlay;
-	
 	DirectoryInfo dir;
 	FileInfo[] info;
 	
 	public string fileToLoad;
 	
 	public float waitTime;
+	public static bool allWaveEnemiesSpawned, lastWave;
 	
 
 	void Start () 
@@ -33,7 +33,8 @@ public class WaveSpawner : MonoBehaviour
 		savefiles = info.Length;
 		//Debug.Log (savefiles);
 		//SaveGame ();
-		firstPlay = true;
+		testStringIndex = 0;
+		lastWave = false;
 	}
 	
 	void Update()
@@ -66,20 +67,21 @@ public class WaveSpawner : MonoBehaviour
 	}
 	void LoadLevel()
 	{
-		if (GameManager.currentState == GameState.DefensePhase && firstPlay == true)
-		{
-			firstPlay = false;
 			LoadGame (dPath+""+fileToLoad);
 			teststring = test.wave.enemyToSpawn;
-			//print (teststring.Length);
-			StartCoroutine(WaveDelay());
-		}
+			//print (teststring.Length);			
+	}
+	
+	public void LoadWave()
+	{
+		StartCoroutine(WaveDelay());
 	}
 	
 	IEnumerator WaveDelay()
 	{
 		GameObject newEnemy;
-		for (int i=0; i < teststring.Length; i++)
+		allWaveEnemiesSpawned = false;
+		for (int i=testStringIndex; i < teststring.Length; i++)
 		{
 			yield return new WaitForSeconds(waitTime);
 			string[] enemyData = teststring[i].Split(',');
@@ -89,12 +91,30 @@ public class WaveSpawner : MonoBehaviour
 			//print ("Enemy: "+enemyToLoad+" Type: "+enemyType+" Delay: "+waitTime);
 			newEnemy = (GameObject) Instantiate (Resources.Load("Enemies/" + enemyToLoad), Pathfinder.start.GetComponent<GridSquare>().pathMarker.transform.position, Pathfinder.start.GetComponent<GridSquare>().pathMarker.transform.rotation);
 			newEnemy.GetComponent<Enemy>().enemyType = DetermineType(enemyType);
+			GameManager.enemiesOnField ++;
 			if(GameManager.currentState == GameState.WinScreen)
 			{
 				i = teststring.Length;
 			}
-			
+			if(waitTime > 9000)
+			{
+				lastWave = true;
+			}
+			if(waitTime > 1000)
+			{
+				int currencyToGive = (int)waitTime;
+				float towerBasesToGive = waitTime - currencyToGive;
+				towerBasesToGive =  Mathf.Round(towerBasesToGive * 100)/100;
+				towerBasesToGive *= 100;
+				GameManager.currentPlayer.GetComponent<TDCharacterController>().currentCurrency += currencyToGive;
+				GameManager.currentPlayer.GetComponent<TDCharacterController>().currentTowerBases += towerBasesToGive;
+				testStringIndex = i+1;
+				waitTime = 1;
+				allWaveEnemiesSpawned = true;
+				break;
+			}
 		}
+		yield return null;
 	}
 
 	EnemyType DetermineType(string stringtype)
