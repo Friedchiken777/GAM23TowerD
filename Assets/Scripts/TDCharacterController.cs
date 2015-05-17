@@ -72,7 +72,7 @@ public class TDCharacterController : MonoBehaviour {
 	void Awake()
 	{
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-		armAttached = transform.FindChild("player_vecordy_asset").FindChild("right_arm").gameObject;
+		armAttached = transform.FindChild("player_vecrody_asset").FindChild("right_arm").gameObject;
 		weapon = cam.transform.FindChild("Weapon").gameObject;
 		gun = weapon.transform.FindChild("SpawnBullet").gameObject;
 		arm = cam.transform.FindChild("Arm").gameObject;

@@ -1,31 +1,19 @@
 fileFormatVersion: 2
-guid: bdf6b187007a21f438087f25d0a46026
-timeCreated: 1431479611
+guid: 404a09a510454e0448dc489b5ad9b991
+timeCreated: 1431516738
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: back
-    100002: body
-    100004: left
-    100006: left_arm
-    100008: //RootNode
-    100010: right_arm
-    400000: back
-    400002: body
-    400004: left
-    400006: left_arm
-    400008: //RootNode
-    400010: right_arm
-    2300000: body
-    2300002: left_arm
-    2300004: right_arm
-    3300000: body
-    3300002: left_arm
-    3300004: right_arm
-    4300000: right_arm
-    4300002: left_arm
-    4300004: body
+    100000: left
+    100002: polySurface738
+    100004: //RootNode
+    400000: left
+    400002: polySurface738
+    400004: //RootNode
+    2300000: polySurface738
+    3300000: polySurface738
+    4300000: polySurface738
     9500000: //RootNode
   materials:
     importMaterials: 1

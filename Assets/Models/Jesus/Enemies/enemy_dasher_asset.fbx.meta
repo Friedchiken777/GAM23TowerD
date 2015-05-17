@@ -1,0 +1,109 @@
+fileFormatVersion: 2
+guid: f65a29fd722a81e49bf1e2ad5af1a2b1
+timeCreated: 1431723999
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: asset_diamond_hands:dasher_body
+    100002: asset_diamond_hands:dasher_body 1
+    100004: asset_diamond_hands:diamond_left_orbit1
+    100006: asset_diamond_hands:diamond_left_orbit2
+    100008: asset_diamond_hands:diamond_left_shoulder
+    100010: asset_diamond_hands:diamond_right_orbit1
+    100012: asset_diamond_hands:diamond_right_orbit2
+    100014: asset_diamond_hands:dimond_right_shoulder
+    100016: back
+    100018: //RootNode
+    100020: left
+    400000: asset_diamond_hands:dasher_body
+    400002: asset_diamond_hands:dasher_body 1
+    400004: asset_diamond_hands:diamond_left_orbit1
+    400006: asset_diamond_hands:diamond_left_orbit2
+    400008: asset_diamond_hands:diamond_left_shoulder
+    400010: asset_diamond_hands:diamond_right_orbit1
+    400012: asset_diamond_hands:diamond_right_orbit2
+    400014: asset_diamond_hands:dimond_right_shoulder
+    400016: back
+    400018: //RootNode
+    400020: left
+    2300000: asset_diamond_hands:dasher_body 1
+    2300002: asset_diamond_hands:diamond_left_orbit1
+    2300004: asset_diamond_hands:diamond_left_orbit2
+    2300006: asset_diamond_hands:diamond_left_shoulder
+    2300008: asset_diamond_hands:diamond_right_orbit1
+    2300010: asset_diamond_hands:diamond_right_orbit2
+    2300012: asset_diamond_hands:dimond_right_shoulder
+    3300000: asset_diamond_hands:dasher_body 1
+    3300002: asset_diamond_hands:diamond_left_orbit1
+    3300004: asset_diamond_hands:diamond_left_orbit2
+    3300006: asset_diamond_hands:diamond_left_shoulder
+    3300008: asset_diamond_hands:diamond_right_orbit1
+    3300010: asset_diamond_hands:diamond_right_orbit2
+    3300012: asset_diamond_hands:dimond_right_shoulder
+    4300000: asset_diamond_hands:dasher_body
+    4300002: asset_diamond_hands:diamond_left_shoulder
+    4300004: asset_diamond_hands:diamond_left_orbit1
+    4300006: asset_diamond_hands:diamond_left_orbit2
+    4300008: asset_diamond_hands:dimond_right_shoulder
+    4300010: asset_diamond_hands:diamond_right_orbit1
+    4300012: asset_diamond_hands:diamond_right_orbit2
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
