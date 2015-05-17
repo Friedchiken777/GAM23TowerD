@@ -49,13 +49,7 @@ public class Pathfinder : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if(Input.GetKeyDown(KeyCode.R))
-		{
-			if(FindPath ())
-			{
-				SetPath();
-			}
-		}
+		
 	}
 	
 	static bool ValidLevelCheck()
@@ -173,7 +167,7 @@ public class Pathfinder : MonoBehaviour
 		if(!closedList.Contains(node))
 		{
 			closedList.Add(node);
-			//print ("Closred List Added: " +node);
+			//print ("Closed List Added: " +node);
 		}
 		if(openList.Contains(node))
 		{

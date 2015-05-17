@@ -8,7 +8,9 @@ public class EnemyAI : MonoBehaviour
 	public int pathIndex = 0;
 	public float speed;
 	public float speedLimit;
+    public float gateDistance;
 	public GameObject player;
+    public GameObject gate;
 	bool stayOnPath;
 	public LayerMask noPlayer;
 	bool followingPlayer = false;
@@ -19,6 +21,7 @@ public class EnemyAI : MonoBehaviour
 	{
 		enemyPath = Pathfinder.currentPath;
 		player = GameManager.currentPlayer;
+        gate = GameObject.FindGameObjectWithTag("Gate");
 		stayOnPath = true;
 	}
 	
@@ -35,10 +38,24 @@ public class EnemyAI : MonoBehaviour
 				pathIndex++;
 			}
 		}
+        if (Vector3.Distance(transform.position, gate.transform.position) < gateDistance)
+        {
+            gate.gameObject.GetComponent<Gate>().isDamaged = true;
+        }
+        if (Vector3.Distance(transform.position, gate.transform.position) > gateDistance)
+        {
+            gate.gameObject.GetComponent<Gate>().isDamaged = false;
+        }
 		if(Vector3.Distance (transform.position, player.transform.position) < 1)
 		{
 			gameObject.GetComponent<Enemy>().isAttacking = true;
+            player.gameObject.GetComponent<TDCharacterController>().isDamaged = true;
 		}
+        if (Vector3.Distance(transform.position, player.transform.position) > 1)
+        {
+            gameObject.GetComponent<Enemy>().isAttacking = false;
+            player.gameObject.GetComponent<TDCharacterController>().isDamaged = false;
+        }
 		else if (Vector3.Distance (transform.position, player.transform.position) < 2) 
 		{
 			RaycastHit hit;
