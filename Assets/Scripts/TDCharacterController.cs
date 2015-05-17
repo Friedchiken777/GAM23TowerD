@@ -62,6 +62,8 @@ public class TDCharacterController : MonoBehaviour {
 	
 	public GameObject spawnPad;
 
+    public float damageTimer = 0.0f;
+    public bool isDamaged = false;
 	
 	void Awake()
 	{
@@ -178,6 +180,20 @@ public class TDCharacterController : MonoBehaviour {
 			ammo = 10;
 		}
 		
+        // Player Taking Damage
+        if (isDamaged == true)
+        {
+            damageTimer += Time.deltaTime;
+            if (damageTimer >= 2.0f)
+            {
+                currentHealth -= 5;
+                damageTimer = 0.0f;
+            }
+        }
+        if (isDamaged == false)
+        {
+            damageTimer = 0.0f;
+        }
 		if(currentHealth < 0 || transform.position.y > 30 || transform.position.y < -10)
 		{			
 			print ("YOU DIED");
