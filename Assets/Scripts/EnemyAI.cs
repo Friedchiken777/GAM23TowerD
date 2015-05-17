@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyAI : MonoBehaviour 
 {
-	public static List<GameObject> enemyPath;
+	public List<GameObject> enemyPath;
 	public int pathIndex = 0;
 	public float speed;
 	public float speedLimit;
@@ -14,6 +14,8 @@ public class EnemyAI : MonoBehaviour
 	bool stayOnPath;
 	public LayerMask noPlayer;
 	bool followingPlayer = false;
+	bool findingNewPath;
+	public float nudgeDistance;
 	
 	
 	// Use this for initialization
@@ -23,6 +25,7 @@ public class EnemyAI : MonoBehaviour
 		player = GameManager.currentPlayer;
         gate = GameObject.FindGameObjectWithTag("Gate");
 		stayOnPath = true;
+		findingNewPath = false;
 	}
 	
 	// Update is called once per frame
@@ -51,12 +54,12 @@ public class EnemyAI : MonoBehaviour
 			gameObject.GetComponent<Enemy>().isAttacking = true;
             player.gameObject.GetComponent<TDCharacterController>().isDamaged = true;
 		}
-        if (Vector3.Distance(transform.position, player.transform.position) > 1)
+        else if (Vector3.Distance(transform.position, player.transform.position) > 1)
         {
             gameObject.GetComponent<Enemy>().isAttacking = false;
             player.gameObject.GetComponent<TDCharacterController>().isDamaged = false;
         }
-		else if (Vector3.Distance (transform.position, player.transform.position) < 2) 
+		if (Vector3.Distance (transform.position, player.transform.position) < 2 && Vector3.Distance (transform.position, player.transform.position) > 0.5) 
 		{
 			RaycastHit hit;
 			if(Physics.Raycast(player.transform.position, Vector3.down, out hit, 2))
@@ -69,22 +72,25 @@ public class EnemyAI : MonoBehaviour
 				}
 				else
 				{
+					
+					if(followingPlayer && !findingNewPath)
+					{
+						StartCoroutine(FindNewPath());
+					}
 					followingPlayer = false;
-					//FindNewPath();
 					stayOnPath = true;
 				}
 			}
 		}
 		else
 		{
-			if(followingPlayer)
+			if(followingPlayer && !findingNewPath)
 			{
-				//FindNewPath();				
+				StartCoroutine(FindNewPath());				
 			}
 			followingPlayer = false;
 			stayOnPath = true;
 		}
-		//print (GetComponent<Rigidbody>().velocity.magnitude);
 		if(GetComponent<Rigidbody>().velocity.magnitude > speedLimit)
 		{
 			Vector3 newSpeed = GetComponent<Rigidbody>().velocity;
@@ -93,8 +99,10 @@ public class EnemyAI : MonoBehaviour
 		}
 	}
 	
-	void FindNewPath()
+	IEnumerator FindNewPath()
 	{
+		findingNewPath = true;
+		List<GameObject> sidePath = new List<GameObject>();
 		GameObject CurrentGrid;
 		RaycastHit hit;
 		if(Physics.Raycast(transform.position, Vector3.down, out hit, 2))
@@ -102,11 +110,62 @@ public class EnemyAI : MonoBehaviour
 			if(hit.collider.gameObject.tag == "GridSquare")
 			{
 				CurrentGrid = hit.collider.gameObject;
-				enemyPath = Pathfinder.GetCorrectionPath(CurrentGrid);
+				GameObject[] temp = GameObject.FindGameObjectsWithTag("GridSquare");
+				Pathfinder.PopulateValidNodeList();
+				Pathfinder.openList.Clear();
+				Pathfinder.closedList.Clear();
+				Pathfinder.proposedPath.Clear();
+				Pathfinder.CalculateParent(CurrentGrid);
+				GameObject nextNode = Pathfinder.CalculateNextNode();
+				for(int i = 0; i < Pathfinder.validNodeList.Count; i++)
+				{
+					if(!Pathfinder.openList.Contains(Pathfinder.end))
+					{
+						Pathfinder.CalculateParent(nextNode);
+						nextNode = Pathfinder.CalculateNextNode();
+					}
+					else
+					{
+						i = Pathfinder.validNodeList.Count + 1;
+					}
+				}
+				GameObject backtrack = Pathfinder.end;
+				Pathfinder.proposedPath.Add(backtrack);
+				List<GameObject> traversed = new List<GameObject>();
+				while(backtrack.GetComponent<GridSquare>().parent != null)
+				{
+					if(!traversed.Contains(backtrack.GetComponent<GridSquare>().parent))
+					{
+						backtrack = backtrack.GetComponent<GridSquare>().parent;
+						Pathfinder.proposedPath.Add(backtrack);
+					}
+					else
+					{
+						break;
+					}
+					traversed.Add(backtrack);
+				}
+				yield return new WaitForSeconds(1);
+				for(int i = Pathfinder.proposedPath.Count - 1; i >= 0; i--)
+				{
+					sidePath.Add(Pathfinder.proposedPath[i]);
+				}
+				enemyPath = sidePath;
 				pathIndex = 0;
 			}
 		}
+		findingNewPath = false;
+		yield return null;
 		
+	}
+	
+	void OnCollisionEnter(Collision col)
+	{
+		if(col.transform.tag == "Enemy")
+		{
+			Vector3 push = new Vector3(transform.position.x + nudgeDistance, transform.position.y, transform.position.z + nudgeDistance);
+			transform.position = push;
+		}
 	}
 	
 	void EnemyAttackBehaviorRushMelee()

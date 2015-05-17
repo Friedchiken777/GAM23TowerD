@@ -34,6 +34,9 @@ public class Pathfinder : MonoBehaviour
 	
 	public static int sortPerformance;
 	
+	public static bool findingSidePath;
+	static GameObject sidePathStart;
+	
 
 	// Use this for initialization
 	void Start () 
@@ -43,7 +46,8 @@ public class Pathfinder : MonoBehaviour
 		{
 			CalculateHValues();
 			FindPath ();
-		}		
+		}	
+		findingSidePath = false;	
 	}
 	
 	// Update is called once per frame
@@ -93,7 +97,7 @@ public class Pathfinder : MonoBehaviour
 		proposedPath.Clear();
 	}
 	
-	static bool PopulateValidNodeList()
+	public static bool PopulateValidNodeList()
 	{
 		startcount = endcount = 0;
 		GameObject[] temp = GameObject.FindGameObjectsWithTag("GridSquare");
@@ -101,6 +105,7 @@ public class Pathfinder : MonoBehaviour
 		{
 			if(temp[i].GetComponent<GridSquare>().canMove)
 			{
+				temp[i].GetComponent<GridSquare>().parent = null;
 				validNodeList.Add(temp[i]);
 			}
 			if(temp[i].GetComponent<GridSquare>().isPathStart)
@@ -117,7 +122,7 @@ public class Pathfinder : MonoBehaviour
 		return ValidLevelCheck();
 	}
 	
-	static bool PopulateValidNodeListDebugColors()
+	public static bool PopulateValidNodeListDebugColors()
 	{
 		startcount = endcount = 0;
 		GameObject[] temp = GameObject.FindGameObjectsWithTag("GridSquare");
@@ -125,6 +130,7 @@ public class Pathfinder : MonoBehaviour
 		{
 			if(temp[i].GetComponent<GridSquare>().canMove)
 			{
+				temp[i].GetComponent<GridSquare>().parent = null;
 				validNodeList.Add(temp[i]);
 				temp[i].GetComponent<GridSquare>().ColorMoveWhite();
 			}
@@ -162,7 +168,7 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	static void CalculateParent(GameObject node, bool sort = true)
+	public static void CalculateParent(GameObject node, bool sort = true)
 	{
 		if(!closedList.Contains(node))
 		{
@@ -194,7 +200,7 @@ public class Pathfinder : MonoBehaviour
 		}
 	}
 	
-	static GameObject CalculateNextNode()
+	public static GameObject CalculateNextNode()
 	{
 		GameObject nextNode = infinityGridSquare;
 		for(int i = 0; i < openList.Count; i++)
@@ -283,41 +289,49 @@ public class Pathfinder : MonoBehaviour
 		LightUpMarkers();		
 	}
 	
-	public static List<GameObject> GetCorrectionPath(GameObject b)
-	{
-		openList.Clear();
-		closedList.Clear();
-		proposedPath.Clear();
-		sidePath.Clear();
-		CalculateParent(b);
-		GameObject nextNode = CalculateNextNode();
-		print ("1");
-		for(int i = 0; i < validNodeList.Count; i++)
-		{
-			if(!openList.Contains(end))
-			{
-				CalculateParent(nextNode);
-				nextNode = CalculateNextNode();
-			}
-			else
-			{
-				i = validNodeList.Count + 1;
-			}
-		}
-		print("2");
-		GameObject backtrack = end;
-		proposedPath.Add(backtrack);
-		while(backtrack.GetComponent<GridSquare>().parent != null)
-		{
-			backtrack = backtrack.GetComponent<GridSquare>().parent;
-			proposedPath.Add(backtrack);
-		}
-		print ("3");
-		for(int i = proposedPath.Count - 1; i >= 0; i--)
-		{
-			sidePath.Add(proposedPath[i]);
-		}
-		print ("4");
-		return sidePath;
-	}
+//	public static List<GameObject> GetCorrectionPath(GameObject b)
+//	{
+//		findingSidePath = true;
+//		sidePathStart = b;
+//		instance_.StartCoroutine(instance_.CorrectionPathTest());
+//		findingSidePath = false;
+//		return sidePath;
+//	}
+//	
+//	IEnumerator CorrectionPathTest()
+//	{
+//		openList.Clear();
+//		closedList.Clear();
+//		proposedPath.Clear();
+//		sidePath.Clear();
+//		CalculateParent(sidePathStart);
+//		GameObject nextNode = CalculateNextNode();
+//		print ("1");
+//		for(int i = 0; i < validNodeList.Count; i++)
+//		{
+//			if(!openList.Contains(end))
+//			{
+//				CalculateParent(nextNode);
+//				nextNode = CalculateNextNode();
+//			}
+//			else
+//			{
+//				i = validNodeList.Count + 1;
+//			}
+//		}
+//		print("2");
+//		GameObject backtrack = end;
+//		proposedPath.Add(backtrack);
+//		while(backtrack.GetComponent<GridSquare>().parent != null)
+//		{
+//			backtrack = backtrack.GetComponent<GridSquare>().parent;
+//			proposedPath.Add(backtrack);
+//		}
+//		print ("3");
+//		for(int i = proposedPath.Count - 1; i >= 0; i--)
+//		{
+//			sidePath.Add(proposedPath[i]);
+//		}
+//		yield return null;
+//	}
 }

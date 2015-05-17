@@ -64,6 +64,10 @@ public class TDCharacterController : MonoBehaviour {
 
     public float damageTimer = 0.0f;
     public bool isDamaged = false;
+    
+    public bool sprinting;
+    public float sprintMultiplier;
+    float sprintModifyer;
 	
 	void Awake()
 	{
@@ -77,6 +81,8 @@ public class TDCharacterController : MonoBehaviour {
 	{
 		gameState = GameManager.currentState;
 		jump = true;
+		sprinting = false;
+		sprintModifyer = 1;
 		currentHealth = maxHealth;
 		characterControler = this.GetComponent<CharacterController> ();
 		originalRotation = cam.transform.localRotation;
@@ -113,7 +119,7 @@ public class TDCharacterController : MonoBehaviour {
 		{
 			if((vertical > 0.01f || vertical < -0.01f))
 			{		
-				moveDirec.x = vertical * walkSpeed * this.transform.forward.x;
+				moveDirec.x = vertical * walkSpeed * this.transform.forward.x ;
 				moveDirec.z = vertical * walkSpeed * this.transform.forward.z;
 			}
 			if ((horizontal > 0.01f || horizontal < -0.01f)) 
@@ -141,6 +147,26 @@ public class TDCharacterController : MonoBehaviour {
 				jumps++;
 			}
 		}
+		
+		if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+		{
+			sprintModifyer = sprintMultiplier;
+			sprinting = true;
+			if(GameManager.currentState == GameState.DefensePhase)
+			{
+				weapon.SetActive (!sprinting);
+			}
+		}
+		
+		if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+		{
+			sprintModifyer = 1;
+			sprinting = false;
+			if(GameManager.currentState == GameState.DefensePhase)
+			{
+				weapon.SetActive (!sprinting);
+			}
+		}
 
 		if (jump && grounded)
 		{
@@ -161,12 +187,12 @@ public class TDCharacterController : MonoBehaviour {
 
 		if(characterControler.enabled)
 		{
-			characterControler.Move (moveDirec * Time.deltaTime);
+			characterControler.Move (moveDirec * Time.deltaTime * sprintModifyer);
 		}
 		
 		if(ammo > 0 && gameState == GameState.DefensePhase)
 		{
-			if(Input.GetMouseButtonDown(0))
+			if(Input.GetMouseButtonDown(0) && !sprinting)
 			{
 				ammoShotType = Random.Range(0,bullets.Length);
 				Instantiate(bullets[0], gun.transform.position, gun.transform.localRotation);
