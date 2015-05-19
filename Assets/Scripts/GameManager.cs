@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
 	public GameState levelStartingState;
 	public static WaveSpawner spawnerOfWaves;
 	public static int enemiesOnField;
-
-	
+	public AudioManager gameTrack;
+	public AudioSource a;
 	// Use this for initialization
 	void Start () 
 	{
@@ -37,11 +37,15 @@ public class GameManager : MonoBehaviour
 	{
 		if(Input.GetKeyDown(KeyCode.B))
 		{
+			a.Stop();
 			MakeBuildPhase();
+			gameTrack.playGameMusicTracks(a, 0, 0.25f);
 		}
 		if(Input.GetKeyDown(KeyCode.N))
 		{
-			MakeDefensePhase();			
+			a.Stop();
+			MakeDefensePhase();
+			gameTrack.playGameMusicTracks(a, 1, 0.25f);
 		}
 		
 		switch(currentState)

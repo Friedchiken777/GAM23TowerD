@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
 	
 	}
 
-	public void playGameMusicTracks (AudioSource a, int index, float volume = 1.0f)
+	public void playGameMusicTracks (AudioSource a, int index, float volume = 0.25f)
 	{
 		if (index < gameMusicTracks.Length) 
 		{
