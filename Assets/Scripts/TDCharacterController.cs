@@ -6,6 +6,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.ImageEffects;
 
 public class TDCharacterController : MonoBehaviour {
 
@@ -86,7 +87,11 @@ public class TDCharacterController : MonoBehaviour {
 		currentHealth = maxHealth;
 		characterControler = this.GetComponent<CharacterController> ();
 		originalRotation = cam.transform.localRotation;
-		origionalPlayerRotation = transform.localRotation;		
+		origionalPlayerRotation = transform.localRotation;
+        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
+        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
+        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = 0.0f;
+        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = 0.0f;
 	}
 	
 	void Update ()
@@ -220,6 +225,21 @@ public class TDCharacterController : MonoBehaviour {
         {
             damageTimer = 0.0f;
         }
+        if (currentHealth <= maxHealth)
+        {
+            float intensity = (maxHealth - currentHealth) / maxHealth;
+            cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = intensity;
+            cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = intensity;
+            cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = intensity;
+            cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = intensity;
+        }
+        else
+        {
+            cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
+            cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
+            cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = 0.0f;
+            cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = 0.0f;
+        }
 		if(currentHealth < 0 || transform.position.y > 30 || transform.position.y < -10)
 		{			
 			print ("YOU DIED");
@@ -235,6 +255,10 @@ public class TDCharacterController : MonoBehaviour {
 		transform.position = spawnPosition;
 		transform.rotation = spawnPad.transform.rotation;
 		currentHealth = maxHealth;
+        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
+        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
+        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = 0.0f;
+        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = 0.0f;
 	}
 	
 	public void SetArms(bool b)

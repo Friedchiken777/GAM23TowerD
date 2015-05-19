@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
 	public float speed;
 	public float speedLimit;
     public float gateDistance;
+    public float attackDistance;
 	public GameObject player;
     public GameObject gate;
 	bool stayOnPath;
@@ -49,12 +50,12 @@ public class EnemyAI : MonoBehaviour
         {
             gate.gameObject.GetComponent<Gate>().isDamaged = false;
         }
-		if(Vector3.Distance (transform.position, player.transform.position) < 1)
+		if(Vector3.Distance (transform.position, player.transform.position) < attackDistance)
 		{
 			gameObject.GetComponent<Enemy>().isAttacking = true;
             player.gameObject.GetComponent<TDCharacterController>().isDamaged = true;
 		}
-        else if (Vector3.Distance(transform.position, player.transform.position) > 1)
+        else if (Vector3.Distance(transform.position, player.transform.position) > attackDistance)
         {
             gameObject.GetComponent<Enemy>().isAttacking = false;
             player.gameObject.GetComponent<TDCharacterController>().isDamaged = false;

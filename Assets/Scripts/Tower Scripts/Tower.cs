@@ -22,6 +22,8 @@ public class Tower : MonoBehaviour
     public LayerMask firstTarget;
     public Vector3 center;
 	public GameObject target;
+    public GameObject[] xLookAt;
+    public GameObject[] yLookAt;
     public AudioClip[] audioClip;
     public Sprite sprite;
 
@@ -52,13 +54,24 @@ public class Tower : MonoBehaviour
             }
             else
             {
-                transform.LookAt(target.transform);
                 foreach (GameObject gunPlacement in gunPlacements)
                 {
                     Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
                 }
 				firingRate = 0.0f;
             }			
+        }
+        if (target != null)
+        {
+            Vector3 enemy = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
+            for (int towerPartsX = 0; towerPartsX < xLookAt.Length; towerPartsX++)
+            {
+                xLookAt[towerPartsX].transform.LookAt(enemy);
+            }
+            for (int towerPartsY = 0; towerPartsY < yLookAt.Length; towerPartsY++)
+            {
+                yLookAt[towerPartsY].transform.LookAt(target.transform.position);
+            }
         }
     }
     GameObject FindTargetWithinReach(Vector3 center, float radius, LayerMask firstTarget)
