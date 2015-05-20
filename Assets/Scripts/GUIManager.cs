@@ -67,7 +67,11 @@ public class GUIManager : MonoBehaviour
 	{
 		buildPhaseGUI.SetActive(true);
 		for(int i = 0; i < towerChoices.Count; i++)
-		{			
+		{	
+			if(i > GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers.Count-1)
+			{
+				break;
+			}	
 			towerChoices[i].GetComponent<Image>().sprite = GameManager.currentPlayer.GetComponent<TowerPlacer>().availableTowers[i].GetComponent<Tower>().sprite;
 			towerSelectors[i].SetActive(false);
 		}

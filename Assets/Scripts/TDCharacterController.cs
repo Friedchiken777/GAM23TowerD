@@ -13,6 +13,7 @@ public class TDCharacterController : MonoBehaviour {
 	CharacterController characterControler;
 
 	public Camera cam;
+	public Camera gunCam;
 
 	public GameState gameState;
 	
@@ -66,13 +67,24 @@ public class TDCharacterController : MonoBehaviour {
     public bool sprinting;
     public float sprintMultiplier;
     float sprintModifyer;
+    
     public float deathTimer = 0.0f;
     public AudioManager playerSound;
     public AudioSource b;
+    
+	public float regenSpeed;
+	public float regenOverTime;
+	public float regenCooldown;
+	public float lastFrameHealth;
+	
+	public bool playerIsGettingAttacked;
+	
+	float intensity;
 
 	void Awake()
 	{
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+		gunCam = GameObject.Find("WeaponCamera").GetComponent<Camera>();
 		armAttached = transform.FindChild("player_vecrody_asset").FindChild("right_arm").gameObject;
 		weapon = cam.transform.FindChild("Weapon").gameObject;
 		gun = weapon.transform.FindChild("SpawnBullet").gameObject;
@@ -88,10 +100,6 @@ public class TDCharacterController : MonoBehaviour {
 		characterControler = this.GetComponent<CharacterController> ();
 		originalRotation = cam.transform.localRotation;
 		origionalPlayerRotation = transform.localRotation;
-        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
-        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
-        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = 0.0f;
-        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = 0.0f;
 	}
 	
 	void Update ()
@@ -144,7 +152,7 @@ public class TDCharacterController : MonoBehaviour {
 
 		if (Input.GetButtonDown ("Jump")) 
 		{
-            playerSound.playGameMusicTracks(b, 6, 0.25f);
+            //playerSound.playGameMusicTracks(b, 6, 0.25f);
 			if(jumps < totalJumps)
 			{
 				moveDirec.y = jumpHeight;
@@ -212,39 +220,51 @@ public class TDCharacterController : MonoBehaviour {
 			ammo = 10;
 		}
 		
-        
-        if (currentHealth <= maxHealth)
-        {
-            float intensity = (maxHealth - currentHealth) / maxHealth;
-            cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = intensity;
-            cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = intensity;
-            cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = intensity;
-            cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = intensity;
-        }
-        else
-        {
-            cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
-            cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
-            cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = 0.0f;
-            cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = 0.0f;
-        }
+
+        intensity = (maxHealth - currentHealth) / maxHealth;
+        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = intensity;
+        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = intensity;
+        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = intensity;
+        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = intensity;
+
+		if(currentHealth < maxHealth)
+		{
+			if(playerIsGettingAttacked)
+			{
+				regenCooldown = 0;
+			}
+			else
+			{
+				regenCooldown += Time.deltaTime;
+			}
+			if(regenSpeed < regenCooldown)
+			{
+				currentHealth += Time.deltaTime * (currentHealth/regenOverTime);
+			}
+		}
+		
+		if(currentHealth > maxHealth)
+		{
+			currentHealth = maxHealth;
+		}
+		
         if (currentHealth < maxHealth / 4)
         {
             if (!b.isPlaying)
             {
-                playerSound.playGameMusicTracks(b, 2, 0.25f);
+               //playerSound.playGameMusicTracks(b, 2, 0.25f);
             }
         }
 
 		if(currentHealth < 0 || transform.position.y > 30 || transform.position.y < -10)
 		{
             deathTimer += Time.deltaTime;
-            playerSound.playGameMusicTracks(b, 4, 0.25f);
+            //playerSound.playGameMusicTracks(b, 4, 0.25f);
             if (deathTimer >= 5.64f)
             {
                 print("YOU DIED");
                 Respawn();
-                playerSound.playGameMusicTracks(b, 7, 0.25f);
+                //playerSound.playGameMusicTracks(b, 7, 0.25f);
                 //Application.LoadLevel(1);
                 deathTimer = 0.0f;
             }
@@ -258,10 +278,6 @@ public class TDCharacterController : MonoBehaviour {
 		transform.position = spawnPosition;
 		transform.rotation = spawnPad.transform.rotation;
 		currentHealth = maxHealth;
-        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
-        cam.gameObject.GetComponent<NoiseAndScratches>().grainIntensityMin = 0.0f;
-        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = 0.0f;
-        cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = 0.0f;
 	}
 	
 	public void SetArms(bool b)

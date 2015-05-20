@@ -24,6 +24,8 @@ public class TowerPlacer : MonoBehaviour
 	GameObject baseSell;
 	RaycastHit hit;
 	TDCharacterController player;
+	AudioManager am;
+	AudioSource audioPlayer;
 	
 	// Use this for initialization
 	void Start () 
@@ -32,6 +34,8 @@ public class TowerPlacer : MonoBehaviour
 		player = gameObject.GetComponent<TDCharacterController>();
 		GUIManager.ChangeCurrencyDisplay(player.currentCurrency);
 		GUIManager.ChangeTowerBaseDisplay(player.currentTowerBases);
+		audioPlayer = GameObject.Find("_AudioManager").GetComponent<AudioSource>();
+		am = GameObject.Find("_AudioManager").GetComponent<AudioManager>();
 	}
 	
 	// Update is called once per frame
@@ -194,6 +198,7 @@ public class TowerPlacer : MonoBehaviour
 			{
 				tempPosTower = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTower ,hit.collider.gameObject.transform.position.z);
 				Instantiate(availableTowers[currentTower], tempPosTower, hit.collider.gameObject.transform.rotation);
+				am.playTowerSounds(audioPlayer, 2, 1);
 				player.currentCurrency -= availableTowers[currentTower].GetComponent<Tower>().cost;
 				GUIManager.ChangeCurrencyDisplay(player.currentCurrency);
 				hit.collider.gameObject.GetComponent<GridSquare>().hasTower = true;
@@ -203,6 +208,7 @@ public class TowerPlacer : MonoBehaviour
 			{
 				tempPosBase = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerBase ,hit.collider.gameObject.transform.position.z);
 				Instantiate(availableTowers[0], tempPosBase, hit.collider.gameObject.transform.rotation);
+				am.playTowerSounds(audioPlayer, 0, 1);
 				player.currentTowerBases --;
 				GUIManager.ChangeTowerBaseDisplay(player.currentTowerBases);
 				hit.collider.gameObject.GetComponent<GridSquare>().canMove = false;
@@ -216,6 +222,7 @@ public class TowerPlacer : MonoBehaviour
 			//Destroy(tb);
 			tempPosTower = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerOffBase ,hit.collider.gameObject.transform.position.z);
 			Instantiate(availableTowers[currentTower], tempPosTower, hit.collider.gameObject.transform.rotation);
+			am.playTowerSounds(audioPlayer, 2, 1);
 			player.currentCurrency -= availableTowers[currentTower].GetComponent<Tower>().cost;
 			GUIManager.ChangeCurrencyDisplay(player.currentCurrency);
 			RaycastHit tempHit;
@@ -245,6 +252,7 @@ public class TowerPlacer : MonoBehaviour
 					actionDelay = 0;
 					GUIManager.MoveBar("Upgrade", actionDelay/2.5f);
 					GameObject tempUp = Instantiate(towerUpgradeSell.GetComponent<Tower>().upgradeTower, towerUpgradeSell.transform.position, towerUpgradeSell.transform.rotation) as GameObject;
+					am.playTowerSounds(audioPlayer, 3, 1);
 					Destroy(towerUpgradeSell);
 					player.currentCurrency -= tempUp.GetComponent<Tower>().cost;
 					GUIManager.ChangeCurrencyDisplay(player.currentCurrency);
@@ -264,6 +272,7 @@ public class TowerPlacer : MonoBehaviour
 					selling = false;
 					actionDelay = 0;
 					GUIManager.MoveBar("Sell", actionDelay/2.5f);
+					am.playTowerSounds(audioPlayer, 1, 1);
 					player.currentCurrency += towerUpgradeSell.GetComponent<Tower>().totalValue;
 					GUIManager.ChangeCurrencyDisplay(player.currentCurrency);
 					RaycastHit tempHit;
@@ -303,6 +312,7 @@ public class TowerPlacer : MonoBehaviour
 				{
 					actionDelayTB = 0;
 					GUIManager.MoveBar("Sell", actionDelayTB/2.5f);
+					am.playTowerSounds(audioPlayer, 1, 1);
 					player.currentTowerBases ++;
 					GUIManager.ChangeTowerBaseDisplay(player.currentTowerBases);
 					RaycastHit tempHit;
@@ -331,27 +341,32 @@ public class TowerPlacer : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
 		{
 			currentTower = 0;
-			GUIManager.ChangeSelectedTower(currentTower);
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
 		{
 			currentTower = 1;
-			GUIManager.ChangeSelectedTower(currentTower);
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
 		{
 			currentTower = 2;
-			GUIManager.ChangeSelectedTower(currentTower);
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
 		{
-			currentTower = 3;
-			GUIManager.ChangeSelectedTower(currentTower);
+			currentTower = 3;			
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
+		{
+			currentTower = 4;			
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+		{
+			currentTower = 5;			
 		}
 		if(currentTower > availableTowers.Count - 1)
 		{
 			currentTower = 0;
 		}
+		GUIManager.ChangeSelectedTower(currentTower);
 		lastGridSquare = Pathfinder.infinityGridSquare;
 		BuildPhaseGO ();
 	}
