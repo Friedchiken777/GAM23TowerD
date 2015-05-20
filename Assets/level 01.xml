@@ -6,7 +6,8 @@
 <string>enemy_bruiser_asset,None,3</string>
 <string>enemy_sprinter_asset,None,3.5</string>
 <string>enemy_tank_asset,None,3.5</string>
-<string>enemy_dasher_asset,None,2000.11</string>
+<string>enemy_dasher_asset,None,4</string>
+<string>enemy_bulwark_asset,None,2000.11</string>
 //wave 2
 <string>enemy_bruiser_asset,Spook,3</string>
 <string>enemy_sprinter_asset,Spook,3.5</string>
