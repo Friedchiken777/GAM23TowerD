@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public EnemyType enemyType;
     public Transform target;
     public float rate;
+    public float damage;
     public GameObject[] particlePlacements;
     public AudioClip[] audioClip;
 
@@ -26,22 +27,21 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
 			GameManager.enemiesOnField --;
         }
-        Attack();
-	}
-    void Attack()
-    {
         attackRate += Time.deltaTime;
-        if (isAttacking == true)
-        {
-            if (attackRate >= rate)
-            {
-
-                attackRate = 0.0f;
-            }
-        }
-        if (isAttacking == false)
+	}
+    public void Attack(GameObject target)
+    {
+        if (attackRate >= rate)
         {
             attackRate = 0.0f;
+            if (target.gameObject.GetComponent<TDCharacterController>() != null)
+            {
+                target.gameObject.GetComponent<TDCharacterController>().currentHealth -= damage;
+            }
+            if (target.gameObject.GetComponent<Gate>() != null)
+            {
+                target.gameObject.GetComponent<Gate>().gateHealthCurrent -= damage;
+            }
         }
     }
     // Player damaging enemy
@@ -218,23 +218,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Enemy Attack is Triggered
-    void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Gate")
-        {
-            isAttacking = true;
-        }
-    }
-
-    // Enemy Attack is not triggered or untriggered
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Gate")
-        {
-            isAttacking = false;
-        }
-    }
     void PlaySound(int clip)
     {
         GetComponent<AudioSource>().PlayOneShot(audioClip[clip]);

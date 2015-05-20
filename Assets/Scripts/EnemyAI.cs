@@ -18,7 +18,6 @@ public class EnemyAI : MonoBehaviour
 	bool findingNewPath;
 	public float nudgeDistance;
 	
-	
 	// Use this for initialization
 	void Start () 
 	{
@@ -44,22 +43,12 @@ public class EnemyAI : MonoBehaviour
 		}
         if (Vector3.Distance(transform.position, gate.transform.position) < gateDistance)
         {
-            gate.gameObject.GetComponent<Gate>().isDamaged = true;
-        }
-        if (Vector3.Distance(transform.position, gate.transform.position) > gateDistance)
-        {
-            gate.gameObject.GetComponent<Gate>().isDamaged = false;
+            gameObject.GetComponent<Enemy>().Attack(gate);
         }
 		if(Vector3.Distance (transform.position, player.transform.position) < attackDistance)
 		{
-			gameObject.GetComponent<Enemy>().isAttacking = true;
-            player.gameObject.GetComponent<TDCharacterController>().isDamaged = true;
+			gameObject.GetComponent<Enemy>().Attack(player);
 		}
-        else if (Vector3.Distance(transform.position, player.transform.position) > attackDistance)
-        {
-            gameObject.GetComponent<Enemy>().isAttacking = false;
-            player.gameObject.GetComponent<TDCharacterController>().isDamaged = false;
-        }
 		if (Vector3.Distance (transform.position, player.transform.position) < 2 && Vector3.Distance (transform.position, player.transform.position) > 0.5) 
 		{
 			RaycastHit hit;

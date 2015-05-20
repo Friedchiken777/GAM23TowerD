@@ -62,9 +62,6 @@ public class TDCharacterController : MonoBehaviour {
 	public float enemiesAggroed;
 	
 	public GameObject spawnPad;
-
-    public float damageTimer = 0.0f;
-    public bool isDamaged = false;
     
     public bool sprinting;
     public float sprintMultiplier;
@@ -211,20 +208,7 @@ public class TDCharacterController : MonoBehaviour {
 			ammo = 10;
 		}
 		
-        // Player Taking Damage
-        if (isDamaged == true)
-        {
-            damageTimer += Time.deltaTime;
-            if (damageTimer >= 2.0f)
-            {
-                currentHealth -= 5;
-                damageTimer = 0.0f;
-            }
-        }
-        if (isDamaged == false)
-        {
-            damageTimer = 0.0f;
-        }
+        
         if (currentHealth <= maxHealth)
         {
             float intensity = (maxHealth - currentHealth) / maxHealth;

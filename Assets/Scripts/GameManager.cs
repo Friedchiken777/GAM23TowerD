@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
 	public static int enemiesOnField;
 	public AudioManager gameTrack;
 	public AudioSource a;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -37,27 +38,34 @@ public class GameManager : MonoBehaviour
 	{
 		if(Input.GetKeyDown(KeyCode.B))
 		{
-			a.Stop();
+			
 			MakeBuildPhase();
-			gameTrack.playGameMusicTracks(a, 0, 0.25f);
+			
 		}
 		if(Input.GetKeyDown(KeyCode.N))
 		{
-			a.Stop();
+
 			MakeDefensePhase();
-			gameTrack.playGameMusicTracks(a, 1, 0.25f);
 		}
 		
 		switch(currentState)
 		{
 		case GameState.BuildPhase:
 		{
-			DoBuildPhase();
+            DoBuildPhase();
+            if (!a.isPlaying)
+            {
+                gameTrack.playGameMusicTracks(a, 0, 0.25f);
+            }
 			break;
 		}
 		case GameState.DefensePhase:
 		{
 			DoDefensePhase();
+            if (!a.isPlaying)
+            {
+                gameTrack.playGameMusicTracks(a, 1, 0.25f);
+            }
 			break;
 		}
 		case GameState.LevelSelect:
