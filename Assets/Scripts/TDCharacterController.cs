@@ -66,7 +66,10 @@ public class TDCharacterController : MonoBehaviour {
     public bool sprinting;
     public float sprintMultiplier;
     float sprintModifyer;
-	
+    public float deathTimer = 0.0f;
+    public AudioManager playerSound;
+    public AudioSource b;
+
 	void Awake()
 	{
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -141,6 +144,7 @@ public class TDCharacterController : MonoBehaviour {
 
 		if (Input.GetButtonDown ("Jump")) 
 		{
+            playerSound.playGameMusicTracks(b, 6, 0.25f);
 			if(jumps < totalJumps)
 			{
 				moveDirec.y = jumpHeight;
@@ -224,11 +228,26 @@ public class TDCharacterController : MonoBehaviour {
             cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMin = 0.0f;
             cam.gameObject.GetComponent<NoiseAndScratches>().scratchIntensityMax = 0.0f;
         }
+        if (currentHealth < maxHealth / 4)
+        {
+            if (!b.isPlaying)
+            {
+                playerSound.playGameMusicTracks(b, 2, 0.25f);
+            }
+        }
+
 		if(currentHealth < 0 || transform.position.y > 30 || transform.position.y < -10)
-		{			
-			print ("YOU DIED");
-			Respawn();
-			//Application.LoadLevel(1);
+		{
+            deathTimer += Time.deltaTime;
+            playerSound.playGameMusicTracks(b, 4, 0.25f);
+            if (deathTimer >= 5.64f)
+            {
+                print("YOU DIED");
+                Respawn();
+                playerSound.playGameMusicTracks(b, 7, 0.25f);
+                //Application.LoadLevel(1);
+                deathTimer = 0.0f;
+            }
 		}
 		
 	}

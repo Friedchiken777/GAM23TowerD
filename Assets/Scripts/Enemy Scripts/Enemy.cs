@@ -11,7 +11,8 @@ public class Enemy : MonoBehaviour
     public float rate;
     public float damage;
     public GameObject[] particlePlacements;
-    public AudioClip[] audioClip;
+    public AudioManager playerSound;
+    public AudioSource b;
 
 	// Use this for initialization
 	void Start () 
@@ -37,6 +38,12 @@ public class Enemy : MonoBehaviour
             if (target.gameObject.GetComponent<TDCharacterController>() != null)
             {
                 target.gameObject.GetComponent<TDCharacterController>().currentHealth -= damage;
+
+                // Sound will most likely loop over current sound playing
+                if (!b.isPlaying)
+                {
+                    playerSound.playGameMusicTracks(b, 3, 0.25f);
+                }
             }
             if (target.gameObject.GetComponent<Gate>() != null)
             {
@@ -216,11 +223,6 @@ public class Enemy : MonoBehaviour
                     }
                 break;
         }
-    }
-
-    void PlaySound(int clip)
-    {
-        GetComponent<AudioSource>().PlayOneShot(audioClip[clip]);
     }
 
     // Enemy Setup for Particle Systems and Attack Rate for spawning

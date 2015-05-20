@@ -17,7 +17,9 @@ public class EnemyAI : MonoBehaviour
 	bool followingPlayer = false;
 	bool findingNewPath;
 	public float nudgeDistance;
-	
+    public AudioManager playerSound;
+    public AudioSource b;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -44,6 +46,10 @@ public class EnemyAI : MonoBehaviour
         if (Vector3.Distance(transform.position, gate.transform.position) < gateDistance)
         {
             gameObject.GetComponent<Enemy>().Attack(gate);
+            if (!b.isPlaying)
+            {
+                playerSound.playGameMusicTracks(b, 0, 0.25f);
+            }
         }
 		if(Vector3.Distance (transform.position, player.transform.position) < attackDistance)
 		{
