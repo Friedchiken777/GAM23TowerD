@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
 	void Start () 
     {
         EnemySetup();
+        playerSound = GameObject.Find("_AudioManager").GetComponent<AudioManager>();
+        b = playerSound.gameObject.GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -38,16 +40,13 @@ public class Enemy : MonoBehaviour
             if (target.gameObject.GetComponent<TDCharacterController>() != null)
             {
                 target.gameObject.GetComponent<TDCharacterController>().currentHealth -= damage;
+                //playerSound.playGameMusicTracks(b, 3, 0.25f);
 
-                // Sound will most likely loop over current sound playing
-                if (!b.isPlaying)
-                {
-                    playerSound.playGameMusicTracks(b, 3, 0.25f);
-                }
             }
             if (target.gameObject.GetComponent<Gate>() != null)
             {
                 target.gameObject.GetComponent<Gate>().gateHealthCurrent -= damage;
+				//playerSound.playGameMusicTracks(b, 0, 0.25f);
             }
         }
     }

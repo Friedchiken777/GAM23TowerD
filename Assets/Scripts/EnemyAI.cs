@@ -19,6 +19,7 @@ public class EnemyAI : MonoBehaviour
 	public float nudgeDistance;
     public AudioManager playerSound;
     public AudioSource b;
+	bool attackedPlayer;
 
 	// Use this for initialization
 	void Start () 
@@ -28,6 +29,7 @@ public class EnemyAI : MonoBehaviour
         gate = GameObject.FindGameObjectWithTag("Gate");
 		stayOnPath = true;
 		findingNewPath = false;
+		attackedPlayer = false;
 	}
 	
 	// Update is called once per frame
@@ -43,18 +45,27 @@ public class EnemyAI : MonoBehaviour
 				pathIndex++;
 			}
 		}
+		
         if (Vector3.Distance(transform.position, gate.transform.position) < gateDistance)
         {
             gameObject.GetComponent<Enemy>().Attack(gate);
-            if (!b.isPlaying)
-            {
-                playerSound.playGameMusicTracks(b, 0, 0.25f);
-            }
         }
+        
 		if(Vector3.Distance (transform.position, player.transform.position) < attackDistance)
 		{
 			gameObject.GetComponent<Enemy>().Attack(player);
+			player.GetComponent<TDCharacterController>().playerIsGettingAttacked = true;
+			attackedPlayer = true;
 		}
+		else
+		{
+			if(attackedPlayer)
+			{
+				attackedPlayer = false;
+				player.GetComponent<TDCharacterController>().playerIsGettingAttacked = false;
+			}
+		}
+		
 		if (Vector3.Distance (transform.position, player.transform.position) < 2 && Vector3.Distance (transform.position, player.transform.position) > 0.5) 
 		{
 			RaycastHit hit;
@@ -106,7 +117,6 @@ public class EnemyAI : MonoBehaviour
 			if(hit.collider.gameObject.tag == "GridSquare")
 			{
 				CurrentGrid = hit.collider.gameObject;
-				GameObject[] temp = GameObject.FindGameObjectsWithTag("GridSquare");
 				Pathfinder.PopulateValidNodeList();
 				Pathfinder.openList.Clear();
 				Pathfinder.closedList.Clear();
@@ -159,7 +169,8 @@ public class EnemyAI : MonoBehaviour
 	{
 		if(col.transform.tag == "Enemy")
 		{
-			Vector3 push = new Vector3(transform.position.x + nudgeDistance, transform.position.y, transform.position.z + nudgeDistance);
+			float nudger = Random.Range(0, nudgeDistance);
+			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
 			transform.position = push;
 		}
 	}

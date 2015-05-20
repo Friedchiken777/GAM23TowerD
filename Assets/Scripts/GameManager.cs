@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
 	public GameState levelStartingState;
 	public static WaveSpawner spawnerOfWaves;
 	public static int enemiesOnField;
-	public AudioManager gameTrack;
-	public AudioSource a;
+	public static AudioManager gameTrack;
+	public static AudioSource a;
 
 	// Use this for initialization
 	void Start () 
@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 		spawnerOfWaves = GetComponent<WaveSpawner>();
 		enemiesOnField = 0;
 		currentState = levelStartingState;
+		gameTrack = GameObject.Find("_AudioManager").GetComponent<AudioManager>();
+		a = gameTrack.gameObject.GetComponent<AudioSource>();
 		StartingState();
 	}
 	
@@ -181,6 +183,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ChangeTowerBaseDisplay(currentPlayer.GetComponent<TDCharacterController>().currentTowerBases);
 		currentPlayer.GetComponent<TDCharacterController>().SetArms(true);
 		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		gameTrack.playGameMusicTracks(a, 0, 0.25f);
 	}
 	
 	public static void MakeDefensePhase()
@@ -195,6 +198,7 @@ public class GameManager : MonoBehaviour
 		currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
 		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(true);
 		spawnerOfWaves.LoadWave();
+		gameTrack.playGameMusicTracks(a, 1, 0.25f);
 	}
 	
 	public static void MakeMainMenue()

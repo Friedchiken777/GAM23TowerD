@@ -41,9 +41,7 @@ public class AudioManager : MonoBehaviour
 	{
 		if (index < playerSounds.Length) 
 		{
-            b.clip = gameMusicTracks[index];
-            b.volume = volume;
-            b.Play();
+			b.PlayOneShot (playerSounds [index], volume);
 		} 
 		else 
 		{
@@ -55,9 +53,7 @@ public class AudioManager : MonoBehaviour
 	{
 		if (index < towerSounds.Length) 
 		{
-            c.clip = gameMusicTracks[index];
-            c.volume = volume;
-            c.Play();
+			c.PlayOneShot (towerSounds [index], volume);
 		} 
 		else 
 		{
