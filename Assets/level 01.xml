@@ -11,23 +11,60 @@
 //wave 2
 <string>enemy_bruiser_asset,Spook,3</string>
 <string>enemy_sprinter_asset,Spook,3.5</string>
-<string>enemy_tank_asset,Spook,2000.9</string>
+<string>enemy_dasher_asset,Spook,4</string>
+<string>enemy_bruiser_asset,None,3</string>
+<string>enemy_sprinter_asset,None,3.5</string>
+<string>enemy_tank_asset,None,3.5</string>
+<string>enemy_tank_asset,Spook,9</string>
+<string>enemy_bulwark_asset,Spook,2000.11</string>
 //wave 3
+<string>enemy_bulwark_asset,Flame,11</string>
 <string>enemy_bruiser_asset,Flame,3</string>
 <string>enemy_sprinter_asset,Flame,3.5</string>
+<string>enemy_bruiser_asset,Spook,3</string>
+<string>enemy_sprinter_asset,Spook,3.5</string>
+<string>enemy_tank_asset,None,3.5</string>
+<string>enemy_dasher_asset,Flame,4</string>
 <string>enemy_tank_asset,Flame,3000.12</string>
 //wave 4
 <string>enemy_bruiser_asset,Crystal,3</string>
+<string>enemy_bruiser_asset,Flame,3</string>
+<string>enemy_sprinter_asset,Flame,3.5</string>
+<string>enemy_bruiser_asset,Spook,3</string>
+<string>enemy_sprinter_asset,Spook,3.5</string>
+<string>enemy_tank_asset,None,3.5</string>
 <string>enemy_sprinter_asset,Crystal,3.6</string>
+<string>enemy_dasher_asset,Crystal,4</string>
+<string>enemy_bulwark_asset,Crystal,11</string>
 <string>enemy_tank_asset,Crystal,1000.8</string>
 //wave 5
+<string>enemy_dasher_asset,Electric,4</string>
 <string>enemy_bruiser_asset,Electric,3</string>
+<string>enemy_sprinter_asset,Flame,3.5</string>
+<string>enemy_bulwark_asset,Electric,11</string>
+<string>enemy_sprinter_asset,Spook,3.5</string>
+<string>enemy_tank_asset,None,3.5</string>
+<string>enemy_sprinter_asset,Crystal,3.6</string>
+<string>enemy_dasher_asset,Crystal,4</string>
+<string>enemy_bulwark_asset,Crystal,11</string>
 <string>enemy_sprinter_asset,Electric,3.5</string>
 <string>enemy_tank_asset,Electric,2000.7</string>
 //wave 6
 <string>enemy_bruiser_asset,Corrosive,3</string>
+<string>enemy_dasher_asset,Electric,4</string>
 <string>enemy_sprinter_asset,Corrosive,3.5</string>
+<string>enemy_bruiser_asset,Electric,3</string>
+<string>enemy_dasher_asset,Corrosive,4</string>
+<string>enemy_sprinter_asset,Flame,3.5</string>
+<string>enemy_bulwark_asset,Electric,11</string>
+<string>enemy_sprinter_asset,Spook,3.5</string>
+<string>enemy_tank_asset,None,3.5</string>
+<string>enemy_dasher_asset,Corrosive,4</string>
+<string>enemy_sprinter_asset,Crystal,3.6</string>
+<string>enemy_dasher_asset,Crystal,4</string>
+<string>enemy_bulwark_asset,Corrosive,11</string>
 <string>enemy_tank_asset,Corrosive,9001</string>
+
 </enemyToSpawn>
 </wave>
 </WaveData>

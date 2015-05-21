@@ -152,7 +152,7 @@ public class TDCharacterController : MonoBehaviour {
 
 		if (Input.GetButtonDown ("Jump")) 
 		{
-            //playerSound.playGameMusicTracks(b, 6, 0.25f);
+			playerSound.playPlayerSounds(b, 6, 0.25f);
 			if(jumps < totalJumps)
 			{
 				moveDirec.y = jumpHeight;
@@ -259,12 +259,12 @@ public class TDCharacterController : MonoBehaviour {
 		if(currentHealth < 0 || transform.position.y > 30 || transform.position.y < -10)
 		{
             deathTimer += Time.deltaTime;
-            //playerSound.playGameMusicTracks(b, 4, 0.25f);
+			playerSound.playPlayerSounds(b, 4, 0.25f);
             if (deathTimer >= 5.64f)
             {
                 print("YOU DIED");
                 Respawn();
-                //playerSound.playGameMusicTracks(b, 7, 0.25f);
+				playerSound.playPlayerSounds(b, 7, 0.25f);
                 //Application.LoadLevel(1);
                 deathTimer = 0.0f;
             }

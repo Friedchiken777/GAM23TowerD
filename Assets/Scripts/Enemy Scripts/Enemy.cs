@@ -40,13 +40,13 @@ public class Enemy : MonoBehaviour
             if (target.gameObject.GetComponent<TDCharacterController>() != null)
             {
                 target.gameObject.GetComponent<TDCharacterController>().currentHealth -= damage;
-                //playerSound.playGameMusicTracks(b, 3, 0.25f);
+				playerSound.playPlayerSounds(b, 3, 0.25f);
 
             }
             if (target.gameObject.GetComponent<Gate>() != null)
             {
                 target.gameObject.GetComponent<Gate>().gateHealthCurrent -= damage;
-				//playerSound.playGameMusicTracks(b, 0, 0.25f);
+				playerSound.playPlayerSounds(b, 0, 0.25f);
             }
         }
     }
