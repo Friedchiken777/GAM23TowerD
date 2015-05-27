@@ -25,12 +25,15 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        if (health <= 0)
+        if (!GameManager.pausedInstance.Paused)
         {
-            Destroy(gameObject);
-			GameManager.enemiesOnField --;
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+                GameManager.enemiesOnField--;
+            }
+            attackRate += Time.deltaTime;
         }
-        attackRate += Time.deltaTime;
 	}
     public void Attack(GameObject target)
     {

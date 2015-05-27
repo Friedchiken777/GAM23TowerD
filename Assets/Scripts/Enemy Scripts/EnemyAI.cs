@@ -36,79 +36,81 @@ public class EnemyAI : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () 
-	{
-		if(enemyPath.Count > pathIndex && stayOnPath)
-		{
-			Vector3 target = enemyPath[pathIndex].GetComponent<GridSquare>().pathMarker.transform.position;
-			transform.LookAt(target);
-			gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * speed * Time.deltaTime, ForceMode.Force);
-			if(Vector3.Distance(target, transform.position) < pathNodeDistance)
-			{
-				pathIndex++;
-			}
-		}
-		
-        if (Vector3.Distance(transform.position, gate.transform.position) < gateDistance)
+    void Update()
+    {
+        if (!GameManager.pausedInstance.Paused)
         {
-            gameObject.GetComponent<Enemy>().Attack(gate);
+            if (enemyPath.Count > pathIndex && stayOnPath)
+            {
+                Vector3 target = enemyPath[pathIndex].GetComponent<GridSquare>().pathMarker.transform.position;
+                transform.LookAt(target);
+                gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * speed * Time.deltaTime, ForceMode.Force);
+                if (Vector3.Distance(target, transform.position) < pathNodeDistance)
+                {
+                    pathIndex++;
+                }
+            }
+
+            if (Vector3.Distance(transform.position, gate.transform.position) < gateDistance)
+            {
+                gameObject.GetComponent<Enemy>().Attack(gate);
+            }
+
+            if (Vector3.Distance(transform.position, player.transform.position) < attackDistance)
+            {
+                gameObject.GetComponent<Enemy>().Attack(player);
+                player.GetComponent<TDCharacterController>().playerIsGettingAttacked = true;
+                attackedPlayer = true;
+            }
+            else
+            {
+                if (attackedPlayer)
+                {
+                    attackedPlayer = false;
+                    player.GetComponent<TDCharacterController>().playerIsGettingAttacked = false;
+                }
+            }
+
+            if (Vector3.Distance(transform.position, player.transform.position) < agroDistance && Vector3.Distance(transform.position, player.transform.position) > playerPersonalSpace)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(player.transform.position, Vector3.down, out hit, 2))
+                {
+                    if (hit.collider.gameObject.tag == "GridSquare")
+                    {
+                        stayOnPath = false;
+                        followingPlayer = true;
+                        EnemyAttackBehaviorRushMelee();
+                    }
+                    else
+                    {
+
+                        if (followingPlayer && !findingNewPath)
+                        {
+                            StartCoroutine(FindNewPath());
+                        }
+                        followingPlayer = false;
+                        stayOnPath = true;
+                    }
+                }
+            }
+            else
+            {
+                if (followingPlayer && !findingNewPath)
+                {
+                    StartCoroutine(FindNewPath());
+                }
+                followingPlayer = false;
+                stayOnPath = true;
+            }
+            if (GetComponent<Rigidbody>().velocity.magnitude > speedLimit)
+            {
+                Vector3 newSpeed = GetComponent<Rigidbody>().velocity;
+                newSpeed.Normalize();
+                GetComponent<Rigidbody>().velocity = newSpeed * speedLimit;
+            }
         }
-        
-		if(Vector3.Distance (transform.position, player.transform.position) < attackDistance)
-		{
-			gameObject.GetComponent<Enemy>().Attack(player);
-			player.GetComponent<TDCharacterController>().playerIsGettingAttacked = true;
-			attackedPlayer = true;
-		}
-		else
-		{
-			if(attackedPlayer)
-			{
-				attackedPlayer = false;
-				player.GetComponent<TDCharacterController>().playerIsGettingAttacked = false;
-			}
-		}
-		
-		if (Vector3.Distance (transform.position, player.transform.position) < agroDistance && Vector3.Distance (transform.position, player.transform.position) > playerPersonalSpace) 
-		{
-			RaycastHit hit;
-			if(Physics.Raycast(player.transform.position, Vector3.down, out hit, 2))
-			{
-				if(hit.collider.gameObject.tag == "GridSquare")
-				{
-					stayOnPath = false;
-					followingPlayer = true;
-					EnemyAttackBehaviorRushMelee();
-				}
-				else
-				{
-					
-					if(followingPlayer && !findingNewPath)
-					{
-						StartCoroutine(FindNewPath());
-					}
-					followingPlayer = false;
-					stayOnPath = true;
-				}
-			}
-		}
-		else
-		{
-			if(followingPlayer && !findingNewPath)
-			{
-				StartCoroutine(FindNewPath());				
-			}
-			followingPlayer = false;
-			stayOnPath = true;
-		}
-		if(GetComponent<Rigidbody>().velocity.magnitude > speedLimit)
-		{
-			Vector3 newSpeed = GetComponent<Rigidbody>().velocity;
-			newSpeed.Normalize();
-			GetComponent<Rigidbody>().velocity = newSpeed * speedLimit;			
-		}
-	}
-	
+    }
 	IEnumerator FindNewPath()
 	{
 		findingNewPath = true;

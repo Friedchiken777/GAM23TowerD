@@ -43,8 +43,11 @@ public class Bullet : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		transform.position += mousePos.normalized * Time.deltaTime * bulletSpeed;
-		//transform.Rotate(Time.deltaTime * 100, Time.deltaTime * 100, 0);
+        if (!GameManager.pausedInstance.Paused)
+        {
+            transform.position += mousePos.normalized * Time.deltaTime * bulletSpeed;
+            //transform.Rotate(Time.deltaTime * 100, Time.deltaTime * 100, 0);
+        }
 	}
 	
 	void OnTriggerEnter(Collider other)

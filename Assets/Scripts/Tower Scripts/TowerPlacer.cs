@@ -42,16 +42,19 @@ public class TowerPlacer : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if(GameManager.currentState == GameState.BuildPhase)
-		{
-			BuildPhaseGO();
-			UpdateTowerSelection();
-		}
-		else
-		{
-			LittleClearFunction();
-			Pathfinder.UnlightUpMarkers();
-		}
+        if (!GameManager.pausedInstance.Paused)
+        {
+            if (GameManager.currentState == GameState.BuildPhase)
+            {
+                BuildPhaseGO();
+                UpdateTowerSelection();
+            }
+            else
+            {
+                LittleClearFunction();
+                Pathfinder.UnlightUpMarkers();
+            }
+        }
 	}
 	
 	void BuildPhaseGO()

@@ -10,13 +10,19 @@ public class Projectile : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        Destroy(gameObject, 5.0f);
+        if (!GameManager.pausedInstance.Paused)
+        {
+            Destroy(gameObject, 5.0f);
+        }
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * speed);
+        if (!GameManager.pausedInstance.Paused)
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime * speed);
+        }
 	}
 	
 	void OnTriggerEnter(Collider other)
