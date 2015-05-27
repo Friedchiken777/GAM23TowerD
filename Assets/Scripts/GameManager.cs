@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour 
 {
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
 	public static int enemiesOnField;
 	public static AudioManager gameTrack;
 	public static AudioSource a;
+	public static Tower[] towers;
+	public static List<Tower> supports;
 
 	// Use this for initialization
 	void Start () 
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
 		gameTrack = GameObject.Find("_AudioManager").GetComponent<AudioManager>();
 		a = gameTrack.gameObject.GetComponent<AudioSource>();
 		StartingState();
+		supports = new List<Tower>();
 	}
 	
 	// Update is called once per frame
@@ -175,6 +179,7 @@ public class GameManager : MonoBehaviour
 	public static void MakeBuildPhase()
 	{
 		currentState = GameState.BuildPhase;
+		DebuffTowers();
 		GUIManager.ShowTowerChoices();
 		GUIManager.ShowCrosshair();
 		GUIManager.ShowDefendReadyText(true);
@@ -189,6 +194,7 @@ public class GameManager : MonoBehaviour
 	public static void MakeDefensePhase()
 	{
 		enemiesOnField = 0;
+		BuffTowers();
 		currentState = GameState.DefensePhase;
 		GUIManager.HideTowerChoices();
 		GUIManager.ShowCrosshair();
@@ -515,6 +521,51 @@ public class GameManager : MonoBehaviour
 		{
 			return unmodedDamage;
 		}
+		}
+	}
+	
+	public static void BuffTowers()
+	{
+		supports.Clear();
+		towers = GameObject.FindObjectsOfType<Tower>();		
+		for (int i = 0; i < towers.Length; i++)
+		{
+			if(towers[i].GetComponent<Tower>().supportTower)
+			{
+				supports.Add(towers[i]);
+			}
+		}
+		for(int i = 0; i < supports.Count; i++)
+		{
+			Collider[] towersToSupport = Physics.OverlapSphere(supports[i].transform.position, supports[i].radius);
+			for(int j = 0; j < towersToSupport.Length; j++)
+			{
+				if(towersToSupport[j].gameObject.tag == "Tower" && !towersToSupport[j].gameObject.GetComponent<Tower>().supportTower && !towersToSupport[j].gameObject.GetComponent<Tower>().buffed)
+				{
+					towersToSupport[j].gameObject.GetComponent<Tower>().damageModifier += supports[i].towerDamageMultiplier - 1;
+					towersToSupport[j].gameObject.GetComponent<Tower>().firingRateModifier += supports[i].towerFiringRateMultiplier - 1;
+					towersToSupport[j].gameObject.GetComponent<Tower>().raduisModifier += supports[i].towerRangeMultiplier - 1;
+					towersToSupport[j].gameObject.GetComponent<Tower>().buffed = true;
+				}
+			}
+		}
+	}
+	
+	public static void DebuffTowers()
+	{
+		for(int i = 0; i < supports.Count; i++)
+		{
+			Collider[] towersToSupport = Physics.OverlapSphere(supports[i].transform.position, supports[i].radius);
+			for(int j = 0; j < towersToSupport.Length; j++)
+			{
+				if(towersToSupport[j].gameObject.tag == "Tower" && !towersToSupport[j].gameObject.GetComponent<Tower>().supportTower)
+				{
+					towersToSupport[j].gameObject.GetComponent<Tower>().damageModifier = 1;
+					towersToSupport[j].gameObject.GetComponent<Tower>().firingRateModifier = 1;
+					towersToSupport[j].gameObject.GetComponent<Tower>().raduisModifier = 1;
+					towersToSupport[j].gameObject.GetComponent<Tower>().buffed = false;
+				}
+			}
 		}
 	}
 	
