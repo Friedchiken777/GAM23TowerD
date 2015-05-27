@@ -3,18 +3,38 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour 
 {
+    private bool paused;
+    public bool Paused
+    {
+        get
+        {
+            return paused;
+        }
+    }
+    private static GameManager pausing;
+    public static GameManager pausedInstance
+    {
+        get
+        {
+            if (pausing == null)
+            {
+                pausing = GameObject.FindObjectOfType<GameManager>();
+            }
+            return pausing;
+        }
+    }
 	static GameManager instance_;
 	public static GameManager Instance
 	{
 		get
 		{
-			if (instance_ == null) {
+			if (instance_ == null) 
+            {
 				instance_ = new GameManager();
 			}
 			return instance_;
 		}
 	}
-	
 	public static GameState currentState;
 	public static GameObject currentPlayer;
 	public GameState levelStartingState;
@@ -22,6 +42,9 @@ public class GameManager : MonoBehaviour
 	public static int enemiesOnField;
 	public static AudioManager gameTrack;
 	public static AudioSource a;
+    public GameObject continueButton;
+    public GameObject controlsButton;
+    public GameObject quitButton;
 
 	// Use this for initialization
 	void Start () 
@@ -38,80 +61,85 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-//		if(Input.GetKeyDown(KeyCode.B))
-//		{
-//			
-//			MakeBuildPhase();
-//			
-//		}
-//		if(Input.GetKeyDown(KeyCode.N))
-//		{
-//
-//			MakeDefensePhase();
-//		}
-		
-		switch(currentState)
-		{
-		case GameState.BuildPhase:
-		{
-            DoBuildPhase();
-            if (!a.isPlaying)
+        if (!GameManager.pausedInstance.Paused)
+        {
+            //		if(Input.GetKeyDown(KeyCode.B))
+            //		{
+            //			
+            //			MakeBuildPhase();
+            //			
+            //		}
+            //		if(Input.GetKeyDown(KeyCode.N))
+            //		{
+            //
+            //			MakeDefensePhase();
+            //		}
+            switch (currentState)
             {
-                gameTrack.playGameMusicTracks(a, 0, 0.25f);
+                case GameState.BuildPhase:
+                    {
+                        DoBuildPhase();
+                        if (!a.isPlaying)
+                        {
+                            gameTrack.playGameMusicTracks(a, 0, 0.25f);
+                        }
+                        break;
+                    }
+                case GameState.DefensePhase:
+                    {
+                        DoDefensePhase();
+                        if (!a.isPlaying)
+                        {
+                            gameTrack.playGameMusicTracks(a, 1, 0.25f);
+                        }
+                        break;
+                    }
+                case GameState.LevelSelect:
+                    {
+                        DoLevelSelect();
+                        break;
+                    }
+                case GameState.LoadingScreen:
+                    {
+                        DoLoadingScreen();
+                        break;
+                    }
+                case GameState.Loadout:
+                    {
+                        DoLoadout();
+                        break;
+                    }
+                case GameState.LossScreen:
+                    {
+                        DoLossScreen();
+                        break;
+                    }
+                case GameState.MainMenue:
+                    {
+                        DoMainMenue();
+                        break;
+                    }
+                case GameState.Pause:
+                    {
+                        DoPause();
+                        break;
+                    }
+                case GameState.WinScreen:
+                    {
+                        DoWinScreen();
+                        break;
+                    }
+                default:
+                    {
+                        Debug.LogError("No Gamestate Present");
+                        break;
+                    }
             }
-			break;
-		}
-		case GameState.DefensePhase:
-		{
-			DoDefensePhase();
-            if (!a.isPlaying)
-            {
-                gameTrack.playGameMusicTracks(a, 1, 0.25f);
-            }
-			break;
-		}
-		case GameState.LevelSelect:
-		{
-			DoLevelSelect();
-			break;
-		}
-		case GameState.LoadingScreen:
-		{
-			DoLoadingScreen();
-			break;
-		}
-		case GameState.Loadout:
-		{
-			DoLoadout();
-			break;
-		}
-		case GameState.LossScreen:
-		{
-			DoLossScreen();
-			break;
-		}
-		case GameState.MainMenue:
-		{
-			DoMainMenue();
-			break;
-		}
-		case GameState.Pause:
-		{
-			DoPause();
-			break;
-		}
-		case GameState.WinScreen:
-		{
-			DoWinScreen();
-			break;
-		}
-		default:
-		{
-			Debug.LogError("No Gamestate Present");
-			break;
-		}
-		}
-		
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseGame();
+        }
 	}
 	
 	
@@ -517,6 +545,23 @@ public class GameManager : MonoBehaviour
 		}
 		}
 	}
+    public void PauseGame()
+    {
+        paused = !paused;
+        a.Pause();
+        if (paused)
+        {
+            continueButton.SetActive(true);
+            controlsButton.SetActive(true);
+            quitButton.SetActive(true);
+        }
+        if (!paused)
+        {
+            continueButton.SetActive(false);
+            controlsButton.SetActive(false);
+            quitButton.SetActive(false);
+        }
+    }
 	
 }
 
