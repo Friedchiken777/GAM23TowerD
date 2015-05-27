@@ -10,6 +10,8 @@ public class Bullet : MonoBehaviour
 	GameObject player;
 	Vector3 playerVelocity;
 	bool playedSound, noMoreHurt;
+	public float damage;
+	public DamageType dt;
 	
 	// Use this for initialization
 	void Start () 
@@ -50,23 +52,10 @@ public class Bullet : MonoBehaviour
 		
 		if(other.tag == "Enemy")
 		{
-			if(Vector3.Distance(other.transform.position, player.transform.position) < 4)
-			{
-				
-			}
-			if(!noMoreHurt)
-			{
-				
-			}
+			other.GetComponent<Enemy>().health -= GameManager.TypeCheckDamageAdjustment(damage, other.gameObject.GetComponent<Enemy>().enemyType, dt);
 		}
-		if(other.gameObject.tag != "Player")
+		if(other.tag != "Tower" || other.tag != "TowerBase" || other.tag != "NormalProjectile" || other.tag != "Player")
 		{
-			if(!playedSound)
-			{
-				//GetComponent<AudioSource>().PlayOneShot(this.GetComponent<AudioSource>().clip);
-				playedSound = true;
-				noMoreHurt = true;
-			}
 			if(this.transform.parent)
 			{
 				

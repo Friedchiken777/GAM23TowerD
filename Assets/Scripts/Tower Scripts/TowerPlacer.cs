@@ -26,6 +26,7 @@ public class TowerPlacer : MonoBehaviour
 	TDCharacterController player;
 	AudioManager am;
 	AudioSource audioPlayer;
+	float typeChangeCooldown;
 	
 	// Use this for initialization
 	void Start () 
@@ -290,6 +291,31 @@ public class TowerPlacer : MonoBehaviour
 				GUIManager.MoveBar("Upgrade", actionDelay/2.5f);
 				GUIManager.MoveBar("Sell", actionDelay/2.5f);
 			}
+			
+			typeChangeCooldown += Time.deltaTime;
+			if(typeChangeCooldown > 0.1f)
+			{
+				if(Mathf.Clamp(Input.mouseScrollDelta.y,-1f,1f) > 0)
+				{
+					towerUpgradeSell.GetComponent<Tower>().projectileIndex ++;
+					if(towerUpgradeSell.GetComponent<Tower>().projectileIndex > towerUpgradeSell.GetComponent<Tower>().projectiles.Length)
+					{
+						towerUpgradeSell.GetComponent<Tower>().projectileIndex = 0;
+					}
+					towerUpgradeSell.GetComponent<Tower>().SetTowerType();
+					typeChangeCooldown = 0;
+				}
+				else if(Mathf.Clamp(Input.mouseScrollDelta.y,-1f,1f) < 0)
+				{
+					towerUpgradeSell.GetComponent<Tower>().projectileIndex--;
+					if(towerUpgradeSell.GetComponent<Tower>().projectileIndex < 0)
+					{
+						towerUpgradeSell.GetComponent<Tower>().projectileIndex = towerUpgradeSell.GetComponent<Tower>().projectiles.Length;
+					}
+					towerUpgradeSell.GetComponent<Tower>().SetTowerType();
+					typeChangeCooldown = 0;
+				}
+			}
 		}
 		else
 		{
@@ -389,27 +415,27 @@ public class TowerPlacer : MonoBehaviour
 		}		
 	}
 
-	string TypeToString(TowerType t)
+	string TypeToString(DamageType t)
 	{
 		switch (t) 
 		{
-		case TowerType.Flame:
+		case DamageType.Flame:
 		{
 			return "Flame";
 		}
-		case TowerType.Electric:
+		case DamageType.Electric:
 		{
 			return "Electric";
 		}
-		case TowerType.Corrosive:
+		case DamageType.Corrosive:
 		{
 			return "Corrosive";
 		}
-		case TowerType.Crystal:
+		case DamageType.Crystal:
 		{
 			return "Crystal";
 		}
-		case TowerType.Spook:
+		case DamageType.Spook:
 		{
 			return "Spook";
 		}

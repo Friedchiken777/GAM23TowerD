@@ -117,33 +117,33 @@ public class WaveSpawner : MonoBehaviour
 		yield return null;
 	}
 
-	EnemyType DetermineType(string stringtype)
+	DamageType DetermineType(string stringtype)
 	{
 		switch (stringtype) 
 		{
 		case "Flame":
 		{
-			return EnemyType.Flame;
+			return DamageType.Flame;
 		}
 		case "Electric":
 		{
-			return EnemyType.Electric;
+			return DamageType.Electric;
 		}
 		case "Corrosive":
 		{
-			return EnemyType.Corrosive;
+			return DamageType.Corrosive;
 		}
 		case "Crystal":
 		{
-			return EnemyType.Crystal;
+			return DamageType.Crystal;
 		}
 		case "Spook":
 		{
-			return EnemyType.Spook;
+			return DamageType.Spook;
 		}
 		default:
 		{
-			return EnemyType.Normal;
+			return DamageType.Normal;
 		}
 		}
 	}

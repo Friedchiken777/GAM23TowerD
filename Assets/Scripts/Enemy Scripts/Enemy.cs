@@ -3,10 +3,10 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour 
 {
-    public int health = 20;
+    public float health = 20;
     public float attackRate = 0.0f;
     public bool isAttacking = false;
-    public EnemyType enemyType;
+    public DamageType enemyType;
     public Transform target;
     public float rate;
     public float damage;
@@ -50,186 +50,14 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    // Player damaging enemy
-    void OnCollisionEnter (Collision other)
-    {
-        switch (enemyType)
-        {
-            case EnemyType.Corrosive:
-                {
-                    if (other.gameObject.tag == "NormalProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "CorrosiveProjectile")
-                    {
-                        health -= 1;
-                    }
-                    if (other.gameObject.tag == "FlameProjectile")
-                    {
-                        health -= 4;
-                    }
-                    if (other.gameObject.tag == "ElectricProjectile")
-                    {
-                        health -= 4;
-                    }
-                    if (other.gameObject.tag == "SpookProjectile")
-                    {
-                        health -= 3;
-                    }
-                    if (other.gameObject.tag == "CrystalProjectile")
-                    {
-                        health -= 3;
-                    }
-                }
-                break;
-            case EnemyType.Flame:
-                {
-                    if (other.gameObject.tag == "NormalProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "CorrosiveProjectile")
-                    {
-                        health -= 3;
-                    }
-                    if (other.gameObject.tag == "FlameProjectile")
-                    {
-                        health -= 1;
-                    }
-                    if (other.gameObject.tag == "ElectricProjectile")
-                    {
-                        health -= 3;
-                    }
-                    if (other.gameObject.tag == "SpookProjectile")
-                    {
-                        health -= 4;
-                    }
-                    if (other.gameObject.tag == "CrystalProjectile")
-                    {
-                        health -= 4;
-                    }
-                }
-                break;
-            case EnemyType.Electric:
-                {
-                    if (other.gameObject.tag == "NormalProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "CorrosiveProjectile")
-                    {
-                        health -= 3;
-                    }
-                    if (other.gameObject.tag == "FlameProjectile")
-                    {
-                        health -= 4;
-                    }
-                    if (other.gameObject.tag == "ElectricProjectile")
-                    {
-                        health -= 1;
-                    }
-                    if (other.gameObject.tag == "SpookProjectile")
-                    {
-                        health -= 4;
-                    }
-                    if (other.gameObject.tag == "CrystalProjectile")
-                    {
-                        health -= 3;
-                    }
-                }
-                break;
-            case EnemyType.Spook:
-                {
-                    if (other.gameObject.tag == "NormalProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "CorrosiveProjectile")
-                    {
-                        health -= 4;
-                    }
-                    if (other.gameObject.tag == "FlameProjectile")
-                    {
-                        health -= 3;
-                    }
-                    if (other.gameObject.tag == "ElectricProjectile")
-                    {
-                        health -= 3;
-                    }
-                    if (other.gameObject.tag == "SpookProjectile")
-                    {
-                        health -= 1;
-                    }
-                    if (other.gameObject.tag == "CrystalProjectile")
-                    {
-                        health -= 4;
-                    }
-                }
-                break;
-            case EnemyType.Crystal:
-                {
-                    if (other.gameObject.tag == "NormalProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "CorrosiveProjectile")
-                    {
-                        health -= 4;
-                    }
-                    if (other.gameObject.tag == "FlameProjectile")
-                    {
-                        health -= 3;
-                    }
-                    if (other.gameObject.tag == "ElectricProjectile")
-                    {
-                        health -= 4;
-                    }
-                    if (other.gameObject.tag == "SpookProjectile")
-                    {
-                        health -= 3;
-                    }
-                    if (other.gameObject.tag == "CrystalProjectile")
-                    {
-                        health -= 1;
-                    }
-                }
-                break;
-            default:
-                    if (other.gameObject.tag == "NormalProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "CorrosiveProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "FlameProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "ElectricProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "SpookProjectile")
-                    {
-                        health -= 2;
-                    }
-                    if (other.gameObject.tag == "CrystalProjectile")
-                    {
-                        health -= 2;
-                    }
-                break;
-        }
-    }
+
 
     // Enemy Setup for Particle Systems and Attack Rate for spawning
     public void EnemySetup ()
     {
         switch(enemyType)
         {
-            case EnemyType.Corrosive: 
+			case DamageType.Corrosive: 
                 {
                     for (int i = 0; i < particlePlacements.Length; i++)
                     {
@@ -238,7 +66,7 @@ public class Enemy : MonoBehaviour
                     }
                         break; 
                 }
-            case EnemyType.Flame:
+			case DamageType.Flame:
                 {
                     for (int i = 0; i < particlePlacements.Length; i++)
                     {
@@ -247,7 +75,7 @@ public class Enemy : MonoBehaviour
                     }
                     break;
                 }
-            case EnemyType.Electric:
+			case DamageType.Electric:
                 {
                     for (int i = 0; i < particlePlacements.Length; i++)
                     {
@@ -256,7 +84,7 @@ public class Enemy : MonoBehaviour
                     }
                     break;
                 }
-            case EnemyType.Spook:
+			case DamageType.Spook:
                 {
                     for (int i = 0; i < particlePlacements.Length; i++)
                     {
@@ -265,7 +93,7 @@ public class Enemy : MonoBehaviour
                     }
                     break;
                 }
-            case EnemyType.Crystal:
+            case DamageType.Crystal:
                 {
                     for (int i = 0; i < particlePlacements.Length; i++)
                     {
@@ -280,12 +108,12 @@ public class Enemy : MonoBehaviour
     }
 }
 
-public enum EnemyType
-{
-    Normal,
-    Corrosive,
-    Flame,
-    Electric,
-    Spook,
-    Crystal
-};
+//public enum EnemyType
+//{
+//    Normal,
+//    Corrosive,
+//    Flame,
+//    Electric,
+//    Spook,
+//    Crystal
+//};

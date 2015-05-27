@@ -38,17 +38,17 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if(Input.GetKeyDown(KeyCode.B))
-		{
-			
-			MakeBuildPhase();
-			
-		}
-		if(Input.GetKeyDown(KeyCode.N))
-		{
-
-			MakeDefensePhase();
-		}
+//		if(Input.GetKeyDown(KeyCode.B))
+//		{
+//			
+//			MakeBuildPhase();
+//			
+//		}
+//		if(Input.GetKeyDown(KeyCode.N))
+//		{
+//
+//			MakeDefensePhase();
+//		}
 		
 		switch(currentState)
 		{
@@ -367,6 +367,157 @@ public class GameManager : MonoBehaviour
 		print ("No Loss Screen Logic");
 	}
 	
+	public static float TypeCheckDamageAdjustment(float unmodedDamage, DamageType defendertype, DamageType attackertype)
+	{
+		switch (attackertype)
+		{
+		case DamageType.Corrosive:
+		{
+			if (defendertype == DamageType.Normal)
+			{
+				unmodedDamage *= 1.1f;
+			}
+			else if (defendertype == DamageType.Corrosive)
+			{
+				unmodedDamage *= 0.3f;
+			}
+			else if (defendertype == DamageType.Crystal)
+			{
+				unmodedDamage *= 1f;
+			}
+			else if (defendertype == DamageType.Electric)
+			{
+				unmodedDamage *= 2f;
+			}
+			else if (defendertype == DamageType.Flame)
+			{
+				unmodedDamage *= 2f;
+			}
+			else if (defendertype == DamageType.Spook)
+			{
+				unmodedDamage *= 1f;
+			}
+			return unmodedDamage;
+		}
+		case DamageType.Flame:
+		{
+			if (defendertype == DamageType.Normal)
+			{
+				unmodedDamage *= 1.1f;
+			}
+			else if (defendertype == DamageType.Corrosive)
+			{
+				unmodedDamage *= 1f;
+			}
+			else if (defendertype == DamageType.Crystal)
+			{
+				unmodedDamage *= 2f;
+			}
+			else if (defendertype == DamageType.Electric)
+			{
+				unmodedDamage *= 1f;
+			}
+			else if (defendertype == DamageType.Flame)
+			{
+				unmodedDamage *= 0.3f;
+			}
+			else if (defendertype == DamageType.Spook)
+			{
+				unmodedDamage *= 2f;
+			}
+			return unmodedDamage;
+		}
+		case DamageType.Electric:
+		{
+			if (defendertype == DamageType.Normal)
+			{
+				unmodedDamage *= 1.1f;
+			}
+			else if (defendertype == DamageType.Corrosive)
+			{
+				unmodedDamage *= 1f;
+			}
+			else if (defendertype == DamageType.Crystal)
+			{
+				unmodedDamage *= 1f;
+			}
+			else if (defendertype == DamageType.Electric)
+			{
+				unmodedDamage *= 0.3f;
+			}
+			else if (defendertype == DamageType.Flame)
+			{
+				unmodedDamage *= 2f;
+			}
+			else if (defendertype == DamageType.Spook)
+			{
+				unmodedDamage *= 2f;
+			}
+			return unmodedDamage;
+		}
+		case DamageType.Spook:
+		{
+			if (defendertype == DamageType.Normal)
+			{
+				unmodedDamage *= 1.1f;
+			}
+			else if (defendertype == DamageType.Corrosive)
+			{
+				unmodedDamage *= 2f;
+			}
+			else if (defendertype == DamageType.Crystal)
+			{
+				unmodedDamage *= 2f;
+			}
+			else if (defendertype == DamageType.Electric)
+			{
+				unmodedDamage *= 1f;
+			}
+			else if (defendertype == DamageType.Flame)
+			{
+				unmodedDamage *= 1f;
+			}
+			else if (defendertype == DamageType.Spook)
+			{
+				unmodedDamage *= 0.3f;
+			}
+			return unmodedDamage;
+		}
+		case DamageType.Crystal:
+		{
+			if (defendertype == DamageType.Normal)
+			{
+				unmodedDamage *= 1.1f;
+			}
+			else if (defendertype == DamageType.Corrosive)
+			{
+				unmodedDamage *= 2f;
+			}
+			else if (defendertype == DamageType.Crystal)
+			{
+				unmodedDamage *= 0.3f;
+			}
+			else if (defendertype == DamageType.Electric)
+			{
+				unmodedDamage *= 2f;
+			}
+			else if (defendertype == DamageType.Flame)
+			{
+				unmodedDamage *= 1f;
+			}
+			else if (defendertype == DamageType.Spook)
+			{
+				unmodedDamage *= 1f;
+			}
+			return unmodedDamage;
+		}
+		default:
+		{
+			return unmodedDamage;
+		}
+		}
+	}
+	
 }
 
 public enum GameState
@@ -381,3 +532,13 @@ public enum GameState
 	WinScreen,
 	LossScreen
 }
+
+public enum DamageType
+{
+	Normal,
+	Corrosive,
+	Flame,
+	Electric,
+	Spook,
+	Crystal
+};

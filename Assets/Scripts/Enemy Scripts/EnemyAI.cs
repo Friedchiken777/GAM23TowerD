@@ -9,7 +9,10 @@ public class EnemyAI : MonoBehaviour
 	public float speed;
 	public float speedLimit;
     public float gateDistance;
+    public float agroDistance;
+    public float playerPersonalSpace;
     public float attackDistance;
+    public float pathNodeDistance;
 	public GameObject player;
     public GameObject gate;
 	bool stayOnPath;
@@ -40,7 +43,7 @@ public class EnemyAI : MonoBehaviour
 			Vector3 target = enemyPath[pathIndex].GetComponent<GridSquare>().pathMarker.transform.position;
 			transform.LookAt(target);
 			gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * speed * Time.deltaTime, ForceMode.Force);
-			if(Vector3.Distance(target, transform.position) < 0.1f)
+			if(Vector3.Distance(target, transform.position) < pathNodeDistance)
 			{
 				pathIndex++;
 			}
@@ -66,7 +69,7 @@ public class EnemyAI : MonoBehaviour
 			}
 		}
 		
-		if (Vector3.Distance (transform.position, player.transform.position) < 2 && Vector3.Distance (transform.position, player.transform.position) > 0.5) 
+		if (Vector3.Distance (transform.position, player.transform.position) < agroDistance && Vector3.Distance (transform.position, player.transform.position) > playerPersonalSpace) 
 		{
 			RaycastHit hit;
 			if(Physics.Raycast(player.transform.position, Vector3.down, out hit, 2))

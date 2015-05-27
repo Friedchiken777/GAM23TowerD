@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Tower : MonoBehaviour 
 {
 	public string towerName;
-	public int health = 20;
+	public float towerBaseDamage;
     public int rank;
     public float range;
     public float cost;
@@ -14,9 +14,10 @@ public class Tower : MonoBehaviour
     public float totalValue;
 	public float firingRate = 0.0f;
 	public GameObject[] gunPlacements;
-    public GameObject projectile;
+    public GameObject[] projectiles;
+    public int projectileIndex;
     public GameObject upgradeTower;
-    public TowerType towerType;
+	public DamageType towerType;
     public float rate;
     public float radius;
     public LayerMask firstTarget;
@@ -30,16 +31,12 @@ public class Tower : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        SetTowers();
+        SetTowerType();
 	}
 	
 	// Update is called once per frame
     void Update()
     {
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-        }
         Fire();
     }
     void Fire()
@@ -47,16 +44,17 @@ public class Tower : MonoBehaviour
         firingRate += Time.deltaTime;
         if (firingRate >= rate)
         {
-            target = FindTargetWithinReach(center, radius, firstTarget);
+            target = FindTargetWithinReach(transform.position, radius, firstTarget);
             if (target == null)
             {
-                target = FindTargetWithinReach(center, radius, firstTarget);
+				target = FindTargetWithinReach(transform.position, radius, firstTarget);
             }
             else
             {
                 foreach (GameObject gunPlacement in gunPlacements)
                 {
-                    Instantiate(projectile, gunPlacement.transform.position, gunPlacement.transform.rotation);
+                    GameObject proj = Instantiate(projectiles[projectileIndex], gunPlacement.transform.position, gunPlacement.transform.rotation) as GameObject;
+					proj.GetComponent<Projectile>().damage = towerBaseDamage;
                 }
 				firingRate = 0.0f;
             }			
@@ -88,38 +86,45 @@ public class Tower : MonoBehaviour
     }
 
 
-    public void SetTowers()
+    public void SetTowerType()
     {
-        switch (towerType)
+		if(projectileIndex > projectiles.Length)
+		{
+			print(projectileIndex);
+			projectileIndex = 0;
+		}
+		switch (projectileIndex)
         {
-            case TowerType.Corrosive:
-                {
-
-                    break;
-                }
-            case TowerType.Flame:
-                {
-
-                    break;
-                }
-            case TowerType.Electric:
-                {
-
-                    break;
-                }
-            case TowerType.Spook:
-                {
-
-                    break;
-                }
-            case TowerType.Crystal:
-                {
-
-                    break;
-                }
-            default:
- 
-                break;
+		case 1:
+        {
+			towerType = DamageType.Corrosive;
+            break;
+        }
+		case 2:
+        {
+			towerType = DamageType.Flame;
+            break;
+        }
+		case 3:
+        {
+			towerType = DamageType.Electric;
+            break;
+        }
+		case 4:
+        {
+			towerType = DamageType.Spook;
+            break;
+        }
+		case 5:
+        {
+			towerType = DamageType.Crystal;
+            break;
+        }
+        default:
+        {
+			towerType = DamageType.Normal;
+        	break;
+        }
         }
     }
 
@@ -129,12 +134,12 @@ public class Tower : MonoBehaviour
     }
 }
 
-public enum TowerType
-{
-    Normal,
-    Corrosive,
-    Flame,
-    Electric,
-    Spook,
-    Crystal
-};
+//public enum TowerType
+//{
+//    Normal,
+//    Corrosive,
+//    Flame,
+//    Electric,
+//    Spook,
+//    Crystal
+//};
