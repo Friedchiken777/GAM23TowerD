@@ -43,14 +43,11 @@ public class GameManager : MonoBehaviour
 	public static int enemiesOnField;
 	public static AudioManager gameTrack;
 	public static AudioSource a;
-<<<<<<< HEAD
     public GameObject continueButton;
     public GameObject controlsButton;
     public GameObject quitButton;
-=======
 	public static Tower[] towers;
 	public static List<Tower> supports;
->>>>>>> 67e3c008f40c1f6e7ca3774d9a9c16ce3c935d2b
 
 	// Use this for initialization
 	void Start () 
