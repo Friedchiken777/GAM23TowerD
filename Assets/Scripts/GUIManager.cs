@@ -23,7 +23,7 @@ public class GUIManager : MonoBehaviour
 	public static GameObject towerInterface;
 	public static GameObject buildPhaseGUI;
 	public static GameObject miniMapCamera, mapCamera;
-	public static GameObject buildReadyDisplay, defendReadyDisplay;
+	public static GameObject buildReadyDisplay, defendReadyDisplay, nextWaveEnemies;
 	
 	// Use this for initialization
 	void Awake () 
@@ -38,6 +38,7 @@ public class GUIManager : MonoBehaviour
 		buildPhaseGUI = GameObject.Find("BuildPhaseGUI");
 		buildReadyDisplay = GameObject.Find("BuildReadyText");
 		defendReadyDisplay = GameObject.Find("DefendReadyText");
+		nextWaveEnemies = GameObject.Find("NextWaveEnemies");
 		ShowTowerInterface (false);
 		miniMapCamera = GameObject.Find("MiniMapCamera");
 		mapCamera = GameObject.Find("MapCamera");
@@ -126,6 +127,19 @@ public class GUIManager : MonoBehaviour
 		towerInterface.transform.FindChild("UpgradeBarBack").gameObject.SetActive(upgrade);
 		towerInterface.transform.FindChild("UpgradeBarFill").gameObject.SetActive(upgrade);
 		towerInterface.transform.FindChild("Upgrade").gameObject.SetActive(upgrade);
+	}
+	
+	public static void ShowNextWaveEnemies(bool b)
+	{
+		nextWaveEnemies.SetActive(b);
+		if(b)
+		{
+			nextWaveEnemies.transform.FindChild("BruiserImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.bruisersInNextWave.ToString();
+			nextWaveEnemies.transform.FindChild("BulwarkImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.bulwarksInNextWave.ToString();
+			nextWaveEnemies.transform.FindChild("DasherImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.dashersInNextWave.ToString();
+			nextWaveEnemies.transform.FindChild("SprinterImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.sprintersInNextwave.ToString();
+			nextWaveEnemies.transform.FindChild("TankImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.tanksInNextWave.ToString();
+		}		
 	}
 	
 	public static void ToggleMaps()

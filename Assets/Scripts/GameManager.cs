@@ -197,6 +197,8 @@ public class GameManager : MonoBehaviour
 		GUIManager.ChangeTowerBaseDisplay(currentPlayer.GetComponent<TDCharacterController>().currentTowerBases);
 		currentPlayer.GetComponent<TDCharacterController>().SetArms(true);
 		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
+		spawnerOfWaves.DetermineNumberOfEnemiesForNextWave();
+		GUIManager.ShowNextWaveEnemies(true);
 		gameTrack.playGameMusicTracks(a, 0, 0.25f);
 		currentPlayer.GetComponent<TDCharacterController>().playerIsGettingAttacked = false;
 	}
@@ -211,6 +213,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ShowTowerInterface(false);
 		GUIManager.ShowDefendReadyText(false);
 		GUIManager.ShowBuildReadyText(false);
+		GUIManager.ShowNextWaveEnemies(false);
 		currentPlayer.GetComponent<TDCharacterController>().SetArms(false);
 		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(true);
 		spawnerOfWaves.LoadWave();
@@ -224,6 +227,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ShowTowerInterface(false);
 		GUIManager.ShowDefendReadyText(false);
 		GUIManager.ShowBuildReadyText(false);
+		GUIManager.ShowNextWaveEnemies(false);
 		currentState = GameState.MainMenue;
 		if(currentPlayer != null)
 		{
@@ -239,6 +243,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ShowTowerInterface(false);
 		GUIManager.ShowDefendReadyText(false);
 		GUIManager.ShowBuildReadyText(false);
+		GUIManager.ShowNextWaveEnemies(false);
 		currentState = GameState.LevelSelect;
 		if(currentPlayer != null)
 		{
@@ -254,6 +259,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ShowTowerInterface(false);
 		GUIManager.ShowDefendReadyText(false);
 		GUIManager.ShowBuildReadyText(true);
+		GUIManager.ShowNextWaveEnemies(false);
 		currentState = GameState.Loadout;
 		if(currentPlayer != null)
 		{
@@ -269,6 +275,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ShowTowerInterface(false);
 		GUIManager.ShowDefendReadyText(false);
 		GUIManager.ShowBuildReadyText(false);
+		GUIManager.ShowNextWaveEnemies(false);
 		currentState = GameState.Pause;
 		if(currentPlayer != null)
 		{
@@ -284,6 +291,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ShowTowerInterface(false);
 		GUIManager.ShowDefendReadyText(false);
 		GUIManager.ShowBuildReadyText(false);
+		GUIManager.ShowNextWaveEnemies(false);
 		currentState = GameState.LoadingScreen;
 		if(currentPlayer != null)
 		{
@@ -299,6 +307,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ShowTowerInterface(false);
 		GUIManager.ShowDefendReadyText(false);
 		GUIManager.ShowBuildReadyText(false);
+		GUIManager.ShowNextWaveEnemies(false);
 		currentState = GameState.WinScreen;
 		if(currentPlayer != null)
 		{
@@ -314,6 +323,7 @@ public class GameManager : MonoBehaviour
 		GUIManager.ShowTowerInterface(false);
 		GUIManager.ShowDefendReadyText(false);
 		GUIManager.ShowBuildReadyText(false);
+		GUIManager.ShowNextWaveEnemies(false);
 		currentState = GameState.LossScreen;
 		if(currentPlayer != null)
 		{
