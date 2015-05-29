@@ -198,6 +198,7 @@ public class GameManager : MonoBehaviour
 		currentPlayer.GetComponent<TDCharacterController>().SetArms(true);
 		currentPlayer.GetComponent<TDCharacterController>().weapon.SetActive(false);
 		gameTrack.playGameMusicTracks(a, 0, 0.25f);
+		currentPlayer.GetComponent<TDCharacterController>().playerIsGettingAttacked = false;
 	}
 	
 	public static void MakeDefensePhase()
