@@ -106,7 +106,7 @@ public class TDCharacterController : MonoBehaviour {
 	
 	void Update ()
 	{
-        if (!GameManager.pausedInstance.Paused)
+        if (!GameManager.paused)
         {
             gameState = GameManager.currentState;
 

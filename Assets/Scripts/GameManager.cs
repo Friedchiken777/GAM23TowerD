@@ -4,29 +4,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour 
 {
-    private bool paused = false;
-    private bool isCameraPaused;
-    public bool Paused
-    {
-        get
-        {
-            return isCameraPaused;
-        }
-    }
-    private static GameManager pausing;
-    public static GameManager pausedInstance
-    {
-        get
-        {
-            if (pausing == null)
-            {
-                pausing = GameObject.FindObjectOfType<GameManager>();
-            }
-            return pausing;
-        }
-    }
-    
-    static GameManager instance_;
+	static GameManager instance_;
 	public static GameManager Instance
 	{
 		get
@@ -50,6 +28,8 @@ public class GameManager : MonoBehaviour
     public GameObject quitButton;
 	public static Tower[] towers;
 	public static List<Tower> supports;
+	
+	public static bool paused = false;
 
 	// Use this for initialization
 	void Start () 
@@ -84,7 +64,7 @@ public class GameManager : MonoBehaviour
                 case GameState.BuildPhase:
                     {
                         DoBuildPhase();
-                        if (!a.isPlaying)
+                        if (!a.isPlaying && !paused)
                         {
                             gameTrack.playGameMusicTracks(a, 0, 0.25f);
                         }
@@ -93,7 +73,7 @@ public class GameManager : MonoBehaviour
                 case GameState.DefensePhase:
                     {
                         DoDefensePhase();
-                        if (!a.isPlaying)
+			if (!a.isPlaying && !paused)
                         {
                             gameTrack.playGameMusicTracks(a, 1, 0.25f);
                         }
@@ -554,7 +534,6 @@ public class GameManager : MonoBehaviour
 	}
     public void PauseGame()
     {
-        isCameraPaused = !isCameraPaused;
         a.Pause();
         if (!paused)
         {
