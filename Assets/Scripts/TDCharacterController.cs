@@ -81,6 +81,8 @@ public class TDCharacterController : MonoBehaviour {
 	
 	float intensity;
 
+    public bool paused;
+
 	void Awake()
 	{
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();

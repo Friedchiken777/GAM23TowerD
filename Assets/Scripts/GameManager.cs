@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour 
 {
-    private bool paused;
+    private bool paused = false;
+    private bool isCameraPaused;
     public bool Paused
     {
         get
         {
-            return paused;
+            return isCameraPaused;
         }
     }
     private static GameManager pausing;
@@ -24,7 +25,8 @@ public class GameManager : MonoBehaviour
             return pausing;
         }
     }
-	static GameManager instance_;
+    
+    static GameManager instance_;
 	public static GameManager Instance
 	{
 		get
@@ -65,8 +67,7 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-        if (!GameManager.pausedInstance.Paused)
-        {
+        
             //		if(Input.GetKeyDown(KeyCode.B))
             //		{
             //			
@@ -138,7 +139,7 @@ public class GameManager : MonoBehaviour
                         Debug.LogError("No Gamestate Present");
                         break;
                     }
-            }
+            
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -553,16 +554,20 @@ public class GameManager : MonoBehaviour
 	}
     public void PauseGame()
     {
-        paused = !paused;
+        isCameraPaused = !isCameraPaused;
         a.Pause();
-        if (paused)
+        if (!paused)
         {
+            paused = true;
+            Time.timeScale = 0;
             continueButton.SetActive(true);
             controlsButton.SetActive(true);
             quitButton.SetActive(true);
         }
-        if (!paused)
+        else
         {
+            paused = false;
+            Time.timeScale = 1;
             continueButton.SetActive(false);
             controlsButton.SetActive(false);
             quitButton.SetActive(false);

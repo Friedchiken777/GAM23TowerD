@@ -38,8 +38,7 @@ public class EnemyAI : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
-        if (!GameManager.pausedInstance.Paused)
-        {
+        
             if (enemyPath.Count > pathIndex && stayOnPath)
             {
                 Vector3 target = enemyPath[pathIndex].GetComponent<GridSquare>().pathMarker.transform.position;
@@ -109,7 +108,7 @@ public class EnemyAI : MonoBehaviour
                 newSpeed.Normalize();
                 GetComponent<Rigidbody>().velocity = newSpeed * speedLimit;
             }
-        }
+        
     }
 	IEnumerator FindNewPath()
 	{

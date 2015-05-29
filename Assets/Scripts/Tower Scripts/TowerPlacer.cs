@@ -42,8 +42,7 @@ public class TowerPlacer : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-        if (!GameManager.pausedInstance.Paused)
-        {
+        
             if (GameManager.currentState == GameState.BuildPhase)
             {
                 BuildPhaseGO();
@@ -54,7 +53,7 @@ public class TowerPlacer : MonoBehaviour
                 LittleClearFunction();
                 Pathfinder.UnlightUpMarkers();
             }
-        }
+        
 	}
 	
 	void BuildPhaseGO()

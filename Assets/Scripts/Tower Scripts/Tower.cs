@@ -48,10 +48,9 @@ public class Tower : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
-        if (!GameManager.pausedInstance.Paused)
-        {
+        
             Fire();
-        }
+        
     }
     void Fire()
     {
