@@ -134,11 +134,51 @@ public class GUIManager : MonoBehaviour
 		nextWaveEnemies.SetActive(b);
 		if(b)
 		{
-			nextWaveEnemies.transform.FindChild("BruiserImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.bruisersInNextWave.ToString();
-			nextWaveEnemies.transform.FindChild("BulwarkImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.bulwarksInNextWave.ToString();
-			nextWaveEnemies.transform.FindChild("DasherImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.dashersInNextWave.ToString();
-			nextWaveEnemies.transform.FindChild("SprinterImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.sprintersInNextwave.ToString();
-			nextWaveEnemies.transform.FindChild("TankImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.tanksInNextWave.ToString();
+			if(GameManager.spawnerOfWaves.bruisersInNextWave > 0)
+			{
+				nextWaveEnemies.transform.FindChild("BruiserImage").gameObject.SetActive(true);
+				nextWaveEnemies.transform.FindChild("BruiserImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.bruisersInNextWave.ToString();
+			}
+			else
+			{
+				nextWaveEnemies.transform.FindChild("BruiserImage").gameObject.SetActive(false);
+			}
+			if(GameManager.spawnerOfWaves.bulwarksInNextWave > 0)
+			{
+				nextWaveEnemies.transform.FindChild("BulwarkImage").gameObject.SetActive(true);
+				nextWaveEnemies.transform.FindChild("BulwarkImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.bulwarksInNextWave.ToString();
+			}
+			else
+			{
+				nextWaveEnemies.transform.FindChild("BulwarkImage").gameObject.SetActive(false);
+			}
+			if(GameManager.spawnerOfWaves.dashersInNextWave > 0)
+			{
+				nextWaveEnemies.transform.FindChild("DasherImage").gameObject.SetActive(true);
+				nextWaveEnemies.transform.FindChild("DasherImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.dashersInNextWave.ToString();
+			}
+			else
+			{
+				nextWaveEnemies.transform.FindChild("DasherImage").gameObject.SetActive(false);
+			}
+			if(GameManager.spawnerOfWaves.sprintersInNextwave > 0)
+			{
+				nextWaveEnemies.transform.FindChild("SprinterImage").gameObject.SetActive(true);
+				nextWaveEnemies.transform.FindChild("SprinterImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.sprintersInNextwave.ToString();
+			}
+			else
+			{
+				nextWaveEnemies.transform.FindChild("SprinterImage").gameObject.SetActive(false);
+			}
+			if(GameManager.spawnerOfWaves.tanksInNextWave > 0)
+			{
+				nextWaveEnemies.transform.FindChild("TankImage").gameObject.SetActive(true);
+				nextWaveEnemies.transform.FindChild("TankImage").transform.FindChild("Count").GetComponent<Text>().text = GameManager.spawnerOfWaves.tanksInNextWave.ToString();
+			}
+			else
+			{
+				nextWaveEnemies.transform.FindChild("TankImage").gameObject.SetActive(false);
+			}
 		}		
 	}
 	
