@@ -24,6 +24,8 @@ public class WaveSpawner : MonoBehaviour
 	public float waitTime;
 	public static bool allWaveEnemiesSpawned, lastWave;
 	
+	public float bruisersInNextWave, bulwarksInNextWave, dashersInNextWave, sprintersInNextwave, tanksInNextWave;
+	
 
 	void Start () 
 	{
@@ -35,11 +37,12 @@ public class WaveSpawner : MonoBehaviour
 		//SaveGame ();
 		testStringIndex = 0;
 		lastWave = false;
+		LoadLevel ();
 	}
 	
 	void Update()
 	{
-		LoadLevel ();
+		
 	}
 	
 	void SaveGame()
@@ -115,6 +118,57 @@ public class WaveSpawner : MonoBehaviour
 			}
 		}
 		yield return null;
+	}
+	
+	public void DetermineNumberOfEnemiesForNextWave()
+	{
+		float endcheck;
+		sprintersInNextwave = tanksInNextWave = bulwarksInNextWave = bruisersInNextWave = dashersInNextWave = 0;
+		for (int i=testStringIndex; i < teststring.Length; i++)
+		{
+			string[] enemyData = teststring[i].Split(',');
+			string nextTallyCheck = enemyData[0];
+			
+			switch(nextTallyCheck)
+			{
+			case "enemy_bruiser_asset":
+			{
+				bruisersInNextWave++;
+				break;
+			}
+			case "enemy_bulwark_asset":
+			{
+				bulwarksInNextWave++;
+				break;
+			}
+			case "enemy_dasher_asset":
+			{
+				dashersInNextWave++;
+				break;
+			}
+			case "enemy_sprinter_asset":
+			{
+				sprintersInNextwave++;
+				break;
+			}
+			case "enemy_tank_asset":
+			{
+				tanksInNextWave++;
+				break;
+			}
+			default:
+			{
+				print ("Warning, Invalid Enemy...");
+				break;
+			}
+			}
+			
+			endcheck = float.Parse(enemyData[2]);
+			if(endcheck > 1000)
+			{
+				break;
+			}
+		}
 	}
 
 	DamageType DetermineType(string stringtype)
