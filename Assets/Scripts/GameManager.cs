@@ -26,6 +26,13 @@ public class GameManager : MonoBehaviour
     public GameObject continueButton;
     public GameObject controlsButton;
     public GameObject quitButton;
+    public GameObject controlsHeading;
+    public GameObject buildPhaseButton;
+    public GameObject defensePhaseButton;
+    public GameObject buildControls;
+    public GameObject defenseControls;
+    public GameObject pauseHeading;
+    public GameObject backButton;
 	public static Tower[] towers;
 	public static List<Tower> supports;
 	
@@ -553,6 +560,7 @@ public class GameManager : MonoBehaviour
             continueButton.SetActive(true);
             controlsButton.SetActive(true);
             quitButton.SetActive(true);
+            pauseHeading.SetActive(true);
         }
         else
         {
@@ -561,6 +569,13 @@ public class GameManager : MonoBehaviour
             continueButton.SetActive(false);
             controlsButton.SetActive(false);
             quitButton.SetActive(false);
+            controlsHeading.SetActive(false);
+            buildPhaseButton.SetActive(false);
+            defensePhaseButton.SetActive(false);
+            buildControls.SetActive(false);
+            defenseControls.SetActive(false);
+            pauseHeading.SetActive(false);
+            backButton.SetActive(false);
         }
     }
 	
