@@ -36,11 +36,12 @@ public class Tower : MonoBehaviour
     public GameObject[] yLookAt;
     public AudioClip[] audioClip;
     public Sprite sprite;
-    
+    Animator anim;
 
 	// Use this for initialization
 	void Start () 
     {
+        anim = GetComponent<Animator>();
         SetTowerType();
         buffed = false;
 	}
