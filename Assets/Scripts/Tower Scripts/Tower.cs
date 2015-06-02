@@ -36,12 +36,13 @@ public class Tower : MonoBehaviour
     public GameObject[] yLookAt;
     public AudioClip[] audioClip;
     public Sprite sprite;
-    Animator anim;
+    Animation anim;
+	public TowerAnimations tower;
 
 	// Use this for initialization
 	void Start () 
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<Animation>();
         SetTowerType();
         buffed = false;
 	}
@@ -69,6 +70,7 @@ public class Tower : MonoBehaviour
                 {
                     GameObject proj = Instantiate(projectiles[projectileIndex], gunPlacement.transform.position, gunPlacement.transform.rotation) as GameObject;
 					proj.GetComponent<Projectile>().damage = towerBaseDamage * damageModifier;
+					Towers();
                 }
 				firingRate = 0.0f;
             }			
@@ -86,6 +88,69 @@ public class Tower : MonoBehaviour
             }
         }
     }
+	void Towers ()
+	{
+		if (tower == TowerAnimations.Cannon) 
+		{
+			anim.Play ("cannon_shoot_animation");
+		}
+		else if (tower == TowerAnimations.CannonUP1)
+		{
+			anim.Play ("cannon1_shoot_animation");
+		}
+		else if (tower == TowerAnimations.CannonUP2)
+		{
+			anim.Play ("cannon2_shoot_animation");
+		}
+		else if (tower == TowerAnimations.Eon)
+		{
+			anim.Play ("eon_cannon_passive_rotation");
+		}
+		else if (tower == TowerAnimations.EonUP1)
+		{
+			anim.Play ("eon_cannon1_passive_rotation");
+		}
+		else if (tower == TowerAnimations.EonUP2)
+		{
+			anim.Play ("eon_cannon2_passive_rotation");
+		}
+		else if (tower == TowerAnimations.Gatling)
+		{
+			anim.Play ("gatling_shoot_animation");
+		}
+		else if (tower == TowerAnimations.GatlingUP1)
+		{
+			anim.Play ("gatling1_shoot_animation");
+		}
+		else if (tower == TowerAnimations.GatlingUP2)
+		{
+			anim.Play ("gatling2_shoot_animation");
+		}
+		else if (tower == TowerAnimations.Slow)
+		{
+			anim.Play ();
+		}
+		else if (tower == TowerAnimations.SlowUP1)
+		{
+			anim.Play ();
+		}
+		else if (tower == TowerAnimations.SlowUP2)
+		{
+			anim.Play ();
+		}
+		else if (tower == TowerAnimations.Support)
+		{
+			anim.Play ("support_ring_rotation_animation");
+		}
+		else if (tower == TowerAnimations.SupportUP1)
+		{
+			anim.Play ("support_ring_rotation_animation");
+		}
+		else if (tower == TowerAnimations.SupportUP2)
+		{
+			anim.Play ("support_ring_rotation_animation");
+		}
+	}
     GameObject FindTargetWithinReach(Vector3 center, float radius, LayerMask firstTarget)
     {
 		Collider[] hitEnemies = Physics.OverlapSphere(center, (radius * raduisModifier), firstTarget);
@@ -147,7 +212,24 @@ public class Tower : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(audioClip[clip]);
     }
 }
-
+public enum TowerAnimations
+{
+	Cannon,
+	CannonUP1,
+	CannonUP2,
+	Eon,
+	EonUP1,
+	EonUP2,
+	Gatling,
+	GatlingUP1,
+	GatlingUP2,
+	Slow,
+	SlowUP1,
+	SlowUP2,
+	Support,
+	SupportUP1,
+	SupportUP2
+};
 //public enum TowerType
 //{
 //    Normal,
