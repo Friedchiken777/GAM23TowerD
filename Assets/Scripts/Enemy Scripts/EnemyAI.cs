@@ -23,6 +23,7 @@ public class EnemyAI : MonoBehaviour
     public AudioManager playerSound;
     public AudioSource b;
 	bool attackedPlayer;
+	float tbNudgeCooldown;
 
 	// Use this for initialization
 	void Start () 
@@ -38,7 +39,7 @@ public class EnemyAI : MonoBehaviour
 	// Update is called once per frame
     void Update()
     {
-        
+        	tbNudgeCooldown += Time.deltaTime;
             if (enemyPath.Count > pathIndex && stayOnPath)
             {
                 Vector3 target = enemyPath[pathIndex].GetComponent<GridSquare>().pathMarker.transform.position;
@@ -173,7 +174,29 @@ public class EnemyAI : MonoBehaviour
 	{
 		if(col.transform.tag == "Enemy")
 		{
-			float nudger = Random.Range(0, nudgeDistance);
+			float nudger = Random.Range(-nudgeDistance, nudgeDistance);
+			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
+			transform.position = push;
+		}
+		if(col.transform.tag == "EnemyBuffer")
+		{
+			float nudger = Random.Range(0, 0.2f);
+			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
+			transform.position = push;
+		}
+		if(col.transform.tag == "TowerBase")
+		{
+			float nudger = Random.Range(-0.1f,0.1f);
+			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
+			transform.position = push;
+		}
+	}
+	void OnCollisionStay(Collision col)
+	{
+		if(col.transform.tag == "TowerBase" && tbNudgeCooldown > 0.1)
+		{
+			tbNudgeCooldown = 0;
+			float nudger = Random.Range(-0.2f,0.2f);
 			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
 			transform.position = push;
 		}

@@ -5,8 +5,8 @@ public class Gate : MonoBehaviour
 {
     public float gateHealthMAX;
     public float gateHealthCurrent;
-    public float damageTimer = 0.0f;
-    public bool isDamaged = false;
+//    public float damageTimer = 0.0f;
+//    public bool isDamaged = false;
 
 	// Use this for initialization
 	void Start () 
@@ -21,5 +21,6 @@ public class Gate : MonoBehaviour
         {
             Application.LoadLevel("GameOver");
         }
+        GUIManager.UpdateGateHealthDisplay(gateHealthCurrent,gateHealthMAX);
     }
 }

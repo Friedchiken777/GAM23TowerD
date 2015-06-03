@@ -213,7 +213,7 @@ public class TDCharacterController : MonoBehaviour {
                 if (Input.GetMouseButtonDown(0) && !sprinting)
                 {
                     ammoShotType = Random.Range(0, bullets.Length);
-                    GameObject proj = Instantiate(bullets[0], gun.transform.position, gun.transform.localRotation) as GameObject;
+                    GameObject proj = Instantiate(bullets[0], gun.transform.position, gun.transform.rotation) as GameObject;
                     proj.GetComponent<Bullet>().damage = playerDamage;
                     //GetComponent<AudioSource>().PlayOneShot(gun.GetComponent<AudioSource>().clip);
                     ammo--;

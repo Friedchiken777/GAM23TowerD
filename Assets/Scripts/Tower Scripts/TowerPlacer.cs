@@ -188,6 +188,7 @@ public class TowerPlacer : MonoBehaviour
 				GUIManager.ShowTowerInterface(true);
 				GUIManager.UpdateTowerInterface(hit.collider.gameObject.GetComponent<Tower>().towerName, TypeToString(hit.collider.gameObject.GetComponent<Tower>().towerType), hit.collider.gameObject.GetComponent<Tower>().upgradeTower != null);
 				upgradeIsGo = true;
+				buildOnClick = false;
 			}
 		}
 		if(hit.collider == null)
@@ -208,16 +209,19 @@ public class TowerPlacer : MonoBehaviour
 				hit.collider.gameObject.GetComponent<GridSquare>().hasTower = true;
 				Destroy(tTemp);
 			}
-			if(!hit.collider.gameObject.GetComponent<GridSquare>().hasTowerBase)
+			if(hit.collider.gameObject.GetComponent<GridSquare>() != null)
 			{
-				tempPosBase = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerBase ,hit.collider.gameObject.transform.position.z);
-				Instantiate(availableTowers[0], tempPosBase, hit.collider.gameObject.transform.rotation);
-				am.playTowerSounds(audioPlayer, 0, 1);
-				player.currentTowerBases --;
-				GUIManager.ChangeTowerBaseDisplay(player.currentTowerBases);
-				hit.collider.gameObject.GetComponent<GridSquare>().canMove = false;
-				hit.collider.gameObject.GetComponent<GridSquare>().canBuild = false;
-				hit.collider.gameObject.GetComponent<GridSquare>().hasTowerBase = true;
+				if(!hit.collider.gameObject.GetComponent<GridSquare>().hasTowerBase)
+				{
+					tempPosBase = new Vector3(hit.collider.gameObject.transform.position.x, hit.collider.gameObject.transform.position.y + yBufferTowerBase ,hit.collider.gameObject.transform.position.z);
+					Instantiate(availableTowers[0], tempPosBase, hit.collider.gameObject.transform.rotation);
+					am.playTowerSounds(audioPlayer, 0, 1);
+					player.currentTowerBases --;
+					GUIManager.ChangeTowerBaseDisplay(player.currentTowerBases);
+					hit.collider.gameObject.GetComponent<GridSquare>().canMove = false;
+					hit.collider.gameObject.GetComponent<GridSquare>().canBuild = false;
+					hit.collider.gameObject.GetComponent<GridSquare>().hasTowerBase = true;
+				}
 			}
 			buildOnClick = false;
 		}

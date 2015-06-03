@@ -23,7 +23,7 @@ public class GUIManager : MonoBehaviour
 	public static GameObject towerInterface;
 	public static GameObject buildPhaseGUI;
 	public static GameObject miniMapCamera, mapCamera;
-	public static GameObject buildReadyDisplay, defendReadyDisplay, nextWaveEnemies;
+	public static GameObject buildReadyDisplay, defendReadyDisplay, nextWaveEnemies, gateHealth;
 	
 	// Use this for initialization
 	void Awake () 
@@ -42,6 +42,7 @@ public class GUIManager : MonoBehaviour
 		ShowTowerInterface (false);
 		miniMapCamera = GameObject.Find("MiniMapCamera");
 		mapCamera = GameObject.Find("MapCamera");
+		gateHealth = GameObject.Find("GateHealth");
 		mapCamera.GetComponent<Camera>().enabled = false;
 	}
 	
@@ -199,6 +200,24 @@ public class GUIManager : MonoBehaviour
 			miniMapCamera.GetComponent<Camera>().enabled = true;
 			mapCamera.GetComponent<Camera>().enabled = false;
 		}
+	}
+	
+	public static void UpdateGateHealthDisplay(float currentHealth, float maxHaelth)
+	{
+		gateHealth.GetComponent<Text>().text = currentHealth + " / " + maxHaelth; 
+		if(currentHealth/maxHaelth > 0.5f)
+		{
+			gateHealth.GetComponent<Text>().color = Color.green;
+		}
+		else if(currentHealth/maxHaelth > 0.25f)
+		{
+			gateHealth.GetComponent<Text>().color = Color.yellow;
+		}
+		else
+		{
+			gateHealth.GetComponent<Text>().color = Color.red;
+		}
+		
 	}
 	
 	public static void MoveBar(string bar, float amount)

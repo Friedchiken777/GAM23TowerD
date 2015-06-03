@@ -56,17 +56,15 @@ public class Bullet : MonoBehaviour
 		{
 			other.GetComponent<Enemy>().health -= GameManager.TypeCheckDamageAdjustment(damage, other.gameObject.GetComponent<Enemy>().enemyType, dt);
 		}
-		if(other.tag != "Tower" || other.tag != "TowerBase" || other.tag != "NormalProjectile" || other.tag != "Player")
+		if(other.tag != "Tower" && other.tag != "TowerBase" && other.tag != "NormalProjectile" && other.tag != "Player" && other.tag != "PlayerBit")
 		{
 			if(this.transform.parent)
-			{
-				
-				Destroy (this.transform.parent.gameObject, 0.4f);
-				
+			{				
+				Destroy (this.transform.parent.gameObject, 0.01f);				
 			}
 			else
 			{
-				Destroy (this.gameObject, 0.4f);
+				Destroy (this.gameObject, 0.01f);
 			}
 		}
 	}
