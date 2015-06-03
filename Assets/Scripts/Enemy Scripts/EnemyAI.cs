@@ -164,6 +164,10 @@ public class EnemyAI : MonoBehaviour
 				enemyPath = sidePath;
 				pathIndex = 0;
 			}
+			else
+			{
+				transform.position = enemyPath[pathIndex].transform.position;
+			}
 		}
 		findingNewPath = false;
 		yield return null;
@@ -177,6 +181,7 @@ public class EnemyAI : MonoBehaviour
 			float nudger = Random.Range(-nudgeDistance, nudgeDistance);
 			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
 			transform.position = push;
+			gameObject.GetComponent<Rigidbody>().AddForce(0,-100,0);
 		}
 		if(col.transform.tag == "EnemyBuffer")
 		{
@@ -186,19 +191,21 @@ public class EnemyAI : MonoBehaviour
 		}
 		if(col.transform.tag == "TowerBase")
 		{
-			float nudger = Random.Range(-0.1f,0.1f);
-			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
-			transform.position = push;
+//			float nudger = Random.Range(-0.1f,0.1f);
+//			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
+//			transform.position = push;
+			gameObject.GetComponent<Rigidbody>().AddForce(0,-100,0);
+			gameObject.GetComponent<Rigidbody>().AddForce(-transform.forward*100);
 		}
 	}
 	void OnCollisionStay(Collision col)
 	{
 		if(col.transform.tag == "TowerBase" && tbNudgeCooldown > 0.1)
 		{
-			tbNudgeCooldown = 0;
-			float nudger = Random.Range(-0.2f,0.2f);
-			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
-			transform.position = push;
+//			tbNudgeCooldown = 0;
+//			float nudger = Random.Range(-0.2f,0.2f);
+//			Vector3 push = new Vector3(transform.position.x + nudger, transform.position.y, transform.position.z + nudger);
+//			transform.position = push;
 		}
 	}
 	

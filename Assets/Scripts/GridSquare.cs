@@ -37,7 +37,7 @@ public class GridSquare : MonoBehaviour
 		{
 			gValue = 100;
 		}
-		ColorNoMoveRed();
+		//ColorNoMoveRed();
 		
 	}
 	

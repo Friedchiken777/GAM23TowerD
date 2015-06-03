@@ -42,7 +42,7 @@ public class Pathfinder : MonoBehaviour
 	void Start () 
 	{
 		sortPerformance = 0;
-		if(PopulateValidNodeListDebugColors())
+		if(PopulateValidNodeList())
 		{
 			CalculateHValues();
 			FindPath ();
@@ -232,7 +232,7 @@ public class Pathfinder : MonoBehaviour
 	public static bool FindPath()
 	{
 		ClearLists();
-		if(PopulateValidNodeListDebugColors())
+		if(PopulateValidNodeList())
 		{
 			bool sort = true;
 			int sortTest = 0;
