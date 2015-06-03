@@ -19,6 +19,7 @@ public class ButtonManager : MonoBehaviour
 	}
 	public void ChangeToScene (string changeScene)
 	{
+		Time.timeScale = 1;
 		Application.LoadLevel (changeScene);
 	}
 	public void QuitGame ()
