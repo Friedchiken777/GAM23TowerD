@@ -392,7 +392,7 @@ public class GameManager : MonoBehaviour
 	
 	public static void DoWinScreen()
 	{
-		print ("No Win Screen Logic");
+		Application.LoadLevel ("VictoryScreen");
 	}
 	
 	public static void DoLossScreen()
